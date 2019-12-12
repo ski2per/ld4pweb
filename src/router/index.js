@@ -23,6 +23,30 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/ted',
+    name: 'Ted',
+    component: Ted,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/btn',
+    name: 'btn',
+    component: MyBtnPage,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/todo',
+    name: 'todo',
+    component: Todo,
+    meta: {
+      requiresAuth: true
+    }
+  }
   //{
   //  path: '/about',
   //  name: 'about',

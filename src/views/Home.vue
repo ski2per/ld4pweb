@@ -1,40 +1,60 @@
 <template>
-  <div class="hello">
-    <p>{{ msg }}<p>
-    <h2>导航</h2>
-      <ul>
-        <li><router-link to="/ted">Ted</router-link></li>
-        <li><router-link to="/btn">Button</router-link></li>
-        <li><router-link to="/todo">Todo</router-link></li>
-      </ul>
-  </div>
+  <v-card
+    height="400"
+    width="256"
+    class="mx-auto"
+  >
+    <v-navigation-drawer permanent>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            LDAP Menu
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Winter is coming ~
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-list
+        dense
+        nav
+      >
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.link"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </v-card>
 </template>
 
-<script>
-export default {
-  name: 'Home',
-  data () {
-    return {
-      msg: "Winter is coming ~"
-    }
-  }
-}
-</script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+<script>
+  export default {
+    data () {
+      return {
+        items: [
+          { title: 'User', icon: 'mdi-view-dashboard', link: '/home'},
+          { title: 'Group', icon: 'mdi-image' },
+          { title: 'Ted', icon: 'mdi-help-box', link: '/ted' },
+          { title: 'Btn', icon: 'mdi-help-box', link: '/btn' },
+          { title: 'Todo', icon: 'mdi-help-box', link: '/todo' },
+        ],
+        right: null,
+      }
+    },
+  }
+</script>
