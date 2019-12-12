@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/vuex/store'
-import Index from '@/views/IndexPage'
+import Home from '@/views/Home'
 import Ted from '@/views/Ted'
 import MyBtnPage from '@/views/MyBtnPage'
 import Login from '@/views/Login'
@@ -15,8 +15,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
-      component: Index,
+      name: 'home',
+      component: Home,
       meta: {
         requiresAuth: true
       }
