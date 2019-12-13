@@ -4,7 +4,7 @@
     app
     floating
     permanent
-    width="200"
+    width="180"
   >
     <v-list-item>
       <v-list-item-content>
@@ -38,7 +38,7 @@
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn block @click="logout">Logout</v-btn>
+        <v-btn block @click="logout" class="success">Logout</v-btn>
       </div>
     </template>
 

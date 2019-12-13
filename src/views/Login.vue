@@ -1,21 +1,25 @@
 <template>
-  <v-container class="ma-0">
-      <v-row class="ma-0"> 
-        <v-col class="grey">
-          <v-row justify="end">
-            <v-col cols="3">
-              <v-img
-                src="../assets/logo.png"
-                aspect-radio="1"
-                width="50%"
-              ></v-img>
-            </v-col>
-          </v-row>
-        </v-col>
+  <v-container fluid>
+    <v-row align="center" justify="center" style="height:100vh">
 
-        <v-col class="light-green">
-          <v-row justify="start">
-            <v-col cols="3">
+      <v-col cols="12">
+        <v-row class="elevation-4" > 
+
+          <v-col>
+            <v-row justify="end">
+                <v-img src="../assets/logo.png"
+                  max-width="200"
+                  max-height="250"
+                ></v-img>
+            </v-row>
+          </v-col>
+
+          <v-col class="light-green">
+            <v-chip class="ma-2" color="warning" outlined >
+              <v-icon left>mdi-server-plus</v-icon>
+              OpenLDAP Management
+            </v-chip>
+            <v-row justify="start" class="pl-2">
               <v-form @submit.prevent="login">
                 <v-text-field
                   v-model="username"
@@ -34,14 +38,15 @@
                   @click:append="show = !show"
                 ></v-text-field>
 
-                <v-btn color="success" type="submit">Login</v-btn>
+                <v-btn color="warning" type="submit">Login</v-btn>
               </v-form>
-            </v-col>
-        </v-row>
+            </v-row>
+          </v-col>
 
-        </v-col>
+        </v-row><!--row with elevation-->
+      </v-col>
 
-      </v-row>
+    </v-row><!--row with 100% height-->
   </v-container>
 </template>
 

@@ -1,16 +1,9 @@
 <template>
   <v-app>
-    <v-content transition="slide-x-transition">
+    <v-content transition="slide-x-transition" class="px-0">
       <router-view></router-view>
     </v-content>
   </v-app>
-  <!--
-  <div id="app">
-    <div id="nav">
-      <span v-if="isLoggedIn"> <a @click="logout">Logout</a></span>
-    </div>
-  </div>
-  -->
 </template>
 
 <script>

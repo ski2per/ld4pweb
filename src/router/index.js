@@ -6,6 +6,7 @@ import Ted from '@/views/Ted'
 import MyBtnPage from '@/views/MyBtnPage'
 import Login from '@/views/Login'
 import Todo from '@/views/SimpleTodo'
+import Foo from '@/views/Foo'
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,10 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/foo',
+    component: Foo
   }
   //{
   //  path: '/about',
