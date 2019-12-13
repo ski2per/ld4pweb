@@ -1,13 +1,16 @@
 <template>
+  <v-app>
+    <v-content transition="slide-x-transition">
+      <router-view></router-view>
+    </v-content>
+  </v-app>
+  <!--
   <div id="app">
-    <a href="/">
-      <img src="./assets/ted.png">
-    </a>
     <div id="nav">
       <span v-if="isLoggedIn"> <a @click="logout">Logout</a></span>
     </div>
-    <router-view/>
   </div>
+  -->
 </template>
 
 <script>
@@ -36,21 +39,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-img {
-  height: 10%;
-  width: 10%;
-}
-a {
-  color: #42b983;
-}
-</style>
