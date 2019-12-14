@@ -23,7 +23,7 @@ export default {
     reverseMsg: function () {
       this.msg = this.msg.split('').reverse().join('')
     }
-  }
+  },
 }
 </script>
 

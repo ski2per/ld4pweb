@@ -24,14 +24,14 @@ const routes = [
       requiresAuth: true
     }
   },
-  {
-    path: '/user',
-    name: 'user',
-    component: User,
-    meta: {
-      requiresAuth: true
-    }
-  },
+  //{
+  //  path: '/user',
+  //  name: 'user',
+  //  component: User,
+  //  meta: {
+  //    requiresAuth: true
+  //  }
+  //},
   {
     path: '/group',
     name: 'group',
@@ -56,14 +56,14 @@ const routes = [
       requiresAuth: true
     }
   },
-  //{
-  //  path: '/about',
-  //  name: 'about',
+  {
+    path: '/user',
+    name: 'user',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-  //  component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  //}
+    component: () => import(/* webpackChunkName: "user" */ '../views/User.vue')
+  }
 ]
 
 const router = new VueRouter({

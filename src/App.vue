@@ -16,7 +16,8 @@ export default {
   components: {
     'nav-menu': Menu
   },
-  created: function () {
+  created () {
+    console.log('[App.vue]')
     this.$http.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {
         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
