@@ -1,23 +1,28 @@
 <template>
-<v-container fluid>
-  <div class="ted">
-    <h1>{{ msg }}</h1>
-    <input v-model="msg">
-    <p>
-      <button v-on:click="reverseMsg"> Reverse Message</button>
-    </p>
-  </div>
-  </div>
-</v-container>
+  <v-container fluid>
+    <div class="ted">
+      <h1>{{ msg }}</h1>
+      <input v-model="msg">
+      <p>
+        <button v-on:click="reverseMsg"> Reverse Message</button>
+      </p>
+
+    </div>
+  </v-container>
 </template>
 
 <script>
+import Info from '@/components/Info.vue'
+
 export default {
   name: 'Ted',
   data () {
     return {
       msg: 'Hello Ted !'
     }
+  },
+  components: {
+    'app-info': Info
   },
   methods: {
     reverseMsg: function () {

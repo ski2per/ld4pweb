@@ -6,7 +6,6 @@ import Group from '../views/Group.vue'
 import store from '../store'
 import Ted from '@/views/Ted'
 import Login from '@/views/Login'
-import Todo from '@/views/SimpleTodo'
 
 Vue.use(VueRouter)
 
@@ -44,14 +43,6 @@ const routes = [
     path: '/ted',
     name: 'Ted',
     component: Ted,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/todo',
-    name: 'todo',
-    component: Todo,
     meta: {
       requiresAuth: true
     }
