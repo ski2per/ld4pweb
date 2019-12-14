@@ -1,11 +1,11 @@
 <template>
   <v-container justify="start">
-    Home Page
+    This is group page
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'Group',
 }
-</script>
+<script>

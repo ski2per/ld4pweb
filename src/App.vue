@@ -1,14 +1,21 @@
 <template>
-  <v-app>
-    <v-content transition="slide-x-transition" class="px-0">
-      <router-view></router-view>
-    </v-content>
-  </v-app>
+<v-app>
+  <nav-menu />
+
+  <v-content transition="slide-x-transition">
+    <router-view></router-view>
+  </v-content>
+</v-app>
 </template>
 
 <script>
+import Menu from '@/components/Menu.vue'
+
 export default {
   name: 'App',
+  components: {
+    'nav-menu': Menu
+  },
   created: function () {
     this.$http.interceptors.response.use(undefined, function (err) {
       return new Promise(function (resolve, reject) {

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import User from '../views/User.vue'
+import Group from '../views/Group.vue'
 import store from '../store'
 import Ted from '@/views/Ted'
 import Login from '@/views/Login'
@@ -18,6 +20,22 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: User,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/group',
+    name: 'group',
+    component: Group,
     meta: {
       requiresAuth: true
     }

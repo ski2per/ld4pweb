@@ -1,4 +1,5 @@
 <template>
+<v-container fluid>
   <div class="ted">
     <h1>{{ msg }}</h1>
     <input v-model="msg">
@@ -6,7 +7,8 @@
       <button v-on:click="reverseMsg"> Reverse Message</button>
     </p>
   </div>
-  <div
+  </div>
+</v-container>
 </template>
 
 <script>

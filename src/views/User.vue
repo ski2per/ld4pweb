@@ -1,11 +1,11 @@
 <template>
   <v-container justify="start">
-    Home Page
+    This is user page
   </v-container>
 </template>
 
 <script>
 export default {
-  name: 'Home',
+  name: 'User',
 }
-</script>
+<script>

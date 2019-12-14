@@ -1,54 +1,54 @@
 <template>
-  <v-container fluid>
-    <v-row align="center" justify="center" style="height:100vh">
+<v-container fluid class="pa-0 ml-0 fill-height" style="display:-webkit-box;">
+  <v-row align="center" justify="center">
 
-      <v-col cols="12">
-        <v-row class="elevation-4" > 
+    <v-col cols="12">
+      <v-row class="elevation-4" > 
 
-          <v-col>
-            <v-row justify="end">
-                <v-img src="../assets/logo.png"
-                  max-width="200"
-                  max-height="250"
-                ></v-img>
-            </v-row>
-          </v-col>
+        <v-col>
+          <v-row justify="end">
+              <v-img src="../assets/logo.png"
+                max-width="200"
+                max-height="250"
+              ></v-img>
+          </v-row>
+        </v-col>
 
-          <v-col class="green darken-1">
-            <v-chip class="ma-2" color="white" outlined label >
-              <v-icon left>mdi-contact-mail-outline</v-icon>
-              OpenLDAP Management
-            </v-chip>
-            <v-row justify="start" class="pl-2">
-              <v-form @submit.prevent="login">
-                <v-text-field
-                  v-model="username"
-                  :rules="[rules.required]"
-                  label="Username"
-                  color="white"
-                ></v-text-field>
+        <v-col class="green darken-1">
+          <v-chip class="my-2" color="white" outlined label >
+            <v-icon left>mdi-contact-mail-outline</v-icon>
+            OpenLDAP Management
+          </v-chip>
+          <v-row justify="start" class="pl-2">
+            <v-form @submit.prevent="login">
+              <v-text-field
+                v-model="username"
+                :rules="[rules.required]"
+                label="Username"
+                color="white"
+              ></v-text-field>
 
-                <v-text-field
-                  v-model="password"
-                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.min]"
-                  :type="show ? 'text' : 'password'"
-                  name="input-password"
-                  label="Password"
-                  color="white"
-                  @click:append="show = !show"
-                ></v-text-field>
+              <v-text-field
+                v-model="password"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[rules.required, rules.min]"
+                :type="show ? 'text' : 'password'"
+                name="input-password"
+                label="Password"
+                color="white"
+                @click:append="show = !show"
+              ></v-text-field>
 
-                <v-btn color="warning" type="submit">Login</v-btn>
-              </v-form>
-            </v-row>
-          </v-col>
+              <v-btn color="warning" type="submit">Login</v-btn>
+            </v-form>
+          </v-row>
+        </v-col>
 
-        </v-row><!--row with elevation-->
-      </v-col>
+      </v-row><!--row with elevation-->
+    </v-col>
 
-    </v-row><!--row with 100% height-->
-  </v-container>
+  </v-row><!--row with 100% height-->
+</v-container>
 </template>
 
 <script>

@@ -2,9 +2,7 @@
   <v-navigation-drawer
     v-model="drawer"
     app
-    floating
-    permanent
-    width="180"
+    v-if="isLoggedIn"
   >
     <v-list-item>
       <v-list-item-content>
@@ -52,13 +50,16 @@
       return {
         drawer: true,
         items: [
-          { title: 'User', icon: 'mdi-account'},
-          { title: 'Group', icon: 'mdi-account-group' },
+          { title: 'User', icon: 'mdi-account', link: '/user'},
+          { title: 'Group', icon: 'mdi-account-group', link: '/group'},
           { title: 'Ted', icon: 'mdi-help-box', link: '/ted' },
           { title: 'Todo', icon: 'mdi-help-box', link: '/todo' },
         ],
         right: null,
       }
+    },
+    computed : {
+      isLoggedIn : function(){ return this.$store.getters.isLoggedIn}
     },
     methods: {
       logout: function () {
