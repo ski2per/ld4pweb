@@ -3,10 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import store from '../store'
 import Ted from '@/views/Ted'
-import MyBtnPage from '@/views/MyBtnPage'
 import Login from '@/views/Login'
 import Todo from '@/views/SimpleTodo'
-import Foo from '@/views/Foo'
 
 Vue.use(VueRouter)
 
@@ -33,14 +31,6 @@ const routes = [
     }
   },
   {
-    path: '/btn',
-    name: 'btn',
-    component: MyBtnPage,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
     path: '/todo',
     name: 'todo',
     component: Todo,
@@ -48,10 +38,6 @@ const routes = [
       requiresAuth: true
     }
   },
-  {
-    path: '/foo',
-    component: Foo
-  }
   //{
   //  path: '/about',
   //  name: 'about',

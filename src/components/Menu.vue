@@ -52,10 +52,9 @@
       return {
         drawer: true,
         items: [
-          { title: 'User', icon: 'mdi-view-dashboard', link: '/home'},
-          { title: 'Group', icon: 'mdi-image' },
+          { title: 'User', icon: 'mdi-account'},
+          { title: 'Group', icon: 'mdi-account-group' },
           { title: 'Ted', icon: 'mdi-help-box', link: '/ted' },
-          { title: 'Btn', icon: 'mdi-help-box', link: '/btn' },
           { title: 'Todo', icon: 'mdi-help-box', link: '/todo' },
         ],
         right: null,

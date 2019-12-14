@@ -14,9 +14,9 @@
             </v-row>
           </v-col>
 
-          <v-col class="light-green">
-            <v-chip class="ma-2" color="warning" outlined >
-              <v-icon left>mdi-server-plus</v-icon>
+          <v-col class="green darken-1">
+            <v-chip class="ma-2" color="white" outlined label >
+              <v-icon left>mdi-contact-mail-outline</v-icon>
               OpenLDAP Management
             </v-chip>
             <v-row justify="start" class="pl-2">
@@ -25,6 +25,7 @@
                   v-model="username"
                   :rules="[rules.required]"
                   label="Username"
+                  color="white"
                 ></v-text-field>
 
                 <v-text-field
@@ -34,7 +35,7 @@
                   :type="show ? 'text' : 'password'"
                   name="input-password"
                   label="Password"
-                  hint="At least 1 characters"
+                  color="white"
                   @click:append="show = !show"
                 ></v-text-field>
 

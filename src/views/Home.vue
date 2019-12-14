@@ -5,7 +5,7 @@
         <Menu />
       </v-col>
       <v-col>
-        abc
+        Home Page
       </v-col>
 
     </v-row>
