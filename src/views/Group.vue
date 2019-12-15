@@ -1,6 +1,6 @@
 <template>
   <v-container justify="start">
-    <grouplist />
+    <group-list />
   </v-container>
 </template>
 
@@ -10,7 +10,7 @@ import GroupList from '@/components/GroupList.vue'
 export default {
   name: 'Group',
   components: {
-    'grouplist': GroupList
+    'group-list': GroupList
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-container justify="start">
-    <userlist />
+    <user-list />
   </v-container>
 </template>
 
@@ -10,7 +10,7 @@ import UserList from '@/components/UserList.vue'
 export default {
   name: 'User',
   components: {
-    'userlist': UserList
+    'user-list': UserList
   }
 }
 </script>

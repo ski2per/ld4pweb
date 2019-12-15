@@ -10,13 +10,9 @@
     :top="y === 'top'"
     :vertical="mode === 'vertical'"
   >
-    {{ text }}
-    <v-btn
-      dark
-      text
-      @click="snackbar = false"
-    >
-      Close
+    {{ info }}
+    <v-btn dark text @click="dismiss" >
+      <v-icon>mdi-cancel</v-icon>
     </v-btn>
   </v-snackbar>
 </template>
@@ -25,13 +21,29 @@
   export default {
     data () {
       return {
-        color: '',
+        color: 'error',
         mode: '',
-        snackbar: false,
-        text: 'Hello, I\'m a snackbar',
-        timeout: 1500,
-        x: null,
+        timeout: 3600,
+        x: 'right',
         y: 'top',
+      }
+    },
+    computed: {
+      snackbar: {
+        get () { return this.$store.getters.isInfo},
+        set (value) {
+          console.log("[value]")
+          console.log(value)
+          this.$store.commit('show_info', "")
+        }
+      },
+      info: function () {
+        return this.$store.getters.getInfo
+      }
+    },
+    methods: {
+      dismiss: function() {
+        this.$store.commit('show_info', "")
       }
     },
   }

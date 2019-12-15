@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    user: ''
+    user: '',
+    info: '',
   },
 
   mutations: {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     logout(state){
       state.status = ''
       state.token = ''
+    },
+    show_info(state, msg){
+      state.info = msg
     }
   },
   actions: {
@@ -46,7 +50,6 @@ export default new Vuex.Store({
           resolve(resp)
         })
         .catch(err => {
-          console.log("Wrong username or password")
           commit('auth_error')
           localStorage.removeItem('token')
           reject(err)
@@ -60,10 +63,17 @@ export default new Vuex.Store({
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })
+    },
+    showInfo({commit}, msg) {
+      console.log('[showInfo] dispatched')
+      console.log(msg)
+      commit('show_info', msg)
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
+    isInfo: state => !!state.info,
+    getInfo: state => state.info
   }
 })
