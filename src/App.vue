@@ -4,17 +4,20 @@
 
   <v-content transition="slide-x-transition">
     <router-view></router-view>
+    <my-info></my-info>
   </v-content>
 </v-app>
 </template>
 
 <script>
 import Menu from '@/components/Menu.vue'
+import Info from "@/components/Info.vue"
 
 export default {
   name: 'App',
   components: {
-    'nav-menu': Menu
+    'nav-menu': Menu,
+    'my-info': Info
   },
   created () {
     console.log('[App.vue]')

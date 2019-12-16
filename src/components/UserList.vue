@@ -40,7 +40,9 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="editedItem.cn" label="Name"></v-text-field>
+                    <v-text-field v-model="editedItem.cn" label="Name"
+                      :rules="[rules.required]"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
@@ -115,15 +117,15 @@ export default {
             uid: '',
             cn: '',
             mail: '',
-        }
+        },
+        rules: {
+          required: value => !!value || 'Required.',
+        },
     }
-  },
+  }, //data()
   computed: {
     formTitle() {
       return this.edited ? 'Edit User' : 'New User'
-    },
-    isNew() {
-        return !this.edited
     },
     isEdited() {
         return this.edited
@@ -138,11 +140,10 @@ export default {
     initialize() {
       console.log("[UserList.vue]")
       console.log(localStorage.getItem('token'))
-      this.$http.get('http://172.16.66.6:8000/api/v1/users/')
-      // this.$http.get('http://localhost:8000/api/v1/users/')
+      // this.$http.get('http://172.16.66.6:8000/api/v1/users/')
+      this.$http.get('http://localhost:8000/api/v1/users/')
       .then(response => {
         this.users = response.data
-        console.log(this.users)
       })
       .catch(error => {
         console.log(error)
@@ -150,25 +151,47 @@ export default {
     },// initialize()
 
     editItem (item) {
-        this.edited = true
-        this.editedItem = item
-        this.dialog = true
-        console.log(item)
+      this.edited = true
+      this.editedItem = item
+      this.dialog = true
+      console.log(item)
     },
 
     deleteItem (item) {
-        console.log("Delete TBD")
+      console.log("Delete TBD")
     },
 
     close () {
-        this.dialog = false
-        this.editedItem = this.defaultItem
-        this.edited = false
+      this.dialog = false
+      this.editedItem = this.defaultItem
+      this.edited = false
     },
     save () {
-        console.log("saved")
-        this.dialog = false
-    }
-  },
+      console.log(this.editedItem)
+      const params = new FormData()
+      console.log(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`)
+
+      const data = {
+        'chinese_name': this.editedItem.cn,
+        'surname': this.editedItem.sn,
+        'given_name': this.editedItem.givenName,
+      }
+      // params.append('chinese_name', this.editedItem.cn)
+      // params.append('surname', this.editedItem.sn)
+      // params.append('given_name', this.editedItem.givenName)
+
+      this.$http.post(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`, data)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        // console.log(error.response.data.detail)
+        this.$store.dispatch('showInfo', error.response.data.detail)
+        console.log(error)
+      })
+      this.dialog = false
+    },
+
+  }, //method()
 }
 </script>

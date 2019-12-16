@@ -28,19 +28,16 @@
     </v-col>
   </v-row><!--row with 100% height-->
 
-  <my-info></my-info>
 </v-container>
 </template>
 
 <script>
   import LoginForm from "@/components/LoginForm.vue"
-  import Info from "@/components/Info.vue"
 
   export default {
     name: "Login",
     components: {
       'login-form': LoginForm,
-      'my-info': Info
     }
   }
 </script>
