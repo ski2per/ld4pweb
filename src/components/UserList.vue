@@ -46,7 +46,7 @@
                     <v-text-field v-model="editedItem.uid" label="UserID"></v-text-field>
                   </v-col>
                   <v-col cols="12" v-if="isEdited">
-                    <v-text-field v-model="editedItem.mail" label="Email" disabled=false></v-text-field>
+                    <v-text-field v-model="editedItem.mail" label="Email" :disabled></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
@@ -104,6 +104,7 @@ export default {
           { text: "Email", value: "mail", sortable: false},
           { text: "Actions", value: "action", sortable: false},
         ],
+        disabled: false,
         dialog: false,
         edited: false,
         editedItem: {
