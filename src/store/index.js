@@ -10,6 +10,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || '',
     user: '',
     info: '',
+    infoColor: '',
   },
 
   mutations: {
@@ -28,8 +29,9 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
     },
-    show_info(state, msg){
-      state.info = msg
+    show_info(state, info){
+      state.info = info.msg
+      state.infoColor = info.color 
     }
   },
   actions: {
@@ -51,16 +53,12 @@ export default new Vuex.Store({
         })
         .catch(err => {
           var error_msg = ""
-          if(err.response) {
-            if (err.response.status == 401) {
-              // this.$store.dispatch('showInfo', "Wrong username or password")
-              error_msg = "Wrong username or password"
-            }
+          if(err.response && err.response.status == 401) {
+            error_msg = "Wrong username or password"
           } else {
-            // this.$store.dispatch('showInfo', "Unknown error")
             error_msg = "Unknown error"
           }
-          this.dispatch('showInfo', error_msg)
+          this.dispatch('showInfo', {"msg": error_msg, color: 'error'})
 
           commit('auth_error')
           localStorage.removeItem('token')
@@ -76,16 +74,17 @@ export default new Vuex.Store({
         resolve()
       })
     },
-    showInfo({commit}, msg) {
+    showInfo({commit}, info) {
       console.log('[showInfo] dispatched')
-      console.log(msg)
-      commit('show_info', msg)
+      console.log(info)
+      commit('show_info', info)
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     isInfo: state => !!state.info,
-    getInfo: state => state.info
+    getInfo: state => state.info,
+    getInfoColor: state => state.infoColor
   }
 })

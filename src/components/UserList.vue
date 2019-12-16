@@ -176,17 +176,18 @@ export default {
         'surname': this.editedItem.sn,
         'given_name': this.editedItem.givenName,
       }
-      // params.append('chinese_name', this.editedItem.cn)
-      // params.append('surname', this.editedItem.sn)
-      // params.append('given_name', this.editedItem.givenName)
 
       this.$http.post(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`, data)
       .then(response => {
-        console.log(response)
+        if(response && response.status == 200){
+          this.$store.dispatch('showInfo', {"msg": response.data.detail, "color": "success"})
+        } else {
+          this.$store.dispatch('showInfo', {"msg": "Unknown error", "color": "error"})
+        }
       })
       .catch(error => {
         // console.log(error.response.data.detail)
-        this.$store.dispatch('showInfo', error.response.data.detail)
+        this.$store.dispatch('showInfo', {"msg": error.response.data.detail, "color": "error"})
         console.log(error)
       })
       this.dialog = false

@@ -21,7 +21,7 @@
   export default {
     data () {
       return {
-        color: 'error',
+        // color: 'error',
         mode: '',
         timeout: 3600,
         x: 'right',
@@ -34,16 +34,19 @@
         set (value) {
           console.log("[value]")
           console.log(value)
-          this.$store.commit('show_info', "")
+          this.$store.commit('show_info', "", "error")
         }
       },
       info: function () {
         return this.$store.getters.getInfo
+      },
+      color: function () {
+        return this.$store.getters.getInfoColor
       }
     },
     methods: {
       dismiss: function() {
-        this.$store.commit('show_info', "")
+        this.$store.commit('show_info', "", "error")
       }
     },
   }
