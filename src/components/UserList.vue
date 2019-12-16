@@ -26,7 +26,9 @@
 
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">New User</v-btn>
+            <v-btn small color="green" fab dark v-on="on">
+              <v-icon>mdi-account-plus </v-icon>
+            </v-btn>
           </template>
 
           <v-card>
@@ -87,18 +89,23 @@ export default {
         search: '',
         headers: [
           {
-              text: "UID",
+              text: "User ID",
               align: "left",
-              sortable: false,
+              sortable: true,
               value: "uid"
           },
-          { text: "CN", value: "cn"},
-          { text: "Email", value: "mail"},
+          { text: "Name", value: "cn"},
+          { text: "Email", value: "mail", sortable: false},
           { text: "Actions", value: "action", sortable: false},
         ],
         dialog: false,
         editedIndex: -1,
         editedItem: {
+            uid: '',
+            cn: '',
+            mail: '',
+        },
+        defaultItem: {
             uid: '',
             cn: '',
             mail: '',
@@ -131,8 +138,9 @@ export default {
     },// initialize()
 
     editItem (item) {
-        this.dialog = true
+        this.editedIndex = 0
         this.editedItem = item
+        this.dialog = true
         console.log(item)
     },
 
@@ -142,6 +150,8 @@ export default {
 
     close () {
         this.dialog = false
+        this.editedItem = this.defaultItem
+        this.editedIndex = -1
     },
     save () {
         console.log("saved")
