@@ -43,10 +43,10 @@
                     <v-text-field v-model="editedItem.cn" label="Name"></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field v-model="editedItem.uid" label="UserID"></v-text-field>
+                    <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
                   </v-col>
                   <v-col cols="12" v-if="isEdited">
-                    <v-text-field v-model="editedItem.mail" label="Email"></v-text-field>
+                    <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
