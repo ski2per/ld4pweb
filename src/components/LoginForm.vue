@@ -54,16 +54,7 @@
 
         this.$store.dispatch('login', params)
        .then(() => this.$router.push('/'))
-      //  .catch(err => console.log(err))
-       .catch(err => {
-          var http_code = err.response.status
-          if (http_code == 401) {
-          // if (err.response.status == 401) {
-            this.$store.dispatch('showInfo', "Wrong username or password")
-          } else {
-            this.$store.dispatch('showInfo', "Unknown error")
-          }
-       })
+       .catch(err => console.log(err))
       }
     }
   }

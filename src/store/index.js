@@ -36,8 +36,8 @@ export default new Vuex.Store({
     login({commit}, userdata){
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({url: 'http://localhost:8000/api/v1/auth/login', data: userdata, method: 'POST' })
-        // axios({url: 'http://172.16.66.6:8000/api/v1/auth/login', data: userdata, method: 'POST' })
+        // axios({url: 'http://localhost:8000/api/v1/auth/login', data: userdata, method: 'POST' })
+        axios({url: 'http://172.16.66.6:8000/api/v1/auth/login', data: userdata, method: 'POST' })
         .then(resp => {
           console.log(resp)
           const token = resp.data.access_token
@@ -50,6 +50,18 @@ export default new Vuex.Store({
           resolve(resp)
         })
         .catch(err => {
+          var error_msg = ""
+          if(err.response) {
+            if (err.response.status == 401) {
+              // this.$store.dispatch('showInfo', "Wrong username or password")
+              error_msg = "Wrong username or password"
+            }
+          } else {
+            // this.$store.dispatch('showInfo', "Unknown error")
+            error_msg = "Unknown error"
+          }
+          this.dispatch('showInfo', error_msg)
+
           commit('auth_error')
           localStorage.removeItem('token')
           reject(err)

@@ -2,8 +2,9 @@
   <v-navigation-drawer
     v-model="drawer"
     app
-    permenant
+    permanent
     width="160"
+    floating
     v-if="isLoggedIn"
   >
     <v-list-item>

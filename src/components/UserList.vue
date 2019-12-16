@@ -1,27 +1,81 @@
 <template>
-<v-card>
-    <v-card-title>
-      LDAP Users
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-search"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-<v-data-table
-  :headers="headers"
-  :items="users"
-  :search="search"
-  show-select
->
-  <template slot="items" slot-scope="props">
-  </template>
+  <v-data-table
+    :headers="headers"
+    :items="users"
+    :search="search"
+    sort-by="uid"
+    class="elevation-1"
+  >
+    <template v-slot:top>
+      <v-toolbar flat color="white">
+        <v-toolbar-title>LDAP Users</v-toolbar-title>
 
-</v-data-table>
-</v-card>
+        <v-divider class="mx-4" inset vertical ></v-divider>
+
+        <v-spacer></v-spacer>
+
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+
+        <v-spacer></v-spacer>
+
+        <v-dialog v-model="dialog" max-width="500px">
+          <template v-slot:activator="{ on }">
+            <v-btn color="primary" dark class="mb-2" v-on="on">New User</v-btn>
+          </template>
+
+          <v-card>
+            <v-card-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.cn" label="CN"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.uid" label="UID"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.mail" label="Email"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.action="{ item }">
+      <v-icon medium class="mr-2"
+        @click="editItem(item)"
+      >
+       mdi-account-edit
+      </v-icon>
+      <v-icon medium 
+        @click="deleteItem(item)"
+      >
+        mdi-delete
+      </v-icon>
+    </template>
+
+    <template v-slot:no-data>
+      <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -32,30 +86,67 @@ export default {
         users: [],
         search: '',
         headers: [
-            {
-                text: "UID",
-                align: "left",
-                sortable: false,
-                value: "uid"
-            },
-            { text: "CN", value: "cn"},
-            { text: "Email", value: "mail"},
-        ]
+          {
+              text: "UID",
+              align: "left",
+              sortable: false,
+              value: "uid"
+          },
+          { text: "CN", value: "cn"},
+          { text: "Email", value: "mail"},
+          { text: "Actions", value: "action", sortable: false},
+        ],
+        dialog: false,
+        editedIndex: -1,
+        editedItem: {
+            uid: '',
+            cn: '',
+            mail: '',
+        }
     }
   },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? 'New User' : 'Edit User'
+    }
+  },
+  created() {
+    this.initialize()
+  },
   mounted: function() {
-    console.log("[UserList.vue]")
-    console.log("i am mounted")
-    console.log(localStorage.getItem('token'))
-    //this.$http.get('http://172.16.66.6:8000/api/v1/users/')
-    this.$http.get('http://localhost:8000/api/v1/users/')
-    .then(response => {
-      this.users = response.data
-      console.log(this.users)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  },
+  methods: {
+    initialize() {
+      console.log("[UserList.vue]")
+      console.log(localStorage.getItem('token'))
+      this.$http.get('http://172.16.66.6:8000/api/v1/users/')
+      // this.$http.get('http://localhost:8000/api/v1/users/')
+      .then(response => {
+        this.users = response.data
+        console.log(this.users)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },// initialize()
+
+    editItem (item) {
+        this.dialog = true
+        this.editedItem = item
+        console.log(item)
+    },
+
+    deleteItem (item) {
+        console.log("Delete TBD")
+    },
+
+    close () {
+        this.dialog = false
+    },
+    save () {
+        console.log("saved")
+        this.dialog = false
+    }
   },
 }
 </script>
