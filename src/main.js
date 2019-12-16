@@ -6,6 +6,9 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import '@babel/polyfill'
 
+import 'material-design-icons/iconfont/material-icons.css'
+import 'typeface-roboto/index.css'
+
 Vue.prototype.$http = Axios;
 
 const token = localStorage.getItem('token')
