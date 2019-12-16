@@ -39,14 +39,20 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.cn" label="CN"></v-text-field>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.cn" label="Name"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.uid" label="UID"></v-text-field>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.uid" label="UserID"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.mail" label="Email"></v-text-field>
+                  <v-col cols="12" v-if="isEdited">
+                    <v-text-field v-model="editedItem.mail" label="Email" disabled=false></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -99,7 +105,7 @@ export default {
           { text: "Actions", value: "action", sortable: false},
         ],
         dialog: false,
-        editedIndex: -1,
+        edited: false,
         editedItem: {
             uid: '',
             cn: '',
@@ -114,7 +120,13 @@ export default {
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New User' : 'Edit User'
+      return this.edited ? 'Edit User' : 'New User'
+    },
+    isNew() {
+        return !this.edited
+    },
+    isEdited() {
+        return this.edited
     }
   },
   created() {
@@ -138,7 +150,7 @@ export default {
     },// initialize()
 
     editItem (item) {
-        this.editedIndex = 0
+        this.edited = true
         this.editedItem = item
         this.dialog = true
         console.log(item)
@@ -151,7 +163,7 @@ export default {
     close () {
         this.dialog = false
         this.editedItem = this.defaultItem
-        this.editedIndex = -1
+        this.edited = false
     },
     save () {
         console.log("saved")
