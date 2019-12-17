@@ -5,9 +5,8 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import '@babel/polyfill'
-
-import 'vue-material-design-icons/styles.css';
-import 'typeface-roboto/index.css'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
+import '@mdi/font/css/materialdesignicons.css'
 
 Vue.prototype.$http = Axios;
 

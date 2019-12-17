@@ -4,7 +4,7 @@
     :items="users"
     :search="search"
     sort-by="uid"
-    class="elevation-1"
+    class="elevation-2"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -132,6 +132,7 @@ export default {
     }
   },
   created() {
+    console.log('[UserList.vue] init')
     this.initialize()
   },
   mounted: function() {
