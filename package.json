@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "srv": "vue-cli-service serve --mode home",
     "build": "vue-cli-service build",
     "test": "vue-cli-service build --mode test",
     "home": "vue-cli-service build --mode home"
