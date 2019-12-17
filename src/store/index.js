@@ -37,9 +37,9 @@ export default new Vuex.Store({
   actions: {
     login({commit}, userdata){
       return new Promise((resolve, reject) => {
+        console.log(process.env.VUE_APP_API_URL)
         commit('auth_request')
-        // axios({url: 'http://localhost:8000/api/v1/auth/login', data: userdata, method: 'POST' })
-        axios({url: 'http://172.16.66.6:8000/api/v1/auth/login', data: userdata, method: 'POST' })
+        axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
         .then(resp => {
           const token = resp.data.access_token
           const user = userdata.get('username')

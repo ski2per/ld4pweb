@@ -171,9 +171,7 @@ export default {
         'surname': this.editedItem.sn,
         'given_name': this.editedItem.givenName,
       }
-
-    //   this.$http.post(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`, data)
-      this.$http.post(`http://172.16.66.6:8000/api/v1/users/${this.editedItem.uid}`, data)
+      this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
       .then(response => {
         const info = {"msg": "", "color": ""} 
         if(response && response.status == 200){
