@@ -41,11 +41,8 @@ export default new Vuex.Store({
         // axios({url: 'http://localhost:8000/api/v1/auth/login', data: userdata, method: 'POST' })
         axios({url: 'http://172.16.66.6:8000/api/v1/auth/login', data: userdata, method: 'POST' })
         .then(resp => {
-          console.log(resp)
           const token = resp.data.access_token
           const user = userdata.get('username')
-          console.log(token)
-          console.log(user)
           localStorage.setItem('token', token)
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
           commit('auth_success', token, user)
@@ -75,8 +72,6 @@ export default new Vuex.Store({
       })
     },
     showInfo({commit}, info) {
-      console.log('[showInfo] dispatched')
-      console.log(info)
       commit('show_info', info)
     }
   },

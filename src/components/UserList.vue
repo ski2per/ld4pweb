@@ -138,8 +138,6 @@ export default {
   },
   methods: {
     initialize() {
-      console.log("[UserList.vue]")
-      console.log(localStorage.getItem('token'))
       this.$http.get('http://172.16.66.6:8000/api/v1/users/')
     //   this.$http.get('http://localhost:8000/api/v1/users/')
       .then(response => {
@@ -154,7 +152,6 @@ export default {
       this.edited = true
       this.editedItem = item
       this.dialog = true
-      console.log(item)
     },
 
     deleteItem (item) {
@@ -167,7 +164,6 @@ export default {
       this.edited = false
     },
     save () {
-      console.log(this.editedItem)
       const params = new FormData()
 
       const data = {
@@ -198,7 +194,6 @@ export default {
         } else {
           info.msg = "Unknown server error"
         }
-        console.log(info)
         this.$store.dispatch('showInfo', info)
         console.log(error)
       })

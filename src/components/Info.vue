@@ -32,8 +32,6 @@
       snackbar: {
         get () { return this.$store.getters.isInfo},
         set (value) {
-          console.log("[value]")
-          console.log(value)
           this.$store.commit('show_info', "", "error")
         }
       },

@@ -62,7 +62,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('router beforeEach')
   if(to.matched.some(record => record.meta.requiresAuth)) {
     console.log(store.getters.isLoggedIn)
     if (store.getters.isLoggedIn) {
@@ -71,7 +70,7 @@ router.beforeEach((to, from, next) => {
     }
     next('/login')
   } else {
-    console.log('no auth requires')
+    console.log('no auth required')
     next()
   }
 })
