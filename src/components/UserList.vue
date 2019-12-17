@@ -83,7 +83,7 @@
     </template>
 
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+      <v-btn color="primary" @click="initialize">Reload</v-btn>
     </template>
   </v-data-table>
 </template>
@@ -140,8 +140,8 @@ export default {
     initialize() {
       console.log("[UserList.vue]")
       console.log(localStorage.getItem('token'))
-      // this.$http.get('http://172.16.66.6:8000/api/v1/users/')
-      this.$http.get('http://localhost:8000/api/v1/users/')
+      this.$http.get('http://172.16.66.6:8000/api/v1/users/')
+    //   this.$http.get('http://localhost:8000/api/v1/users/')
       .then(response => {
         this.users = response.data
       })
@@ -169,7 +169,6 @@ export default {
     save () {
       console.log(this.editedItem)
       const params = new FormData()
-      console.log(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`)
 
       const data = {
         'chinese_name': this.editedItem.cn,
@@ -177,20 +176,34 @@ export default {
         'given_name': this.editedItem.givenName,
       }
 
-      this.$http.post(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`, data)
+    //   this.$http.post(`http://localhost:8000/api/v1/users/${this.editedItem.uid}`, data)
+      this.$http.post(`http://172.16.66.6:8000/api/v1/users/${this.editedItem.uid}`, data)
       .then(response => {
+        const info = {"msg": "", "color": ""} 
         if(response && response.status == 200){
-          this.$store.dispatch('showInfo', {"msg": response.data.detail, "color": "success"})
+          info.msg = response.data.detail
+          info.color = "success"
         } else {
-          this.$store.dispatch('showInfo', {"msg": "Unknown error", "color": "error"})
+          info.msg = "Unknown error"
+          info.color = "error"
         }
+        console.log(info)
+        this.$store.dispatch('showInfo', info)
+
       })
       .catch(error => {
-        // console.log(error.response.data.detail)
-        this.$store.dispatch('showInfo', {"msg": error.response.data.detail, "color": "error"})
+        const info = {"msg": "", "color": "error"} 
+        if (error.response) {
+          info.msg = response.data.detail
+        } else {
+          info.msg = "Unknown server error"
+        }
+        console.log(info)
+        this.$store.dispatch('showInfo', info)
         console.log(error)
       })
       this.dialog = false
+      this.editedItem = this.defaultItem
     },
 
   }, //method()

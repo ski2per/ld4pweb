@@ -4,7 +4,6 @@
     app
     permanent
     width="160"
-    floating
     v-if="isLoggedIn"
   >
     <v-list-item>
@@ -38,7 +37,7 @@
     </v-list>
 
     <template v-slot:append>
-      <div class="pa-2">
+      <div class="pa-4">
         <v-btn block @click="logout" class="success">Logout</v-btn>
       </div>
     </template>
