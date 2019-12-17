@@ -24,7 +24,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on }">
             <v-btn small color="green" fab dark v-on="on">
               <v-icon>mdi-account-plus </v-icon>
@@ -40,7 +40,7 @@
               <v-container>
                 <v-row>
                   <!--User info(left)-->
-                  <v-col cols="6">
+                  <v-col>
                     <v-col cols="12">
                       <v-text-field v-model="editedItem.cn" label="Name"
                         :rules="[rules.required]"
@@ -60,8 +60,12 @@
                     </v-col>
                   </v-col>
                   <!--Group selection(right)-->
-                  <v-col cols="6" v-if="isCreated">
-                    right
+                  <v-col v-if="isCreated">
+                    <v-treeview
+                      selectable
+                      item-disabled="locked"
+                      :items="groups"
+                    ></v-treeview>
                   </v-col>
                 </v-row>
               </v-container>
@@ -101,6 +105,45 @@ export default {
   data () {
     return {
         users: [],
+        groups: [
+          {
+            id: 1,
+            name: "superhero",
+            locked: true,
+            children: [
+            ],
+          },
+          {
+            id: 2,
+            name: "jira",
+            locked: false,
+            children: [
+              { id: 3, name: "confluence-users"},
+              { id: 4, name: "运维"},
+              { id: 5, name: "测试"},
+              { id: 6, name: "Jira项目经理"},
+              { id: 7, name: "产品经理"},
+              { id: 8, name: "方案组"},
+              { id: 9, name: "平台组"},
+              { id: 10, name: "应用组"},
+              { id: 11, name: "jira-software-users"},
+              { id: 12, name: "Jira管理员"},
+            ],
+          },
+          {
+            id: 13,
+            name: "nextcloud",
+            locked: false,
+            children: [
+              { id: 14, name: "运维"},
+              { id: 15, name: "测试"},
+              { id: 16, name: "产品经理"},
+              { id: 17, name: "方案组"},
+              { id: 18, name: "平台组"},
+              { id: 19, name: "应用组"},
+            ],
+          },
+        ],
         search: '',
         headers: [
           {
