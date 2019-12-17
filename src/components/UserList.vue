@@ -39,22 +39,29 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.cn" label="Name"
-                      :rules="[rules.required]"
-                    ></v-text-field>
+                  <!--User info(left)-->
+                  <v-col cols="6">
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.cn" label="Name"
+                        :rules="[rules.required]"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" v-if="isEdited">
+                      <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
+                    </v-col>
                   </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" v-if="isEdited">
-                    <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
+                  <!--Group selection(right)-->
+                  <v-col cols="6" v-if="isCreated">
+                    right
                   </v-col>
                 </v-row>
               </v-container>
@@ -128,24 +135,27 @@ export default {
       return this.edited ? 'Edit User' : 'New User'
     },
     isEdited() {
-        return this.edited
+      return this.edited
+    },
+    isCreated() {
+      return !this.edited
     }
   },
   created() {
-    console.log('[UserList.vue] init')
     this.initialize()
-  },
-  mounted: function() {
   },
   methods: {
     initialize() {
-      this.$http.get('http://172.16.66.6:8000/api/v1/users/')
-    //   this.$http.get('http://localhost:8000/api/v1/users/')
+      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
       .then(response => {
         this.users = response.data
       })
       .catch(error => {
         console.log(error)
+        if (error.response && error.response.status == 401) {
+          this.$store.commit("logout")
+          this.$router.push("/login")
+        }
       })
     },// initialize()
 
