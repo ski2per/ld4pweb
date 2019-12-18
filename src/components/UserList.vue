@@ -49,7 +49,7 @@
                     <v-col cols="12">
                       <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
                     </v-col>
-                    <v-col cols="12" v-if="isEdited">
+                    <v-col cols="12" v-if="edited">
                       <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -59,6 +59,7 @@
                       <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
                     </v-col>
                   </v-col>
+
                   <!--Group selection(right)-->
                   <v-col v-if="isCreated">
                     <v-treeview
@@ -176,9 +177,6 @@ export default {
   computed: {
     formTitle() {
       return this.edited ? 'Edit User' : 'New User'
-    },
-    isEdited() {
-      return this.edited
     },
     isCreated() {
       return !this.edited
