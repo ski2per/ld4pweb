@@ -54,7 +54,6 @@
         items: [
           { title: 'User', icon: 'mdi-account', link: '/user'},
           { title: 'Group', icon: 'mdi-account-group', link: '/group'},
-          { title: 'Ted', icon: 'mdi-help-box', link: '/ted' },
         ],
         right: null,
       }
