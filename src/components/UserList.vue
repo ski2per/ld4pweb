@@ -101,7 +101,7 @@
     </template>
 
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reload</v-btn>
+      <v-btn color="primary" @click="initialize_users">Reload</v-btn>
     </template>
   </v-data-table>
 </template>
@@ -112,45 +112,7 @@ export default {
   data () {
     return {
         selectedGroups: [],
-        groups: [
-          {
-            id: 1,
-            name: "superhero",
-            locked: true,
-            children: [
-            ],
-          },
-          {
-            id: 2,
-            name: "jira",
-            locked: false,
-            children: [
-              { id: 3, name: "confluence-users"},
-              { id: 4, name: "运维"},
-              { id: 5, name: "测试"},
-              { id: 6, name: "Jira项目经理"},
-              { id: 7, name: "产品经理"},
-              { id: 8, name: "方案组"},
-              { id: 9, name: "平台组"},
-              { id: 10, name: "应用组"},
-              { id: 11, name: "jira-software-users"},
-              { id: 12, name: "Jira管理员"},
-            ],
-          },
-          {
-            id: 13,
-            name: "nextcloud",
-            locked: false,
-            children: [
-              { id: 14, name: "运维"},
-              { id: 15, name: "测试"},
-              { id: 16, name: "产品经理"},
-              { id: 17, name: "方案组"},
-              { id: 18, name: "平台组"},
-              { id: 19, name: "应用组"},
-            ],
-          },
-        ],
+        groups: [],
         search: '',
         users: [],
         headers: [
@@ -187,10 +149,11 @@ export default {
     },
   },
   created() {
-    this.initialize()
+    this.initialize_users()
+    this.initialize_group_tree()
   },
   methods: {
-    initialize() {
+    initialize_users() {
       this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
       .then(response => {
         this.users = response.data
@@ -202,7 +165,20 @@ export default {
           this.$router.push("/login")
         }
       })
-    },// initialize()
+    },// initialize_users()
+    initialize_group_tree() {
+      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+      .then(response => {
+        this.groups = response.data
+      })
+      .catch(error => {
+        console.log(error)
+        if (error.response && error.response.status == 401) {
+          this.$store.commit("logout")
+          this.$router.push("/login")
+        }
+      })
+    },// initialize_group_tree()
 
     editItem (item) {
       this.edited = true
@@ -218,6 +194,7 @@ export default {
       this.dialog = false
       this.editedItem = this.defaultItem
       this.edited = false
+      this.selectedGroups = []
     },
     save () {
       const params = new FormData()
@@ -227,35 +204,49 @@ export default {
         'surname': this.editedItem.sn,
         'given_name': this.editedItem.givenName,
       }
-      console.log(this.selectedGroups)
 
-      //this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
-      //.then(response => {
-      //  const info = {"msg": "", "color": ""} 
-      //  if(response && response.status == 200){
-      //    info.msg = response.data.detail
-      //    info.color = "success"
-      //  } else {
-      //    info.msg = "Unknown error"
-      //    info.color = "error"
-      //  }
-      //  console.log(info)
-      //  this.$store.dispatch('showInfo', info)
+      // Add new user
+      this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+      .then(response => {
+        const info = {"msg": "", "color": ""} 
+        if(response && response.status == 200){
+          info.msg = response.data.detail
+          info.color = "success"
+        } else {
+          info.msg = "Unknown error"
+          info.color = "error"
+        }
+        console.log(info)
+        this.$store.dispatch('showInfo', info)
+      })
+      .catch(error => {
+        const info = {"msg": "", "color": "error"} 
+        if (error.response) {
+          info.msg = response.data.detail
+        } else {
+          info.msg = "Unknown server error"
+        }
+        this.$store.dispatch('showInfo', info)
+        console.log(error)
+      })
 
-      //})
-      //.catch(error => {
-      //  const info = {"msg": "", "color": "error"} 
-      //  if (error.response) {
-      //    info.msg = response.data.detail
-      //  } else {
-      //    info.msg = "Unknown server error"
-      //  }
-      //  this.$store.dispatch('showInfo', info)
-      //  console.log(error)
-      //})
+      // Add new user to groups
+      this.selectedGroups.forEach((item, index) => {
+        // Think I will put sleep or something here ;P
+        this.$http.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${item.pgroup}/${item.name}/${this.editedItem.uid}`)
+        .then(response => {
+          if(response && response.status == 200) {
+            console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      })
 
       this.dialog = false
       this.editedItem = this.defaultItem
+      this.selectedGroups = []
     },
 
   }, //method()
