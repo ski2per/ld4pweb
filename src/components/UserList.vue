@@ -47,13 +47,16 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"></v-text-field>
+                      <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"
+                        :rules="[rules.required]"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12" v-if="edited">
                       <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.sn" label="Family Name"></v-text-field>
+                      <v-text-field v-model="editedItem.sn" label="Family Name"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
                       <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
@@ -61,11 +64,14 @@
                   </v-col>
 
                   <!--Group selection(right)-->
-                  <v-col v-if="isCreated">
+                  <v-col v-if="!edited">
                     <v-treeview
-                      selectable
-                      item-disabled="locked"
+                      v-model="selectedGroups"
+                      selection-type="leaf"
                       :items="groups"
+                      item-disabled="locked"
+                      selectable
+                      return-object
                     ></v-treeview>
                   </v-col>
                 </v-row>
@@ -105,7 +111,7 @@ export default {
   name: 'UserList',
   data () {
     return {
-        users: [],
+        selectedGroups: [],
         groups: [
           {
             id: 1,
@@ -146,6 +152,7 @@ export default {
           },
         ],
         search: '',
+        users: [],
         headers: [
           {
               text: "User ID",
@@ -178,9 +185,6 @@ export default {
     formTitle() {
       return this.edited ? 'Edit User' : 'New User'
     },
-    isCreated() {
-      return !this.edited
-    }
   },
   created() {
     this.initialize()
@@ -223,30 +227,33 @@ export default {
         'surname': this.editedItem.sn,
         'given_name': this.editedItem.givenName,
       }
-      this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
-      .then(response => {
-        const info = {"msg": "", "color": ""} 
-        if(response && response.status == 200){
-          info.msg = response.data.detail
-          info.color = "success"
-        } else {
-          info.msg = "Unknown error"
-          info.color = "error"
-        }
-        console.log(info)
-        this.$store.dispatch('showInfo', info)
+      console.log(this.selectedGroups)
 
-      })
-      .catch(error => {
-        const info = {"msg": "", "color": "error"} 
-        if (error.response) {
-          info.msg = response.data.detail
-        } else {
-          info.msg = "Unknown server error"
-        }
-        this.$store.dispatch('showInfo', info)
-        console.log(error)
-      })
+      //this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+      //.then(response => {
+      //  const info = {"msg": "", "color": ""} 
+      //  if(response && response.status == 200){
+      //    info.msg = response.data.detail
+      //    info.color = "success"
+      //  } else {
+      //    info.msg = "Unknown error"
+      //    info.color = "error"
+      //  }
+      //  console.log(info)
+      //  this.$store.dispatch('showInfo', info)
+
+      //})
+      //.catch(error => {
+      //  const info = {"msg": "", "color": "error"} 
+      //  if (error.response) {
+      //    info.msg = response.data.detail
+      //  } else {
+      //    info.msg = "Unknown server error"
+      //  }
+      //  this.$store.dispatch('showInfo', info)
+      //  console.log(error)
+      //})
+
       this.dialog = false
       this.editedItem = this.defaultItem
     },
