@@ -42,12 +42,12 @@
                   <!--User info(left)-->
                   <v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.cn" label="Name"
+                      <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
                         :rules="[rules.required]"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.uid" label="UserID" :disabled="edited"
+                      <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
                         :rules="[rules.required]"
                       ></v-text-field>
                     </v-col>
@@ -55,11 +55,11 @@
                       <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.sn" label="Family Name"
+                      <v-text-field v-model="editedItem.sn" label="姓(Surname)"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.givenName" label="Given Name"></v-text-field>
+                      <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
                     </v-col>
                   </v-col>
 
@@ -122,7 +122,7 @@ export default {
               sortable: true,
               value: "uid"
           },
-          { text: "Name", value: "cn"},
+          { text: "姓名", value: "cn"},
           { text: "Email", value: "mail", sortable: false},
           { text: "Actions", value: "action", sortable: false},
         ],
@@ -145,7 +145,7 @@ export default {
   }, //data()
   computed: {
     formTitle() {
-      return this.edited ? 'Edit User' : 'New User'
+      return this.edited ? '编辑' : '创建用户'
     },
   },
   created() {

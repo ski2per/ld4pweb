@@ -27,8 +27,7 @@ export default {
     }
   },
   mounted: function() {
-    this.$http.get('http://172.16.66.6:8000/api/v1/groups/')
-    // this.$http.get('http://localhost:8000/api/v1/groups/')
+    this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
     .then(response => {
       this.groups = response.data
     })
