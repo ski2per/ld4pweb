@@ -4,7 +4,7 @@
     :items="users"
     :search="search"
     sort-by="uid"
-    class="elevation-2"
+    class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -66,8 +66,10 @@
 
                   <!--Group selection(right)-->
                   <v-col v-if="!edited">
+                    选择用户组:
+                    <v-divider></v-divider>
                     <v-treeview
-                      v-model="selectedGroups"
+                      v-model="selectedGroup"
                       selection-type="leaf"
                       :items="groups"
                       item-disabled="locked"
@@ -112,10 +114,10 @@ export default {
   name: 'UserList',
   data () {
     return {
-        selectedGroups: [],
+        users: [],
         groups: [],
         search: '',
-        users: [],
+        selectedGroup: [],
         headers: [
           {
               text: "User ID",
@@ -155,6 +157,7 @@ export default {
   },
   methods: {
     initialize_users() {
+      console.log("[initialize_users()]")
       this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
       .then(response => {
         this.users = response.data
@@ -166,6 +169,7 @@ export default {
           this.$router.push("/login")
         }
       })
+      console.log(`init user: ${this.selectedGroup}`)
     },// initialize_users()
     initialize_group_tree() {
       this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
@@ -189,16 +193,43 @@ export default {
 
     deleteItem (item) {
       console.log(item)
-      console.log("Delete TBD")
+      const info = { msg: "", color: "" } 
+      this.$http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+      .then(response => {
+        if(response && response.status == 200) {
+          info.msg = response.data.detail
+          info.color = "success"
+          // init users, consider using vuex later
+          this.initialize_users()
+        } else {
+          info.msg = response.data.detail
+          info.color = "error"
+        }
+        console.log(info)
+        this.$store.dispatch("showInfo", info)
+      })
+      .catch(error => {
+        // Also need to refactor
+        info.color = "error"
+        if (error.response) {
+          info.msg = error.response.data.detail
+        } else {
+          info.msg = "Unknown server error"
+        }
+        this.$store.dispatch('showInfo', info)
+
+      })
     },
 
     close () {
       this.dialog = false
       this.editedItem = this.defaultItem
       this.edited = false
-      this.selectedGroups = []
+      this.selectedGroup = []
     },
     save () {
+      console.log(this.selectedGroup)
+      console.log(`Edited: ${this.edited}`)
       const params = new FormData()
 
       const data = {
@@ -206,34 +237,52 @@ export default {
         'surname': this.editedItem.sn,
         'given_name': this.editedItem.givenName,
       }
+      const info = {msg: "", color: ""}
 
-      // Add new user
-      this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
-      .then(response => {
-        const info = {"msg": "", "color": ""} 
-        if(response && response.status == 200){
-          info.msg = response.data.detail
-          info.color = "success"
-        } else {
-          info.msg = "Unknown error"
+      if (this.edited) {
+        console.log("[edit] TBD")
+      } else {
+        // Add new user
+        this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+        .then(response => {
+          console.log(response)
+          if(response && response.status == 200) {
+            info.msg = response.data.detail
+            info.color = "success"
+            // init users, consider using vuex later
+            console.log(`before init user: ${this.selectedGroup}`)
+            this.initialize_users()
+            console.log(`after init user: ${this.selectedGroup}`)
+            // Add new user to groups
+            // (Only when adding user successfully)
+            this.massiveAddToGroup(this.selectedGroup)
+          } else {
+            console.log(response)
+            info.msg = "Unknown error"
+            info.color = "error"
+          }
+          this.$store.dispatch('showInfo', info)
+        })
+        .catch(error => {
           info.color = "error"
-        }
-        console.log(info)
-        this.$store.dispatch('showInfo', info)
-      })
-      .catch(error => {
-        const info = {"msg": "", "color": "error"} 
-        if (error.response) {
-          info.msg = response.data.detail
-        } else {
-          info.msg = "Unknown server error"
-        }
-        this.$store.dispatch('showInfo', info)
-        console.log(error)
-      })
+          if (error.response) {
+            info.msg = error.response.data.detail
+          } else {
+            info.msg = "Unknown server error"
+          }
+          this.$store.dispatch('showInfo', info)
+        })
+      }
 
-      // Add new user to groups
-      this.selectedGroups.forEach((item, index) => {
+      this.dialog = false
+      this.editedItem = this.defaultItem
+      this.selectedGroup = []
+    }, //save()
+    massiveAddToGroup (groupData) {
+      console.log(`groupData: ${groupData}`)
+      console.log("[massiveAddToGroup()]")
+      // Need refactor
+      groupData.forEach((item, index) => {
         // Think I will put sleep or something here ;P
         this.$http.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${item.pgroup}/${item.name}/${this.editedItem.uid}`)
         .then(response => {
@@ -246,10 +295,7 @@ export default {
         })
       })
 
-      this.dialog = false
-      this.editedItem = this.defaultItem
-      this.selectedGroups = []
-    },
+    }
 
   }, //method()
 }
