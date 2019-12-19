@@ -53,8 +53,8 @@
         //debug
 
         this.$store.dispatch('login', params)
-       .then(() => this.$router.push('/'))
-       .catch(err => console.log(err))
+       .then(() => this.$router.push('/user'))
+       .catch(err => console.log(err.response.data))
       }
     }
   }

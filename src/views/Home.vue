@@ -1,6 +1,9 @@
 <template>
   <v-container justify="start">
-    Home Page
+    <ul>
+      <li>add</li>
+      <li>delete</li>
+    </ul>
   </v-container>
 </template>
 
