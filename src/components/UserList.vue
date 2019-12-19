@@ -64,13 +64,13 @@
                     </v-col>
                   </v-col>
 
-                  <!--Group selection(right)-->
+                  <!--Group selectedGroup(right)-->
                   <v-col v-if="!edited">
                     选择用户组:
                     <v-divider></v-divider>
                     <v-treeview
                       v-model="selectedGroup"
-                      selection-type="leaf"
+                      selectedGroup-type="leaf"
                       :items="groups"
                       item-disabled="locked"
                       selectable
@@ -169,7 +169,6 @@ export default {
           this.$router.push("/login")
         }
       })
-      console.log(`init user: ${this.selectedGroup}`)
     },// initialize_users()
     initialize_group_tree() {
       this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
@@ -192,7 +191,6 @@ export default {
     },
 
     deleteItem (item) {
-      console.log(item)
       const info = { msg: "", color: "" } 
       this.$http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
       .then(response => {
@@ -228,8 +226,6 @@ export default {
       this.selectedGroup = []
     },
     save () {
-      console.log(this.selectedGroup)
-      console.log(`Edited: ${this.edited}`)
       const params = new FormData()
 
       const data = {
@@ -245,17 +241,15 @@ export default {
         // Add new user
         this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
         .then(response => {
-          console.log(response)
           if(response && response.status == 200) {
             info.msg = response.data.detail
             info.color = "success"
-            // init users, consider using vuex later
-            console.log(`before init user: ${this.selectedGroup}`)
-            this.initialize_users()
-            console.log(`after init user: ${this.selectedGroup}`)
             // Add new user to groups
             // (Only when adding user successfully)
             this.massiveAddToGroup(this.selectedGroup)
+
+            // init users, consider using vuex later
+            this.initialize_users()
           } else {
             console.log(response)
             info.msg = "Unknown error"
@@ -272,11 +266,13 @@ export default {
           }
           this.$store.dispatch('showInfo', info)
         })
+        .finally(() => {
+          this.dialog = false
+          this.editedItem = this.defaultItem
+          this.selectedGroup = []
+        })
       }
 
-      this.dialog = false
-      this.editedItem = this.defaultItem
-      this.selectedGroup = []
     }, //save()
     massiveAddToGroup (groupData) {
       console.log(`groupData: ${groupData}`)
