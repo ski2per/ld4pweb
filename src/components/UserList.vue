@@ -56,6 +56,7 @@
                     </v-col>
                     <v-col cols="12">
                       <v-text-field v-model="editedItem.sn" label="姓(Surname)"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -187,6 +188,7 @@ export default {
     },
 
     deleteItem (item) {
+      console.log(item)
       console.log("Delete TBD")
     },
 
