@@ -1,5 +1,8 @@
 # ld4pman-web
 
+## Environment Variable
+* VUE_APP_API_URL
+
 ## Project setup
 ```
 npm install
@@ -22,3 +25,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 docker build -t ld4pman-web .
 ```
+
+
