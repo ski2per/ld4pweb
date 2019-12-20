@@ -191,6 +191,8 @@ export default {
     },
 
     deleteItem (item) {
+      console.log("TBD")
+      /*
       const info = { msg: "", color: "" } 
       this.$http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
       .then(response => {
@@ -215,8 +217,8 @@ export default {
           info.msg = "Unknown server error"
         }
         this.$store.dispatch('showInfo', info)
-
       })
+      */
     },
 
     close () {
