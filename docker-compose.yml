@@ -7,10 +7,5 @@ services:
     #  dockerfile: Dockerfile
     image: ld4pman-web
     hostname: ld4pman-web
-    #env_file:
-    #  - dev.env
-    environment:
-      - VUE_APP_API_URL=http://172.16.66.6:8000
-    user: root
     ports:
       - "8080:80"
