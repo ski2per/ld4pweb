@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    admin: false,
+    isAdmin: false,
     user: '',
     info: '',
     infoColor: '',
@@ -18,11 +18,11 @@ export default new Vuex.Store({
     auth_request(state){
       state.status = 'loading'
     },
-    auth_success(state, token, user, admin){
+    auth_success(state, authData){
       state.status = 'success'
-      state.token = token
-      state.user = user
-      state.admin = admin
+      state.token = authData.token
+      state.user = authData.user
+      state.isAdmin = authData.admin
     },
     auth_error(state){
       state.status = 'error'
@@ -30,6 +30,7 @@ export default new Vuex.Store({
     logout(state){
       state.status = ''
       state.token = ''
+      state.isAdmin = false
     },
     show_info(state, info){
       state.info = info.msg
@@ -43,8 +44,6 @@ export default new Vuex.Store({
         commit('auth_request')
         axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
         .then(response => {
-          console.log(`[vuex] ${response}`)
-          console.log(response)
           const token = response.data.access_token
           const isAdmin = response.data.admin
           const user = userdata.get('username')
@@ -52,7 +51,12 @@ export default new Vuex.Store({
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
           // Commit 'auth_success' mutations
-          commit('auth_success', token, user, isAdmin)
+          const authData = {
+            token: token,
+            user: user,
+            admin: isAdmin,
+          }
+          commit('auth_success', authData)
           resolve(response)
         })
         .catch(error => {
@@ -83,7 +87,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAdmin: state => state.admin,
+    isAdmin: state => state.isAdmin,
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     isInfo: state => !!state.info,

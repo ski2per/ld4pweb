@@ -20,20 +20,39 @@
     <v-divider></v-divider>
 
     <v-list dense nav >
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
-        :to="item.link"
-        link
-      >
+      <!-- User -->
+      <v-list-item link to="/user" v-if="isAdmin">
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-icon>mdi-account</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title>User</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <!-- Group -->
+      <v-list-item link to="/group" v-if="isAdmin">
+        <v-list-item-icon>
+          <v-icon>mdi-account-group</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Group</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <!-- About me -->
+      <v-list-item link to="/aboutme">
+        <v-list-item-icon>
+          <v-icon>mdi-account</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>About Me</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
     </v-list>
 
     <template v-slot:append>
@@ -51,16 +70,18 @@
     data () {
       return {
         drawer: true,
-        items: [
-          { title: 'User', icon: 'mdi-account', link: '/user'},
-          { title: 'Group', icon: 'mdi-account-group', link: '/group'},
-          { title: 'About Me', icon: 'mdi-account-group', link: '/aboutme'},
-        ],
+        //items: [
+        //  { title: 'User', icon: 'mdi-account', link: '/user'},
+        //  { title: 'Group', icon: 'mdi-account-group', link: '/group'},
+        //  { title: 'About Me', icon: 'mdi-account-group', link: '/aboutme'},
+        //],
         right: null,
       }
     },
     computed : {
-      isLoggedIn : function(){ return this.$store.getters.isLoggedIn}
+      isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
+      isAdmin: function() { return this.$store.getters.isAdmin },
+
     },
     methods: {
       logout: function () {

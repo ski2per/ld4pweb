@@ -1,6 +1,7 @@
 <template>
   <v-form 
     ref="loginForm"
+    @submit.prevent="validate"
     >
     <v-text-field
       v-model="username"
@@ -20,7 +21,8 @@
       @click:append="show = !show"
     ></v-text-field>
 
-    <v-btn color="warning" @click="validate" :disabled="!valid">Login</v-btn>
+    <v-btn color="warning" type="submit" :disabled="!valid">Login</v-btn>
+    <!--<v-btn color="warning" @click="validate" :disabled="!valid">Login</v-btn>-->
   </v-form>
 </template>
 
@@ -57,7 +59,10 @@
 
         this.$store.dispatch('login', params)
        .then(() => this.$router.push('/user'))
-       .catch(err => console.log(err.response.data))
+       .catch(err => {
+         console.log(err)
+         if(err) {console.log(err.response.data)}
+       })
       }
     }
   }

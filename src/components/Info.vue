@@ -32,7 +32,7 @@
       snackbar: {
         get () { return this.$store.getters.isInfo},
         set (value) {
-          this.$store.commit('show_info', "", "error")
+          this.$store.dispatch('showInfo', { msg: "", color: "error" })
         }
       },
       info: function () {
@@ -44,7 +44,7 @@
     },
     methods: {
       dismiss: function() {
-        this.$store.commit('show_info', "", "error")
+        this.$store.dispatch('showInfo', { msg: "", color: "error" })
       }
     },
   }

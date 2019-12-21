@@ -15,11 +15,18 @@ const routes = [
     component: Login
   },
   {
+    path: '/',
+    redirect: '/user',
+    requiresAuth: true,
+    requiresAdmin: true,
+  },
+  {
     path: '/aboutme',
     name: 'aboutme',
     component: About,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresAdmin: false,
     }
   },
   //{
@@ -35,7 +42,8 @@ const routes = [
     name: 'group',
     component: Group,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresAdmin: true,
     }
   },
   {
@@ -46,7 +54,8 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "user" */ '../views/User.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      requiresAdmin: true,
     }
   }
 ]
@@ -56,14 +65,32 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log(to.fullPath)
+  console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
+  console.log(`isAdmin: ${store.getters.isAdmin}`)
+  // 'to.matched' is a list
+  // some() method tests whether at least one element pass the test of
+  // 'record => record.meta.requriesAuth' function
   if(to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
-    if (store.getters.isLoggedIn) {
-      next()
-      return
+    if(!store.getters.isLoggedIn) {
+      next('/login')
+    } else {
+      // Check page permission
+      // console.log(to)
+      // console.log(`Current route: ${to.fullPath}`)
+      // console.log(`Current route requires admin: ${to.meta.requiresAdmin}`)
+      if(to.meta.requiresAdmin) {
+        if(!store.getters.isAdmin) {
+          next('/aboutme')
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
     }
-    next('/login')
   } else {
+    // Route no auth required goes here
     console.log('no auth required')
     next()
   }

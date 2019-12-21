@@ -166,7 +166,7 @@ export default {
       .catch(error => {
         console.log(error)
         if (error.response && error.response.status == 401) {
-          this.$store.commit("logout")
+          this.$store.dispatch("logout")
           this.$router.push("/login")
         }
       })
@@ -179,7 +179,7 @@ export default {
       .catch(error => {
         console.log(error)
         if (error.response && error.response.status == 401) {
-          this.$store.commit("logout")
+          this.$store.dispatch("logout")
           this.$router.push("/login")
         }
       })
