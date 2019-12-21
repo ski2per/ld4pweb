@@ -104,8 +104,9 @@
     </template>
 
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize_users">Reload</v-btn>
+      No data : P
     </template>
+
   </v-data-table>
 </template>
 
