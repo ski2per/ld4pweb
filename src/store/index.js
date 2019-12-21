@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
+    admin: false,
     user: '',
     info: '',
     infoColor: '',
@@ -17,10 +18,11 @@ export default new Vuex.Store({
     auth_request(state){
       state.status = 'loading'
     },
-    auth_success(state, token, user){
+    auth_success(state, token, user, admin){
       state.status = 'success'
       state.token = token
       state.user = user
+      state.admin = admin
     },
     auth_error(state){
       state.status = 'error'
@@ -40,17 +42,22 @@ export default new Vuex.Store({
         console.log(process.env.VUE_APP_API_URL)
         commit('auth_request')
         axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
-        .then(resp => {
-          const token = resp.data.access_token
+        .then(response => {
+          console.log(`[vuex] ${response}`)
+          console.log(response)
+          const token = response.data.access_token
+          const isAdmin = response.data.admin
           const user = userdata.get('username')
           localStorage.setItem('token', token)
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-          commit('auth_success', token, user)
-          resolve(resp)
+
+          // Commit 'auth_success' mutations
+          commit('auth_success', token, user, isAdmin)
+          resolve(response)
         })
-        .catch(err => {
+        .catch(error => {
           var error_msg = ""
-          if(err.response && err.response.status == 401) {
+          if(error.response && error.response.status == 401) {
             error_msg = "Wrong username or password"
           } else {
             error_msg = "Unknown error"
@@ -59,7 +66,7 @@ export default new Vuex.Store({
 
           commit('auth_error')
           localStorage.removeItem('token')
-          reject(err)
+          reject(error)
         })
       })
     },
@@ -76,6 +83,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isAdmin: state => state.admin,
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     isInfo: state => !!state.info,

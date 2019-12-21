@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import About from '../views/AboutMe.vue'
 import User from '../views/User.vue'
 import Group from '../views/Group.vue'
 import store from '../store'
@@ -15,9 +15,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/',
-    name: 'home',
-    component: Home,
+    path: '/aboutme',
+    name: 'aboutme',
+    component: About,
     meta: {
       requiresAuth: true
     }
@@ -57,7 +57,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if(to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(store.getters.isLoggedIn)
+    console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
     if (store.getters.isLoggedIn) {
       next()
       return
