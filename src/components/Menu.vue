@@ -1,10 +1,8 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
     app
     permanent
-    width="160"
-    v-if="isLoggedIn"
+    width="200"
   >
     <v-list-item>
       <v-list-item-content>
@@ -20,39 +18,19 @@
     <v-divider></v-divider>
 
     <v-list dense nav >
-      <!-- User -->
-      <v-list-item link to="/user" v-if="isAdmin">
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        :to="item.link"
+        link
+      >
         <v-list-item-icon>
-          <v-icon>mdi-account</v-icon>
+          <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>User</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <!-- Group -->
-      <v-list-item link to="/group" v-if="isAdmin">
         <v-list-item-icon>
-          <v-icon>mdi-account-group</v-icon>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Group</v-list-item-title>
-        </v-list-item-content>
       </v-list-item>
-
-      <!-- About me -->
-      <v-list-item link to="/aboutme">
-        <v-list-item-icon>
-          <v-icon>mdi-account</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>About Me</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
     </v-list>
 
     <template v-slot:append>
@@ -69,19 +47,23 @@
     name: 'Menu',
     data () {
       return {
-        drawer: true,
-        //items: [
-        //  { title: 'User', icon: 'mdi-account', link: '/user'},
-        //  { title: 'Group', icon: 'mdi-account-group', link: '/group'},
-        //  { title: 'About Me', icon: 'mdi-account-group', link: '/aboutme'},
-        //],
-        right: null,
+        // drawer: true,
+        items: [],
+        // right: null,
       }
     },
-    computed : {
-      isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
-      isAdmin: function() { return this.$store.getters.isAdmin },
-
+    mounted() {
+      console.log("menu mounted") 
+      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
+      .then(response => {
+        if(response && response.status == 200) {
+          console.log(response.data)
+          this.items = response.data
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     methods: {
       logout: function () {

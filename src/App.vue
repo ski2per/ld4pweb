@@ -1,6 +1,6 @@
 <template>
 <v-app>
-  <nav-menu />
+  <nav-menu v-if="isLoggedIn"></nav-menu>
 
   <v-content transition="slide-x-transition">
     <router-view></router-view>
@@ -28,6 +28,9 @@ export default {
         throw err;
       });
     });
+  },
+  computed: {
+    isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
   },
   methods: {
     logout: function () {

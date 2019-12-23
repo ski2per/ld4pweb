@@ -66,8 +66,11 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   console.log(to.fullPath)
+  console.log('[router]')
+  console.log(localStorage)
   console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
   console.log(`isAdmin: ${store.getters.isAdmin}`)
+  console.log(`whoami: ${store.getters.whoAmI}`)
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of
   // 'record => record.meta.requriesAuth' function

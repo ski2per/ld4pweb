@@ -8,8 +8,8 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    isAdmin: false,
-    user: '',
+    isAdmin: localStorage.getItem('admin') || false,
+    user: localStorage.getItem('user') || '',
     info: '',
     infoColor: '',
   },
@@ -41,6 +41,8 @@ export default new Vuex.Store({
     login({commit}, userdata){
       return new Promise((resolve, reject) => {
         console.log(process.env.VUE_APP_API_URL)
+        console.log('[login] localStorage')
+        console.log(localStorage)
         commit('auth_request')
         axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
         .then(response => {
@@ -48,6 +50,8 @@ export default new Vuex.Store({
           const isAdmin = response.data.admin
           const user = userdata.get('username')
           localStorage.setItem('token', token)
+          localStorage.setItem('user', user)
+          localStorage.setItem('admin', isAdmin)
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
           // Commit 'auth_success' mutations
@@ -70,6 +74,8 @@ export default new Vuex.Store({
 
           commit('auth_error')
           localStorage.removeItem('token')
+          localStorage.removeItem('user', user)
+          localStorage.removeItem('admin', isAdmin)
           reject(error)
         })
       })
@@ -77,7 +83,11 @@ export default new Vuex.Store({
     logout({commit}){
       return new Promise((resolve, reject) => {
         commit('logout')
+        console.log('[logout] localStorage')
+        console.log(localStorage)
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('admin')
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })
@@ -89,6 +99,7 @@ export default new Vuex.Store({
   getters: {
     isAdmin: state => state.isAdmin,
     isLoggedIn: state => !!state.token,
+    whoAmI: state => state.user,
     authStatus: state => state.status,
     isInfo: state => !!state.info,
     getInfo: state => state.info,
