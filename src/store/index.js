@@ -8,7 +8,6 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    isAdmin: localStorage.getItem('admin') || false,
     user: localStorage.getItem('user') || '',
     info: '',
     infoColor: '',
@@ -22,7 +21,6 @@ export default new Vuex.Store({
       state.status = 'success'
       state.token = authData.token
       state.user = authData.user
-      state.isAdmin = authData.admin
     },
     auth_error(state){
       state.status = 'error'
@@ -30,7 +28,6 @@ export default new Vuex.Store({
     logout(state){
       state.status = ''
       state.token = ''
-      state.isAdmin = false
     },
     show_info(state, info){
       state.info = info.msg
@@ -47,18 +44,15 @@ export default new Vuex.Store({
         axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
         .then(response => {
           const token = response.data.access_token
-          const isAdmin = response.data.admin
           const user = userdata.get('username')
           localStorage.setItem('token', token)
           localStorage.setItem('user', user)
-          localStorage.setItem('admin', isAdmin)
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
           // Commit 'auth_success' mutations
           const authData = {
             token: token,
             user: user,
-            admin: isAdmin,
           }
           commit('auth_success', authData)
           resolve(response)
@@ -75,7 +69,6 @@ export default new Vuex.Store({
           commit('auth_error')
           localStorage.removeItem('token')
           localStorage.removeItem('user', user)
-          localStorage.removeItem('admin', isAdmin)
           reject(error)
         })
       })
@@ -87,7 +80,6 @@ export default new Vuex.Store({
         console.log(localStorage)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        localStorage.removeItem('admin')
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })
@@ -97,7 +89,6 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isAdmin: state => state.isAdmin,
     isLoggedIn: state => !!state.token,
     whoAmI: state => state.user,
     authStatus: state => state.status,

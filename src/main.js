@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Axios from 'axios'
+import axios from 'axios'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -8,7 +8,7 @@ import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 
-Vue.prototype.$http = Axios;
+Vue.prototype.$http = axios;
 
 const token = localStorage.getItem('token')
 if(token) {

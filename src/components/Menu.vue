@@ -47,13 +47,11 @@
     name: 'Menu',
     data () {
       return {
-        // drawer: true,
         items: [],
-        // right: null,
       }
     },
     mounted() {
-      console.log("menu mounted") 
+      console.log("Menu.vue mounted, get menu content") 
       this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
       .then(response => {
         if(response && response.status == 200) {
