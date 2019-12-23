@@ -27,7 +27,7 @@ export default {
     }
   },
   mounted: function() {
-    this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
+    this.$store.dispatch('getGroups')
     .then(response => {
       this.groups = response.data
     })

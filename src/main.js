@@ -8,12 +8,12 @@ import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 
-Vue.prototype.$http = axios;
+// Vue.prototype.$axios = axios;
 
-const token = localStorage.getItem('token')
-if(token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
-}
+// const token = localStorage.getItem('token')
+// if(token) {
+//   Vue.prototype.$axios.defaults.headers.common['Authorization'] = token
+// }
 
 Vue.config.productionTip = false
 

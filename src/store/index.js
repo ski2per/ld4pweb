@@ -2,6 +2,24 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
+// const http = axios.create()
+
+axios.interceptors.request.use(function (config) {
+// http.interceptors.request.use(function (config) {
+  // Do something before request is sent
+  const token = localStorage.getItem('token')
+  console.log(`[interceptor] token: ${token}`)
+  console.log(axios.defaults.headers)
+  if(token) {
+    config.headers.common['Authorization'] = `Bearer ${token}`
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+  }
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -9,6 +27,7 @@ export default new Vuex.Store({
     status: '',
     token: localStorage.getItem('token') || '',
     user: localStorage.getItem('user') || '',
+    admin: localStorage.getItem('admin') || false,
     info: '',
     infoColor: '',
   },
@@ -21,6 +40,7 @@ export default new Vuex.Store({
       state.status = 'success'
       state.token = authData.token
       state.user = authData.user
+      state.admin = authData.admin
     },
     auth_error(state){
       state.status = 'error'
@@ -28,6 +48,7 @@ export default new Vuex.Store({
     logout(state){
       state.status = ''
       state.token = ''
+      state.admin = false
     },
     show_info(state, info){
       state.info = info.msg
@@ -41,18 +62,24 @@ export default new Vuex.Store({
         console.log('[login] localStorage')
         console.log(localStorage)
         commit('auth_request')
-        axios({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
+        axios.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
+        // http.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
+        // http({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
         .then(response => {
+          console.log(response.data)
           const token = response.data.access_token
           const user = userdata.get('username')
+          const admin = response.data.admin
           localStorage.setItem('token', token)
           localStorage.setItem('user', user)
+          localStorage.setItem('admin', admin)
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
           // Commit 'auth_success' mutations
           const authData = {
             token: token,
             user: user,
+            admin: admin,
           }
           commit('auth_success', authData)
           resolve(response)
@@ -68,7 +95,8 @@ export default new Vuex.Store({
 
           commit('auth_error')
           localStorage.removeItem('token')
-          localStorage.removeItem('user', user)
+          localStorage.removeItem('user')
+          localStorage.removeItem('admin')
           reject(error)
         })
       })
@@ -80,8 +108,66 @@ export default new Vuex.Store({
         console.log(localStorage)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
+        localStorage.removeItem('admin')
+        // delete http.defaults.headers.common['Authorization']
         delete axios.defaults.headers.common['Authorization']
         resolve()
+      })
+    },
+    getUsers({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
+        // http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    createUser({commit}, data) {
+      return new Promise((resolve, reject) => {
+        // http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+        axios.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    getGroups({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
+        // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    getGroupTree({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+        // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    add2Group({commit}, data) {
+      return new Promise((resolve, reject) => {
+        axios.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
+        // http.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    deleteGroup({commit}, item) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+        // http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    getMenu({commit}) {
+      return new Promise((resolve, reject) => {
+        axios.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
+        // http.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
       })
     },
     showInfo({commit}, info) {
@@ -90,6 +176,7 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn: state => !!state.token,
+    isAdmin: state => state.admin,
     whoAmI: state => state.user,
     authStatus: state => state.status,
     isInfo: state => !!state.info,

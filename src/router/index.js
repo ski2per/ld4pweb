@@ -69,7 +69,6 @@ router.beforeEach((to, from, next) => {
   console.log('[router]')
   console.log(localStorage)
   console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
-  console.log(`isAdmin: ${store.getters.isAdmin}`)
   console.log(`whoami: ${store.getters.whoAmI}`)
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of

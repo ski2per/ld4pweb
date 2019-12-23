@@ -52,7 +52,7 @@
     },
     mounted() {
       console.log("Menu.vue mounted, get menu content") 
-      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
+      this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {
           console.log(response.data)

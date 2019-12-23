@@ -159,7 +159,7 @@ export default {
   methods: {
     initialize_users() {
       console.log("[initialize_users()]")
-      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
+      this.$store.dispatch('getUsers')
       .then(response => {
         this.users = response.data
       })
@@ -172,7 +172,7 @@ export default {
       })
     },// initialize_users()
     initialize_group_tree() {
-      this.$http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+      this.$store.dispatch('getGroupTree')
       .then(response => {
         this.groups = response.data
       })
@@ -195,7 +195,7 @@ export default {
       console.log("TBD")
       /*
       const info = { msg: "", color: "" } 
-      this.$http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+      this.$store.dispatch('deleteItem', item)
       .then(response => {
         if(response && response.status == 200) {
           info.msg = response.data.detail
@@ -242,7 +242,7 @@ export default {
         console.log("[edit] TBD")
       } else {
         // Add new user
-        this.$http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+        this.$store.dispatch('createUser', data)
         .then(response => {
           if(response && response.status == 200) {
             info.msg = response.data.detail
@@ -283,7 +283,7 @@ export default {
       // Need refactor
       groupData.forEach((item, index) => {
         // Think I will put sleep or something here ;P
-        this.$http.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${item.pgroup}/${item.name}/${this.editedItem.uid}`)
+        this.$store.dispatch('add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
         .then(response => {
           if(response && response.status == 200) {
             console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
