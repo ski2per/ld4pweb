@@ -67,7 +67,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   console.log('[router]')
   console.log(to.fullPath)
-  console.log(localStorage)
+  // console.log(localStorage)
   console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
   console.log(`whoami: ${store.getters.whoAmI}`)
   // 'to.matched' is a list

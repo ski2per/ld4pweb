@@ -108,15 +108,28 @@
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
-      <v-icon medium class="mr-2"
-        @click="editItem(item)"
-      >
-       mdi-account-edit
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" medium class="mr-2" @click="editItem(item)">
+            mdi-account-edit
+          </v-icon>
+        </template>
+        <span>编辑用户</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" medium class="mr-2" @click="deleteConfirm(item)">
+            mdi-account-minus
+          </v-icon>
+        </template>
+        <span>删除用户</span>
+      </v-tooltip>
+      <v-icon medium class="mr-2">
+        mdi-account-off
       </v-icon>
-      <v-icon medium 
-        @click="deleteConfirm(item)"
-      >
-        mdi-delete
+      <v-icon medium class="mr-2">
+        mdi-account-key
       </v-icon>
     </template>
 
@@ -146,7 +159,7 @@ export default {
         },
         { text: "姓名", value: "cn"},
         { text: "Email", value: "mail", sortable: false},
-        { text: "Actions", value: "action", sortable: false},
+        { text: "操作", value: "action", sortable: false},
       ],
       dialog: false,
       dialogDelete: false,

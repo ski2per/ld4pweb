@@ -55,7 +55,6 @@
       this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {
-          console.log(response.data)
           this.items = response.data
         }
       })
