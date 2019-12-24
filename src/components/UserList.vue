@@ -24,6 +24,7 @@
 
         <v-spacer></v-spacer>
 
+        <!--Create/Edit dialog-->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on }">
             <v-btn small color="green" fab dark v-on="on">
@@ -40,29 +41,31 @@
               <v-container>
                 <v-row>
                   <!--User info(left)-->
-                  <v-col>
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
-                        :rules="[rules.required]"
-                      ></v-text-field>
+                  <v-form ref="userForm">
+                    <v-col>
+                      <v-col cols="12">
+                        <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" v-if="edited">
+                        <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field v-model="editedItem.sn" label="姓(Surname)"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
+                      </v-col>
                     </v-col>
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" v-if="edited">
-                      <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.sn" label="姓(Surname)"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
-                    </v-col>
-                  </v-col>
+                  </v-form>
 
                   <!--Group selectedGroup(right)-->
                   <v-col v-if="!edited">
@@ -83,11 +86,25 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn color="green darken-1" text @click="close" :disabled="!valid">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="validate">OK</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <!--Delete dialog-->
+        <v-dialog v-model="dialogDelete" persistent max-width="290">
+          <v-card>
+            <v-card-title class="headline">Delete User ?</v-card-title>
+            <v-card-text start="end">{{ user2delete }}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="green darken-1" text @click="deleteItem">OK</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
       </v-toolbar>
     </template>
     <template v-slot:item.action="{ item }">
@@ -97,7 +114,7 @@
        mdi-account-edit
       </v-icon>
       <v-icon medium 
-        @click="deleteItem(item)"
+        @click="deleteConfirm(item)"
       >
         mdi-delete
       </v-icon>
@@ -115,50 +132,55 @@ export default {
   name: 'UserList',
   data () {
     return {
-        users: [],
-        groups: [],
-        search: '',
-        selectedGroup: [],
-        headers: [
-          {
-              text: "User ID",
-              align: "left",
-              sortable: true,
-              value: "uid"
-          },
-          { text: "姓名", value: "cn"},
-          { text: "Email", value: "mail", sortable: false},
-          { text: "Actions", value: "action", sortable: false},
-        ],
-        dialog: false,
-        edited: false,
-        editedItem: {
-            uid: '',
-            cn: '',
-            mail: '',
+      valid: true,  
+      users: [],
+      groups: [],
+      search: '',
+      selectedGroup: [],
+      headers: [
+        {
+            text: "User ID",
+            align: "left",
+            sortable: true,
+            value: "uid"
         },
-        defaultItem: {
-            uid: '',
-            cn: '',
-            mail: '',
-        },
-        rules: {
-          required: value => !!value || 'Required.',
-        },
+        { text: "姓名", value: "cn"},
+        { text: "Email", value: "mail", sortable: false},
+        { text: "Actions", value: "action", sortable: false},
+      ],
+      dialog: false,
+      dialogDelete: false,
+      edited: false,
+      editedItem: {
+          uid: '',
+          cn: '',
+          mail: '',
+      },
+      defaultItem: {
+          uid: '',
+          cn: '',
+          mail: '',
+      },
+      rules: {
+        required: value => !!value || 'Required.',
+      },
     }
   }, //data()
   computed: {
     formTitle() {
       return this.edited ? '编辑' : '创建用户'
     },
+    user2delete () {
+      return this.editedItem.cn
+    }
   },
   created() {
-    this.initialize_users()
-    this.initialize_group_tree()
+    this.initializeUsers()
+    this.initializeGroupTree()
   },
   methods: {
-    initialize_users() {
-      console.log("[initialize_users()]")
+    initializeUsers() {
+      console.log("[initializeUsers()]")
       this.$store.dispatch('getUsers')
       .then(response => {
         this.users = response.data
@@ -170,8 +192,8 @@ export default {
           this.$router.push("/login")
         }
       })
-    },// initialize_users()
-    initialize_group_tree() {
+    },// initializeUsers()
+    initializeGroupTree() {
       this.$store.dispatch('getGroupTree')
       .then(response => {
         this.groups = response.data
@@ -183,30 +205,41 @@ export default {
           this.$router.push("/login")
         }
       })
-    },// initialize_group_tree()
-
-    editItem (item) {
+    },// initializeGroupTree()
+    validate () {
+      this.valid = false
+      if(this.$refs.userForm.validate()) {
+        this.save()
+      }
+      this.valid = true
+    },
+    editItem(item) {
       this.edited = true
       this.editedItem = item
       this.dialog = true
     },
+    deleteConfirm (item) {
+      this.editedItem = item
+      this.dialogDelete = true
+    },
+    deleteItem () {
+      console.log(`will delete ${this.editedItem.cn}`)
+      console.log(this.editedItem)
+      const uid = this.editedItem.uid
 
-    deleteItem (item) {
-      console.log("TBD")
-      /*
       const info = { msg: "", color: "" } 
-      this.$store.dispatch('deleteItem', item)
+      this.$store.dispatch('deleteUser', uid)
       .then(response => {
         if(response && response.status == 200) {
+          console.log(response.data)
           info.msg = response.data.detail
           info.color = "success"
           // init users, consider using vuex later
-          this.initialize_users()
+          this.initializeUsers()
         } else {
           info.msg = response.data.detail
           info.color = "error"
         }
-        console.log(info)
         this.$store.dispatch("showInfo", info)
       })
       .catch(error => {
@@ -219,11 +252,15 @@ export default {
         }
         this.$store.dispatch('showInfo', info)
       })
-      */
+      .finally(() => {
+        this.dialogDelete = false
+        this.editedItem = this.defaultItem
+      })
     },
 
     close () {
       this.dialog = false
+      this.dialogDelete = false
       this.editedItem = this.defaultItem
       this.edited = false
       this.selectedGroup = []
@@ -232,9 +269,10 @@ export default {
       const params = new FormData()
 
       const data = {
-        'chinese_name': this.editedItem.cn,
-        'surname': this.editedItem.sn,
-        'given_name': this.editedItem.givenName,
+        uid: this.editedItem.uid,
+        chinese_name: this.editedItem.cn,
+        surname: this.editedItem.sn,
+        given_name: this.editedItem.givenName,
       }
       const info = {msg: "", color: ""}
 
@@ -252,7 +290,7 @@ export default {
             this.massiveAddToGroup(this.selectedGroup)
 
             // init users, consider using vuex later
-            this.initialize_users()
+            this.initializeUsers()
           } else {
             console.log(response)
             info.msg = "Unknown error"

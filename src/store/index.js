@@ -8,8 +8,6 @@ axios.interceptors.request.use(function (config) {
 // http.interceptors.request.use(function (config) {
   // Do something before request is sent
   const token = localStorage.getItem('token')
-  console.log(`[interceptor] token: ${token}`)
-  console.log(axios.defaults.headers)
   if(token) {
     config.headers.common['Authorization'] = `Bearer ${token}`
     // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -117,15 +115,21 @@ export default new Vuex.Store({
     getUsers({commit}) {
       return new Promise((resolve, reject) => {
         axios.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
-        // http.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
         .then(response => {resolve(response)})
         .catch(error => {reject(error)})
       })
     },
     createUser({commit}, data) {
+      console.log(data)
       return new Promise((resolve, reject) => {
-        // http.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
-        axios.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${this.editedItem.uid}`, data)
+        axios.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
+        .then(response => {resolve(response)})
+        .catch(error => {reject(error)})
+      })
+    },
+    deleteUser({commit}, uid) {
+      return new Promise((resolve, reject) => {
+        axios.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
         .then(response => {resolve(response)})
         .catch(error => {reject(error)})
       })
