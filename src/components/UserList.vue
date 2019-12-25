@@ -107,6 +107,8 @@
 
       </v-toolbar>
     </template>
+
+    <!--操作按钮-->
     <template v-slot:item.action="{ item }">
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -125,12 +127,24 @@
         </template>
         <span>删除用户</span>
       </v-tooltip>
-      <v-icon medium class="mr-2">
-        mdi-account-off
-      </v-icon>
-      <v-icon medium class="mr-2">
-        mdi-account-key
-      </v-icon>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" medium class="mr-2">
+            mdi-account-off
+          </v-icon>
+        </template>
+        <span>锁定/解锁用户</span>
+      </v-tooltip>
+
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon medium class="mr-2" v-on="on">
+            mdi-account-key
+          </v-icon>
+        </template>
+        <span>重置密码</span>
+      </v-tooltip>
     </template>
 
     <template v-slot:no-data>
