@@ -24,127 +24,28 @@
 
         <v-spacer></v-spacer>
 
-        <!--Create/Edit dialog-->
-        <v-dialog v-model="dialog" persistent max-width="600px">
-          <template v-slot:activator="{ on }">
-            <v-btn small color="green" fab dark v-on="on">
-              <v-icon>mdi-account-plus </v-icon>
-            </v-btn>
-          </template>
+        <!--创建用户按钮-->
+        <v-btn small color="green" fab dark @click="handleCreate">
+          <v-icon>mdi-account-plus </v-icon>
+        </v-btn>
 
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
+        <user-edit-dialog ref="editDialog"
+        v-on:init-user="handleInitEvent"
+        ></user-edit-dialog>
 
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <!--User info(left)-->
-                  <v-form ref="userForm">
-                    <v-col>
-                      <v-col cols="12">
-                        <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" v-if="edited">
-                        <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field v-model="editedItem.sn" label="姓(Surname)"
-                          :rules="[rules.required]"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
-                      </v-col>
-                    </v-col>
-                  </v-form>
-
-                  <!--Group selectedGroup(right)-->
-                  <v-col v-if="!edited">
-                    选择用户组:
-                    <v-divider></v-divider>
-                    <v-treeview
-                      v-model="selectedGroup"
-                      selectedGroup-type="leaf"
-                      :items="groups"
-                      item-disabled="locked"
-                      selectable
-                      return-object
-                    ></v-treeview>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="close" :disabled="!valid">Cancel</v-btn>
-              <v-btn color="green darken-1" text @click="validate">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <!--Delete dialog-->
-        <v-dialog v-model="dialogDelete" persistent max-width="290">
-          <v-card>
-            <v-card-title class="headline">Delete User ?</v-card-title>
-            <v-card-text start="end">{{ user2delete }}</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="green darken-1" text @click="deleteItem">OK</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <user-delete-dialog ref="deleteDialog"
+        v-on:init-user="handleInitEvent"
+        ></user-delete-dialog>
 
       </v-toolbar>
     </template>
 
     <!--操作按钮-->
     <template v-slot:item.action="{ item }">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" medium class="mr-2" @click="editItem(item)">
-            mdi-account-edit
-          </v-icon>
-        </template>
-        <span>编辑用户</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" medium class="mr-2" @click="deleteConfirm(item)">
-            mdi-account-minus
-          </v-icon>
-        </template>
-        <span>删除用户</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-icon v-on="on" medium class="mr-2">
-            mdi-account-off
-          </v-icon>
-        </template>
-        <span>锁定/解锁用户</span>
-      </v-tooltip>
-
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-icon medium class="mr-2" v-on="on">
-            mdi-account-key
-          </v-icon>
-        </template>
-        <span>重置密码</span>
-      </v-tooltip>
+      <user-list-action :user="item"
+      v-on:delete="handleDeleteEvent($event)"
+      v-on:edit="handleEditEvent($event)"
+      ></user-list-action>
     </template>
 
     <template v-slot:no-data>
@@ -155,15 +56,22 @@
 </template>
 
 <script>
+import UserListAction from '@/components/UserListAction.vue'
+import UserEditDialog from '@/components/UserEditDialog.vue'
+import UserDeleteDialog from '@/components/UserDeleteDialog.vue'
+
 export default {
   name: 'UserList',
+  components: {
+    'user-list-action': UserListAction,
+    'user-edit-dialog': UserEditDialog,
+    'user-delete-dialog': UserDeleteDialog,
+  },
   data () {
     return {
       valid: true,  
       users: [],
-      groups: [],
       search: '',
-      selectedGroup: [],
       headers: [
         {
             text: "User ID",
@@ -175,37 +83,35 @@ export default {
         { text: "Email", value: "mail", sortable: false},
         { text: "操作", value: "action", sortable: false},
       ],
-      dialog: false,
-      dialogDelete: false,
-      edited: false,
-      editedItem: {
-          uid: '',
-          cn: '',
-          mail: '',
-      },
-      defaultItem: {
-          uid: '',
-          cn: '',
-          mail: '',
-      },
-      rules: {
-        required: value => !!value || 'Required.',
-      },
     }
   }, //data()
-  computed: {
-    formTitle() {
-      return this.edited ? '编辑' : '创建用户'
-    },
-    user2delete () {
-      return this.editedItem.cn
-    }
-  },
   created() {
     this.initializeUsers()
     this.initializeGroupTree()
   },
   methods: {
+    handleInitEvent() {
+      this.initializeUsers()
+    },
+    handleCreate() {
+      this.$refs.editDialog.dialog = true
+    },
+    handleEditEvent(item) {
+      const editedItem = {
+        uid: item.uid,
+        cn: item.cn,
+        mail: item.mail,
+        sn: item.sn,
+        givenName: item.givenName,
+      }
+      this.$refs.editDialog.editedItem = editedItem
+      this.$refs.editDialog.dialog = true
+      this.$refs.editDialog.edited = true
+    },
+    handleDeleteEvent(item) {
+      this.$refs.deleteDialog.user= item
+      this.$refs.deleteDialog.dialog = true
+    },
     initializeUsers() {
       console.log("[initializeUsers()]")
       this.$store.dispatch('getUsers')
@@ -223,7 +129,7 @@ export default {
     initializeGroupTree() {
       this.$store.dispatch('getGroupTree')
       .then(response => {
-        this.groups = response.data
+        this.$refs.editDialog.groups = response.data
       })
       .catch(error => {
         console.log(error)
@@ -233,62 +139,10 @@ export default {
         }
       })
     },// initializeGroupTree()
-    validate () {
-      this.valid = false
-      if(this.$refs.userForm.validate()) {
-        this.save()
-      }
-      this.valid = true
-    },
-    editItem(item) {
-      this.edited = true
-      this.editedItem = item
-      this.dialog = true
-    },
-    deleteConfirm (item) {
-      this.editedItem = item
-      this.dialogDelete = true
-    },
-    deleteItem () {
-      console.log(`will delete ${this.editedItem.cn}`)
-      console.log(this.editedItem)
-      const uid = this.editedItem.uid
-
-      const info = { msg: "", color: "" } 
-      this.$store.dispatch('deleteUser', uid)
-      .then(response => {
-        if(response && response.status == 200) {
-          console.log(response.data)
-          info.msg = response.data.detail
-          info.color = "success"
-          // init users, consider using vuex later
-          this.initializeUsers()
-        } else {
-          info.msg = response.data.detail
-          info.color = "error"
-        }
-        this.$store.dispatch("showInfo", info)
-      })
-      .catch(error => {
-        // Also need to refactor
-        info.color = "error"
-        if (error.response) {
-          info.msg = error.response.data.detail
-        } else {
-          info.msg = "Unknown server error"
-        }
-        this.$store.dispatch('showInfo', info)
-      })
-      .finally(() => {
-        this.dialogDelete = false
-        this.editedItem = this.defaultItem
-      })
-    },
 
     close () {
       this.dialog = false
       this.dialogDelete = false
-      this.editedItem = this.defaultItem
       this.edited = false
       this.selectedGroup = []
     },
