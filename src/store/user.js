@@ -1,8 +1,19 @@
+import httpCli from '@/assets/js/http'
+
 const state = {}
 
 const getters = {}
 
-const actions = {}
+const actions = {
+  updatePassword({commit}, password) {
+    console.log("user action")
+    return new Promise((resolve, reject) => {
+      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/users/password`, password)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  }
+}
 
 const mutations = {}
 

@@ -56,10 +56,13 @@
       .then(response => {
         if(response && response.status == 200) {
           this.items = response.data
+        } else {
+          console.log(response)
         }
       })
       .catch(error => {
         console.log(error)
+        this.logout()
       })
     },
     methods: {

@@ -1,23 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+// import httpCli from 'httpCli'
+import httpCli from '@/assets/js/http'
 import user from './user'
 
-// const http = axios.create()
 
-axios.interceptors.request.use(function (config) {
-// http.interceptors.request.use(function (config) {
-  // Do something before request is sent
-  const token = localStorage.getItem('token')
-  if(token) {
-    config.headers.common['Authorization'] = `Bearer ${token}`
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-  }
-  return config;
-}, function (error) {
-  // Do something with request error
-  return Promise.reject(error);
-});
+// const http = httpCli.create()
+
+//httpCli.interceptors.request.use(function (config) {
+//// http.interceptors.request.use(function (config) {
+//  // Do something before request is sent
+//  const token = localStorage.getItem('token')
+//  if(token) {
+//    config.headers.common['Authorization'] = `Bearer ${token}`
+//    // httpCli.defaults.headers.common['Authorization'] = `Bearer ${token}`
+//  }
+//  return config;
+//}, function (error) {
+//  // Do something with request error
+//  return Promise.reject(error);
+//});
 
 Vue.use(Vuex)
 
@@ -71,7 +73,7 @@ const actions = {
       console.log('[login] localStorage')
       console.log(localStorage)
       commit('AUTH_REQUEST')
-      axios.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
+      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
       // http.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
       // http({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
       .then(response => {
@@ -82,7 +84,7 @@ const actions = {
         localStorage.setItem('token', token)
         localStorage.setItem('user', user)
         localStorage.setItem('admin', admin)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        httpCli.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
         // Commit 'AUTH_SUCCESS' mutations
         const authData = {
@@ -96,7 +98,7 @@ const actions = {
       .catch(error => {
         var error_msg = ""
         if(error.response && error.response.status == 401) {
-          error_msg = "Wrong username or password"
+          error_msg = "用户名或密码错误"
         } else {
           error_msg = "Unknown error"
         }
@@ -119,13 +121,13 @@ const actions = {
       localStorage.removeItem('user')
       localStorage.removeItem('admin')
       // delete http.defaults.headers.common['Authorization']
-      delete axios.defaults.headers.common['Authorization']
+      delete httpCli.defaults.headers.common['Authorization']
       resolve()
     })
   },
   getUsers({commit}) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
@@ -133,21 +135,21 @@ const actions = {
   createUser({commit}, data) {
     console.log(data)
     return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
+      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
   },
   deleteUser({commit}, uid) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
   },
   getGroups({commit}) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
       // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
@@ -155,7 +157,7 @@ const actions = {
   },
   getGroupTree({commit}) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
       // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
@@ -163,7 +165,7 @@ const actions = {
   },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
-      axios.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
+      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
       // http.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
@@ -171,7 +173,7 @@ const actions = {
   },
   deleteGroup({commit}, item) {
     return new Promise((resolve, reject) => {
-      axios.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
       // http.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
@@ -179,7 +181,7 @@ const actions = {
   },
   getMenu({commit}) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
       // http.get(`${process.env.VUE_APP_API_URL}/api/v1/auth/menu`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
