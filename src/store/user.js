@@ -12,7 +12,14 @@ const actions = {
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
-  }
+  },
+  getMyInfo({commit}) {
+    return new Promise((resolve, reject) => {
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/users/me`)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  },
 }
 
 const mutations = {}

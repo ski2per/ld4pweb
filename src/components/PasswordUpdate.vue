@@ -98,9 +98,6 @@
           }
           this.$store.dispatch('showInfo', info)
         })
-        .finally(() => {
-          // this.dialog = false
-        })
       },
     },
   } //export default
