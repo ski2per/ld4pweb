@@ -40,7 +40,10 @@
       </v-toolbar>
     </template>
 
-    <!--操作按钮-->
+    <!--操作按钮
+      v-slot:item.action跟的"action"对应headers数组对象中，
+      操作这一列的value
+    -->
     <template v-slot:item.action="{ item }">
       <user-list-action :user="item"
       v-on:delete="handleDeleteEvent($event)"
@@ -81,7 +84,7 @@ export default {
         },
         { text: "姓名", value: "cn"},
         { text: "Email", value: "mail", sortable: false},
-        { text: "操作", value: "action", sortable: false},
+        { text: "操作", value: "action", sortable: false, align: 'center'},
       ],
     }
   }, //data()
