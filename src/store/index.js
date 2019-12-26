@@ -31,24 +31,24 @@ const state = {
 }
 
 const mutations = {
-  auth_request(state){
+  AUTH_REQUEST(state){
     state.status = 'loading'
   },
-  auth_success(state, authData){
+  AUTH_SUCCESS(state, authData){
     state.status = 'success'
     state.token = authData.token
     state.user = authData.user
     state.admin = authData.admin
   },
-  auth_error(state){
+  AUTH_ERROR(state){
     state.status = 'error'
   },
-  logout(state){
+  LOGOUT(state){
     state.status = ''
     state.token = ''
     state.admin = false
   },
-  show_info(state, info){
+  SHOW_INFO(state, info){
     state.info = info.msg
     state.infoColor = info.color 
   }
@@ -70,7 +70,7 @@ const actions = {
       console.log(process.env.VUE_APP_API_URL)
       console.log('[login] localStorage')
       console.log(localStorage)
-      commit('auth_request')
+      commit('AUTH_REQUEST')
       axios.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
       // http.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
       // http({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
@@ -84,13 +84,13 @@ const actions = {
         localStorage.setItem('admin', admin)
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-        // Commit 'auth_success' mutations
+        // Commit 'AUTH_SUCCESS' mutations
         const authData = {
           token: token,
           user: user,
           admin: admin,
         }
-        commit('auth_success', authData)
+        commit('AUTH_SUCCESS', authData)
         resolve(response)
       })
       .catch(error => {
@@ -102,7 +102,7 @@ const actions = {
         }
         this.dispatch('showInfo', {"msg": error_msg, color: 'error'})
 
-        commit('auth_error')
+        commit('AUTH_ERROR')
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         localStorage.removeItem('admin')
@@ -112,7 +112,7 @@ const actions = {
   },
   logout({commit}){
     return new Promise((resolve, reject) => {
-      commit('logout')
+      commit('LOGOUT')
       console.log('[logout] localStorage')
       console.log(localStorage)
       localStorage.removeItem('token')
@@ -186,7 +186,7 @@ const actions = {
     })
   },
   showInfo({commit}, info) {
-    commit('show_info', info)
+    commit('SHOW_INFO', info)
   }
 }
 
