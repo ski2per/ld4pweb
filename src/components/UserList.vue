@@ -97,6 +97,7 @@ export default {
       this.initializeUsers()
     },
     handleCreate() {
+      this.$refs.editDialog.editedItem = {}
       this.$refs.editDialog.dialog = true
     },
     handleEditEvent(item) {
