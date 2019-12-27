@@ -1,11 +1,29 @@
 <template>
-  <v-container justify="start">
+  <!--<v-container justify="start">-->
+  <v-container >
     <v-row>
-      <v-col cols="2">
-        <v-subheader>test</v-subheader>
-      </v-col>
       <v-col cols="4">
-        <v-text-field :value="this.uid" readonly solo></v-text-field>
+      <v-card min-width="400">
+        <v-card-title><h4>{{ cn }}</h4></v-card-title>
+        <v-divider></v-divider>
+        <v-list dense>
+          <v-list-item>
+            <v-list-item-content>用户ID:</v-list-item-content>
+            <v-list-item-content>{{ uid }}</v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>邮箱:</v-list-item-content>
+            <v-list-item-content>{{ mail }}</v-list-item-content>
+          </v-list-item>
+
+          <v-list-item v-if="alias">
+            <v-list-item-content>邮箱别名:</v-list-item-content>
+            <v-list-item-content>{{ alias }}</v-list-item-content>
+          </v-list-item>
+
+        </v-list>
+      </v-card>
       </v-col>
     </v-row>
 
@@ -27,6 +45,7 @@ export default {
       uid: "",
       cn: "",
       mail: "",
+      alias: "",
     }
   },
   components: {
@@ -36,8 +55,12 @@ export default {
     this.$store.dispatch('user/getMyInfo')
     .then(response => {
       if(response && response.status == 200) {
-        console.log(response.data)
-        this.uid = response.data.uid
+        const user = response.data
+        console.log(`alias: ${user.shadowAddress}`)
+        this.uid = user.uid
+        this.cn = user.cn
+        this.mail = user.mail
+        this.alias = user.shadowAddress
       }
     })
     .catch(error => {
