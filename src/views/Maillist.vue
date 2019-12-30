@@ -1,16 +1,16 @@
 <template>
   <v-container justify="start">
-    maillist here
+    <mail-list></mail-list>
   </v-container>
 </template>
 
 <script>
-// import GroupList from '@/components/GroupList.vue'
+import MList from '@/components/maillist/MList.vue'
 
 export default {
-  name: 'Group',
+  name: 'MList',
   components: {
-    // 'group-list': GroupList
+    'mail-list': MList
   }
 }
 </script>

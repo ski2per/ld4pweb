@@ -4,23 +4,7 @@ import Vuex from 'vuex'
 import httpCli from '@/assets/js/http'
 import users from './users'
 import groups from './groups'
-
-
-// const http = httpCli.create()
-
-//httpCli.interceptors.request.use(function (config) {
-//// http.interceptors.request.use(function (config) {
-//  // Do something before request is sent
-//  const token = localStorage.getItem('token')
-//  if(token) {
-//    config.headers.common['Authorization'] = `Bearer ${token}`
-//    // httpCli.defaults.headers.common['Authorization'] = `Bearer ${token}`
-//  }
-//  return config;
-//}, function (error) {
-//  // Do something with request error
-//  return Promise.reject(error);
-//});
+import maillists from './maillists'
 
 Vue.use(Vuex)
 
@@ -140,6 +124,7 @@ export default new Vuex.Store({
   modules: {
     ldapusers: users,
     ldapgroups: groups,
+    ldapmaillists: maillists,
   },
   state,
   mutations,

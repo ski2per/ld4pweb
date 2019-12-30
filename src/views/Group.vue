@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GroupList from '@/components/GroupList.vue'
+import GroupList from '@/components/group/GroupList.vue'
 
 export default {
   name: 'Group',

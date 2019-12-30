@@ -58,6 +58,7 @@
         this.$store.dispatch('ldapusers/loadUsers')
         this.$store.dispatch('ldapgroups/loadGroupTree')
         this.$store.dispatch('ldapgroups/loadGroups')
+        this.$store.dispatch('ldapmaillists/loadMaillists')
       }
       this.$store.dispatch('getMenu')
       .then(response => {

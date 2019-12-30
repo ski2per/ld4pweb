@@ -55,9 +55,9 @@
 </template>
 
 <script>
-import UserListAction from '@/components/UserListAction.vue'
-import UserEditDialog from '@/components/UserEditDialog.vue'
-import UserDeleteDialog from '@/components/UserDeleteDialog.vue'
+import UserListAction from '@/components/user/UserListAction.vue'
+import UserEditDialog from '@/components/user/UserEditDialog.vue'
+import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
 
 export default {
   name: 'UserList',
