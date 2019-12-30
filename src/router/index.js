@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import About from '../views/AboutMe.vue'
 import User from '../views/User.vue'
 import Group from '../views/Group.vue'
+import MailList from '../views/MailList.vue'
 import store from '../store'
 import Login from '@/views/Login'
 
@@ -29,14 +30,15 @@ const routes = [
       requiresAdmin: false,
     }
   },
-  //{
-  //  path: '/user',
-  //  name: 'user',
-  //  component: User,
-  //  meta: {
-  //    requiresAuth: true
-  //  }
-  //},
+  {
+    path: '/maillist',
+    name: 'maillist',
+    component: MailList,
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+   }
+  },
   {
     path: '/group',
     name: 'group',

@@ -21,6 +21,21 @@ const actions = {
       })
     })
   },
+  createUser({commit}, data) {
+    console.log(data)
+    return new Promise((resolve, reject) => {
+      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  },
+  deleteUser({commit}, uid) {
+    return new Promise((resolve, reject) => {
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  },
   updatePassword({commit}, password) {
     console.log("user action")
     return new Promise((resolve, reject) => {

@@ -34,7 +34,7 @@ export default {
       const uid = this.user.uid
 
       const info = { msg: "", color: "" } 
-      this.$store.dispatch('deleteUser', uid)
+      this.$store.dispatch('ldapusers/deleteUser', uid)
       .then(response => {
         if(response && response.status == 200) {
           console.log(response.data)

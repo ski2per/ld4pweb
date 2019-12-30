@@ -124,35 +124,6 @@ const actions = {
       resolve()
     })
   },
-  createUser({commit}, data) {
-    console.log(data)
-    return new Promise((resolve, reject) => {
-      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
-  deleteUser({commit}, uid) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
-  add2Group({commit}, data) {
-    return new Promise((resolve, reject) => {
-      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
-  deleteGroup({commit}, item) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
   getMenu({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/common/menu`)

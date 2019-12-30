@@ -34,6 +34,20 @@ const actions = {
       })
     })
   },
+  add2Group({commit}, data) {
+    return new Promise((resolve, reject) => {
+      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  },
+  deleteGroup({commit}, item) {
+    return new Promise((resolve, reject) => {
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
+    })
+  },
 }
 
 const mutations = {
