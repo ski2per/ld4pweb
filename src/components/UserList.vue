@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="users"
+    :items="this.$store.state.ldapusers.users"
     :search="search"
     sort-by="uid"
     class="elevation-1"
@@ -88,10 +88,6 @@ export default {
       ],
     }
   }, //data()
-  created() {
-    this.initializeUsers()
-    this.initializeGroupTree()
-  },
   methods: {
     handleInitEvent() {
       this.initializeUsers()
@@ -118,31 +114,19 @@ export default {
     },
     initializeUsers() {
       console.log("[initializeUsers()]")
-      this.$store.dispatch('getUsers')
-      .then(response => {
-        this.users = response.data
-      })
-      .catch(error => {
-        console.log(error)
-        if (error.response && error.response.status == 401) {
-          this.$store.dispatch("logout")
-          this.$router.push("/login")
-        }
-      })
+      // this.$store.dispatch()
+      // this.$store.dispatch('getUsers')
+      // .then(response => {
+      //   this.users = response.data
+      // })
+      // .catch(error => {
+      //   console.log(error)
+      //   if (error.response && error.response.status == 401) {
+      //     this.$store.dispatch("logout")
+      //     this.$router.push("/login")
+      //   }
+      // })
     },// initializeUsers()
-    initializeGroupTree() {
-      this.$store.dispatch('getGroupTree')
-      .then(response => {
-        this.$refs.editDialog.groups = response.data
-      })
-      .catch(error => {
-        console.log(error)
-        if (error.response && error.response.status == 401) {
-          this.$store.dispatch("logout")
-          this.$router.push("/login")
-        }
-      })
-    },// initializeGroupTree()
 
     close () {
       this.dialog = false

@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 // import httpCli from 'httpCli'
 import httpCli from '@/assets/js/http'
-import user from './user'
+import users from './users'
+import groups from './groups'
 
 
 // const http = httpCli.create()
@@ -39,7 +40,7 @@ const mutations = {
   AUTH_SUCCESS(state, authData){
     state.status = 'success'
     state.token = authData.token
-    state.user = authData.user
+    state.currentUser = authData.user
     state.admin = authData.admin
   },
   AUTH_ERROR(state){
@@ -59,7 +60,7 @@ const mutations = {
 const getters = {
   isLoggedIn: state => !!state.token,
   isAdmin: state => state.admin,
-  whoAmI: state => state.user,
+  whoAmI: state => state.currentUser,
   authStatus: state => state.status,
   isInfo: state => !!state.info,
   getInfo: state => state.info,
@@ -74,8 +75,6 @@ const actions = {
       console.log(localStorage)
       commit('AUTH_REQUEST')
       httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
-      // http.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
-      // http({url: `${process.env.VUE_APP_API_URL}/api/v1/auth/login`, data: userdata, method: 'POST' })
       .then(response => {
         console.log(response.data)
         const token = response.data.access_token
@@ -125,13 +124,6 @@ const actions = {
       resolve()
     })
   },
-  getUsers({commit}) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
   createUser({commit}, data) {
     console.log(data)
     return new Promise((resolve, reject) => {
@@ -143,22 +135,6 @@ const actions = {
   deleteUser({commit}, uid) {
     return new Promise((resolve, reject) => {
       httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
-  getGroups({commit}) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
-      // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
-  getGroupTree({commit}) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
-      // http.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
@@ -191,7 +167,8 @@ const actions = {
 
 export default new Vuex.Store({
   modules: {
-    user,
+    ldapusers: users,
+    ldapgroups: groups,
   },
   state,
   mutations,

@@ -52,6 +52,13 @@
     },
     mounted() {
       console.log("Menu.vue mounted, get menu content") 
+      console.log(`isAdmin: ${this.$store.getters.isAdmin}`)
+      if (this.$store.getters.isAdmin) {
+        // Load users
+        this.$store.dispatch('ldapusers/loadUsers')
+        this.$store.dispatch('ldapgroups/loadGroupTree')
+        this.$store.dispatch('ldapgroups/loadGroups')
+      }
       this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {

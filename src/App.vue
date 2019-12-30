@@ -19,7 +19,7 @@ export default {
     'nav-menu': Menu,
     'my-info': Info
   },
-  // created () {
+  created () {
   //   this.$axios.interceptors.response.use(undefined, function (err) {
   //     return new Promise(function (resolve, reject) {
   //       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
@@ -28,7 +28,8 @@ export default {
   //       throw err;
   //     });
   //   });
-  // },
+    console.log('[App.vue: created()]')
+  },
   computed: {
     isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
   },

@@ -1,7 +1,7 @@
 <template>
 <v-data-table
   :headers="headers"
-  :items="groups"
+  :items="this.$store.state.ldapgroups.groups"
 >
   <template slot="items" slot-scope="props">
   </template>
@@ -25,15 +25,6 @@ export default {
             { text: "Description", value: "description"},
         ]
     }
-  },
-  mounted: function() {
-    this.$store.dispatch('getGroups')
-    .then(response => {
-      this.groups = response.data
-    })
-    .catch(error => {
-      console.log(error)
-    })
   },
 }
 </script>
