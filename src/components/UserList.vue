@@ -29,9 +29,7 @@
           <v-icon>mdi-account-plus </v-icon>
         </v-btn>
         <!--创建/编辑用户对话框-->
-        <user-edit-dialog ref="editDialog"
-        v-on:init-user="handleInitEvent"
-        ></user-edit-dialog>
+        <user-edit-dialog ref="editDialog"></user-edit-dialog>
 
         <user-delete-dialog ref="deleteDialog"></user-delete-dialog>
 
