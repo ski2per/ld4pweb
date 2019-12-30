@@ -40,8 +40,8 @@ export default {
           console.log(response.data)
           info.msg = response.data.detail
           info.color = "success"
-          // 发送init-user事件给UserList.vue，调用UserList中的初始化用户方法
-          this.$emit('init-user')
+          // Dispatch store/users.js中的加载用户action, 重新加载用户
+          this.$store.dispatch('ldapusers/loadUsers')
         } else {
           info.msg = response.data.detail
           info.color = "error"

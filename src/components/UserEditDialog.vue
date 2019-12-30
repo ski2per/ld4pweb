@@ -43,7 +43,7 @@
             <v-treeview
               v-model="selectedGroup"
               selectedGroup-type="leaf"
-              :items="groups"
+              :items="this.$store.state.ldapgroups.groupTree"
               item-disabled="locked"
               selectable
               return-object
@@ -128,8 +128,8 @@ export default {
             // (Only when adding user successfully)
             this.massiveAddToGroup(this.selectedGroup)
 
-            // init users, consider using vuex later
-            this.$emit('init-user')
+            // Reload users in vuex
+            this.$store.dispatch('ldapusers/loadUsers')
           } else {
             console.log(response)
             info.msg = "Unknown error"

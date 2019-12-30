@@ -28,14 +28,12 @@
         <v-btn small color="green" fab dark @click="handleCreate">
           <v-icon>mdi-account-plus </v-icon>
         </v-btn>
-
+        <!--创建/编辑用户对话框-->
         <user-edit-dialog ref="editDialog"
         v-on:init-user="handleInitEvent"
         ></user-edit-dialog>
 
-        <user-delete-dialog ref="deleteDialog"
-        v-on:init-user="handleInitEvent"
-        ></user-delete-dialog>
+        <user-delete-dialog ref="deleteDialog"></user-delete-dialog>
 
       </v-toolbar>
     </template>
