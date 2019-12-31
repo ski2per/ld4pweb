@@ -11,20 +11,14 @@ export default {
   name: 'UserListMicro',
   data () {
     return {
-      valid: true,  
-      selectedUsers: [],
-      search: '',
-      headers: [
-        //注意' d-none'前面有空格
-        {value: "uid", align: ' d-none'},
-        {value: "cn", align: "left"},
-      ],
+      members: [],
     }
   }, //data()
   created() {
     console.log('[UserListMicro.vue] created')
   },
   methods: {
+    loadMember() {},
     selectItem(selectedList) {
       // 向MLEditDialog发送selected事件，并传递当前选中用户列表
       this.$emit('selected', selectedList)

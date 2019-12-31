@@ -45,6 +45,14 @@ const actions = {
       .catch(error => { reject(error) })
     })
   },
+  loadMaillistMember({commit}, maillist) {
+    console.log('[store/maillists.js: addUser2Maillist()]')
+    return new Promise((resolve, reject) => {
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}/member`)
+      .then(response => { resolve(response) })
+      .catch(error => { reject(error) })
+    })
+  },
 }
 
 const mutations = {
