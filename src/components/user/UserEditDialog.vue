@@ -55,7 +55,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="green darken-1" text @click="close" :disabled="!valid">Cancel</v-btn>
+      <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
       <v-btn color="green darken-1" text @click="validate">OK</v-btn>
     </v-card-actions>
   </v-card>
@@ -79,6 +79,13 @@ export default {
           sn: '',
           givenName: '',
       },
+      defaultItem: {
+          uid: '',
+          cn: '',
+          mail: '',
+          sn: '',
+          givenName: '',
+      },
       rules: {
         required: value => !!value || 'Required.',
       },
@@ -90,8 +97,11 @@ export default {
     },
   },
   methods: {
-    close () {
+    reset() {
       this.dialog = false
+      this.edited = false
+      this.editedItem = this.defaultItem
+      this.selectedGroup = []
     },
     validate () {
       this.valid = false
@@ -147,9 +157,10 @@ export default {
           this.$store.dispatch('showInfo', info)
         })
         .finally(() => {
-          this.dialog = false
+          // this.dialog = false
           // this.editedItem = this.defaultItem
-          this.selectedGroup = []
+          // this.selectedGroup = []
+          this.reset()
         })
       }
 
