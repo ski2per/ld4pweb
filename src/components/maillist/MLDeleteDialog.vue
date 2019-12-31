@@ -35,16 +35,16 @@ export default {
     },
     deleteItem () {
       console.log(`[MLDeleteDialog.vue]: will delete ${this.ml2delete}`)
-      const uid = this.maillist.uid
 
       const info = { msg: "", color: "" }
-      this.$store.dispatch('lu/deleteUser', uid)
+      const maillist_name = this.maillist.mail.split('@')[0]
+      this.$store.dispatch('lm/deleteMaillist', maillist_name)
       .then(response => {
         if(response && response.status == 200) {
           console.log(response.data)
           info.msg = response.data.detail
           info.color = "success"
-          // Dispatch store/users.js中的加载用户action, 重新加载用户
+          // 重新加载邮件列表
           this.$store.dispatch('lm/loadMaillists')
         } else {
           info.msg = response.data.detail

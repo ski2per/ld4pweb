@@ -96,7 +96,7 @@ export default {
       this.$refs.editDialog.edited = true
     },
     handleDeleteEvent(item) {
-      this.$refs.deleteDialog.user= item
+      this.$refs.deleteDialog.maillist= item
       this.$refs.deleteDialog.dialog = true
     },
     close () {

@@ -20,6 +20,15 @@ const actions = {
       })
     })
   },
+  deleteMaillist({commit}, mail) {
+    console.log('[store/maillists.js: deleteMaillist()]')
+
+    return new Promise((resolve, reject) => {
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${mail}`)
+      .then(response => { resolve(response) })
+      .catch(error => { reject(error) })
+    })
+  },
 }
 
 const mutations = {
