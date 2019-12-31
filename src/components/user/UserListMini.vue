@@ -4,7 +4,7 @@
     :headers="headers"
     :items="this.$store.state.lu.users"
     :search="search"
-    sort-by="cn"
+    sort-by="uid"
     item-key="cn"
     dense
     show-select
@@ -48,7 +48,7 @@
 <script>
 
 export default {
-  name: 'UserList',
+  name: 'UserListMini',
   data () {
     return {
       valid: true,  

@@ -27,7 +27,7 @@
           </v-col>
           <!--Only visible in edit mode-->
           <v-col v-if="edited">
-          Current users in maillist
+            <userlist-micro></userlist-micro>
           </v-col>
         </v-row>
         <!--User Addition-->
@@ -39,7 +39,7 @@
           </v-col>
           <v-col>
             <template v-if="!selected.length">
-              No item selected.
+              <h4>从左侧选择要加入邮件列表的用户</h4>
             </template>
             <template v-else>
               <div v-for="item in selected" :key="item.uid">
@@ -63,10 +63,12 @@
 
 <script>
 import UserListMini from '@/components/user/UserListMini.vue'
+import UserListMicro from '@/components/user/UserListMicro.vue'
 
 export default {
   components: {
-    'userlist-mini': UserListMini
+    'userlist-mini': UserListMini,
+    'userlist-micro': UserListMicro
   },
   data () {
     return {
@@ -94,8 +96,6 @@ export default {
   },
   methods: {
     handleSelectedEvent(data) {
-      console.log("bitch")
-      console.log(data)
       this.selected = data
     },
     reset () {
@@ -112,13 +112,14 @@ export default {
           console.log("[edit] TBD")
         } else {
           console.log("form valid, gonna create maillist")
-          // console.log(this.$refs.userMini.selectedUsers)
-          // this.save()
+          // console.log(`will add these users to maillist:${this.editedItem.mail}`)
+          // console.log(this.selected)
+          this.create()
         }
       }
       this.valid = true
     },
-    save () {
+    create () {
       const data = {
         cn: this.editedItem.cn,
         mail: this.editedItem.mail
@@ -133,9 +134,9 @@ export default {
           if(response && response.status == 200) {
             info.msg = response.data.detail
             info.color = "success"
-    //         // Add new user to groups
-    //         // (Only when adding user successfully)
-    //         this.massiveAddToGroup(this.selectedGroup)
+            // Add selected users to maillist
+            // (Only when adding maillist successfully)
+            this.massiveAdd2Maillist(this.selected)
 
             // Reload maillist
             this.$store.dispatch('lm/loadMaillists')
@@ -160,24 +161,24 @@ export default {
         })
       }
     }, //save()
-    // massiveAddToGroup (groupData) {
-    //   console.log(`groupData: ${groupData}`)
-    //   console.log("[massiveAddToGroup()]")
-    //   // Need refactor
-    //   groupData.forEach((item, index) => {
-    //     // Think I will put sleep or something here ;P
-    //     this.$store.dispatch('lg/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
-    //     .then(response => {
-    //       if(response && response.status == 200) {
-    //         console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    //   })
+    massiveAdd2Maillist (users) {
+      console.log(`groupData: ${users}`)
+      console.log("[massiveAdd2Maillist()]")
+      // Need refactor
+      users.forEach((item, index) => {
+        console.log(item.uid)
+        console.log(this.editedItem.mail)
 
-    // }
+        // Think I will put sleep or something here ;P
+        this.$store.dispatch('lm/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
+        .then(response => {
+          if(response && response.status == 200) {
+            console.log(`Add ${item.uid} to ${this.editedItem.mail} success`)
+          }
+        })
+        .catch(error => { console.log(error) })
+      })
+    }//massiveAdd2Maillist()
   }//methods(),
 }
 </script>
