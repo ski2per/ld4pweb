@@ -27,7 +27,7 @@
           </v-col>
           <!--Only visible in edit mode-->
           <v-col v-if="edited">
-            <userlist-micro></userlist-micro>
+            <userlist-micro ref="userMicro"></userlist-micro>
           </v-col>
         </v-row>
         <!--User Addition-->
@@ -97,6 +97,9 @@ export default {
   methods: {
     handleSelectedEvent(data) {
       this.selected = data
+    },
+    tellMicro2Load() {
+      console.log("tell micro 2 load")
     },
     reset () {
       this.dialog = false
