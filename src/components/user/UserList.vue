@@ -55,14 +55,14 @@
 </template>
 
 <script>
-import UserListAction from '@/components/user/UserListAction.vue'
+import UserListActionBtn from '@/components/user/UserListActionBtn.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
 import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
 
 export default {
   name: 'UserList',
   components: {
-    'user-list-action': UserListAction,
+    'user-list-action': UserListActionBtn,
     'user-edit-dialog': UserEditDialog,
     'user-delete-dialog': UserDeleteDialog,
   },
