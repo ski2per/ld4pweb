@@ -20,10 +20,12 @@ const actions = {
       })
     })
   },
-  createMaillist({commit}, mlData) {
+  createMaillist({commit}, data) {
     console.log('[store/maillists.js: createMaillist()]')
     return new Promise((resolve, reject) => {
-
+      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.mail}`, data)
+      .then(response => {resolve(response)})
+      .catch(error => {reject(error)})
     })
   },
   deleteMaillist({commit}, mail) {

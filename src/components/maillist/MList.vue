@@ -84,13 +84,10 @@ export default {
       this.$refs.editDialog.dialog = true
     },
     handleEditEvent(item) {
-      console.log("shit")
-      console.log(item)
       const editedItem = {
         cn: item.cn,
         mail: item.mail,
       }
-      console.log(editedItem)
 
       this.$refs.editDialog.editedItem = editedItem
       this.$refs.editDialog.dialog = true

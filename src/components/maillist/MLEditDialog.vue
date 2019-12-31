@@ -11,7 +11,7 @@
         <v-row>
           <!--User info(left)-->
           <v-col>
-            <v-form ref="MLForm">
+            <v-form ref="maillistForm">
               <v-col>
                 <v-text-field v-model="editedItem.cn" label="邮件列表名(建议中文)"
                 ></v-text-field>
@@ -25,10 +25,28 @@
               </v-col>
             </v-form>
           </v-col>
+          <!--Only visible in edit mode-->
+          <v-col v-if="edited">
+          Current users in maillist
+          </v-col>
         </v-row>
         <!--User Addition-->
         <v-row>
-        select user here
+          <v-col>
+          <userlist-mini ref="userMini"
+            v-on:selected="handleSelectedEvent($event)"
+          ></userlist-mini>
+          </v-col>
+          <v-col>
+            <template v-if="!selected.length">
+              No item selected.
+            </template>
+            <template v-else>
+              <div v-for="item in selected" :key="item.uid">
+                {{ item.cn}}
+              </div>
+            </template>
+          </v-col>
         </v-row>
       </v-container>
     </v-card-text>
@@ -44,14 +62,18 @@
 </template>
 
 <script>
+import UserListMini from '@/components/user/UserListMini.vue'
+
 export default {
+  components: {
+    'userlist-mini': UserListMini
+  },
   data () {
     return {
       dialog: false,
-      valid: true,  
-      users: [],
-      selectedUsers: [],
+      valid: true,
       edited: false,
+      selected: [],
       editedItem: {
           cn: '',
           mail: '',
@@ -71,19 +93,27 @@ export default {
     },
   },
   methods: {
+    handleSelectedEvent(data) {
+      console.log("bitch")
+      console.log(data)
+      this.selected = data
+    },
     reset () {
       this.dialog = false
       this.edited = false
       this.editedItem = this.defaultItem
+      this.selected = []
+      this.$refs.userMini.selectedUsers = []
     },
     validate () {
       this.valid = false
-      if(this.$refs.MLForm.validate()) {
+      if(this.$refs.maillistForm.validate()) {
         if (this.edited) {
           console.log("[edit] TBD")
         } else {
           console.log("form valid, gonna create maillist")
-          this.save()
+          // console.log(this.$refs.userMini.selectedUsers)
+          // this.save()
         }
       }
       this.valid = true
@@ -91,7 +121,7 @@ export default {
     save () {
       const data = {
         cn: this.editedItem.cn,
-        mail: this.editedItem.
+        mail: this.editedItem.mail
       }
       const info = {msg: "", color: ""}
 
