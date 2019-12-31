@@ -69,7 +69,7 @@ export default {
   data () {
     return {
       valid: true,  
-      users: [],
+      // users: [],
       search: '',
       headers: [
         { text: "邮件列表", value: "cn"},

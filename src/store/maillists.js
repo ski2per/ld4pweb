@@ -20,6 +20,12 @@ const actions = {
       })
     })
   },
+  createMaillist({commit}, mlData) {
+    console.log('[store/maillists.js: createMaillist()]')
+    return new Promise((resolve, reject) => {
+
+    })
+  },
   deleteMaillist({commit}, mail) {
     console.log('[store/maillists.js: deleteMaillist()]')
 

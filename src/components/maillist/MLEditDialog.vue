@@ -11,30 +11,22 @@
         <v-row>
           <!--User info(left)-->
           <v-col>
-            <v-form ref="userForm">
+            <v-form ref="MLForm">
               <v-col>
-                <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
-                  :rules="[rules.required]"
+                <v-text-field v-model="editedItem.cn" label="邮件列表名(建议中文)"
                 ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
+                <v-text-field v-model="editedItem.uid" label="邮件列表地址(不用输入@域名)" :disabled="edited"
                   :rules="[rules.required]"
                 ></v-text-field>
-              </v-col>
-              <v-col v-if="edited">
-                <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.sn" label="姓(Surname)"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
               </v-col>
             </v-form>
           </v-col>
+        </v-row>
+        <!--User Addition-->
+        <v-row>
+        select user here
         </v-row>
       </v-container>
     </v-card-text>
@@ -55,15 +47,12 @@ export default {
     return {
       dialog: false,
       valid: true,  
-      groups: [],
-      selectedGroup: [],
+      users: [],
+      selectedUsers: [],
       edited: false,
       editedItem: {
-          uid: '',
           cn: '',
           mail: '',
-          sn: '',
-          givenName: '',
       },
       rules: {
         required: value => !!value || 'Required.',
@@ -72,7 +61,7 @@ export default {
   },
   computed: {
     dialogTitle() {
-      return this.edited ? '编辑' : '创建用户'
+      return this.edited ? '编辑邮件列表' : '创建邮件列表'
     },
   },
   methods: {
@@ -81,83 +70,82 @@ export default {
     },
     validate () {
       this.valid = false
-      if(this.$refs.userForm.validate()) {
+      if(this.$refs.MLForm.validate()) {
         if (this.edited) {
           console.log("[edit] TBD")
         } else {
-          console.log("form valid, gonna create user")
-          this.save()
+          console.log("form valid, gonna create maillist")
+          // this.save()
         }
       }
       this.valid = true
     },
-    save () {
-      const params = new FormData()
+    // save () {
+    //   const params = new FormData()
 
-      const data = {
-        uid: this.editedItem.uid,
-        chinese_name: this.editedItem.cn,
-        surname: this.editedItem.sn,
-        given_name: this.editedItem.givenName,
-      }
-      const info = {msg: "", color: ""}
+    //   const data = {
+    //     uid: this.editedItem.uid,
+    //     chinese_name: this.editedItem.cn,
+    //     surname: this.editedItem.sn,
+    //     given_name: this.editedItem.givenName,
+    //   }
+    //   const info = {msg: "", color: ""}
 
-      if (this.edited) {
-      } else {
-        // Add new user
-        this.$store.dispatch('lu/createUser', data)
-        .then(response => {
-          if(response && response.status == 200) {
-            info.msg = response.data.detail
-            info.color = "success"
-            // Add new user to groups
-            // (Only when adding user successfully)
-            this.massiveAddToGroup(this.selectedGroup)
+    //   if (this.edited) {
+    //   } else {
+    //     // Add new user
+    //     this.$store.dispatch('lu/createUser', data)
+    //     .then(response => {
+    //       if(response && response.status == 200) {
+    //         info.msg = response.data.detail
+    //         info.color = "success"
+    //         // Add new user to groups
+    //         // (Only when adding user successfully)
+    //         this.massiveAddToGroup(this.selectedGroup)
 
-            // Reload users in vuex
-            this.$store.dispatch('lu/loadUsers')
-          } else {
-            console.log(response)
-            info.msg = "Unknown error"
-            info.color = "error"
-          }
-          this.$store.dispatch('showInfo', info)
-        })
-        .catch(error => {
-          info.color = "error"
-          if (error.response) {
-            info.msg = error.response.data.detail
-          } else {
-            info.msg = "Unknown server error"
-          }
-          this.$store.dispatch('showInfo', info)
-        })
-        .finally(() => {
-          this.dialog = false
-          // this.editedItem = this.defaultItem
-          this.selectedGroup = []
-        })
-      }
+    //         // Reload users in vuex
+    //         this.$store.dispatch('lu/loadUsers')
+    //       } else {
+    //         console.log(response)
+    //         info.msg = "Unknown error"
+    //         info.color = "error"
+    //       }
+    //       this.$store.dispatch('showInfo', info)
+    //     })
+    //     .catch(error => {
+    //       info.color = "error"
+    //       if (error.response) {
+    //         info.msg = error.response.data.detail
+    //       } else {
+    //         info.msg = "Unknown server error"
+    //       }
+    //       this.$store.dispatch('showInfo', info)
+    //     })
+    //     .finally(() => {
+    //       this.dialog = false
+    //       // this.editedItem = this.defaultItem
+    //       this.selectedGroup = []
+    //     })
+    //   }
+    // }, //save()
+    // massiveAddToGroup (groupData) {
+    //   console.log(`groupData: ${groupData}`)
+    //   console.log("[massiveAddToGroup()]")
+    //   // Need refactor
+    //   groupData.forEach((item, index) => {
+    //     // Think I will put sleep or something here ;P
+    //     this.$store.dispatch('lg/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
+    //     .then(response => {
+    //       if(response && response.status == 200) {
+    //         console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    //   })
 
-    }, //save()
-    massiveAddToGroup (groupData) {
-      console.log(`groupData: ${groupData}`)
-      console.log("[massiveAddToGroup()]")
-      // Need refactor
-      groupData.forEach((item, index) => {
-        // Think I will put sleep or something here ;P
-        this.$store.dispatch('lg/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
-        .then(response => {
-          if(response && response.status == 200) {
-            console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      })
-
-    }
+    // }
   }//methods(),
 }
 </script>
