@@ -17,8 +17,10 @@
                 ></v-text-field>
               </v-col>
               <v-col>
-                <v-text-field v-model="editedItem.uid" label="邮件列表地址(不用输入@域名)" :disabled="edited"
-                  :rules="[rules.required]"
+                <v-text-field v-model="editedItem.mail" label="邮件列表地址(不用输入@域名)" 
+                  v-if="!edited" :rules="[rules.required]"
+                ></v-text-field>
+                <v-text-field v-model="editedItem.mail" label="邮件列表地址" v-if="edited" :disabled="edited"
                 ></v-text-field>
               </v-col>
             </v-form>
@@ -33,7 +35,7 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="green darken-1" text @click="close" :disabled="!valid">Cancel</v-btn>
+      <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
       <v-btn color="green darken-1" text @click="validate">OK</v-btn>
     </v-card-actions>
   </v-card>
@@ -54,6 +56,10 @@ export default {
           cn: '',
           mail: '',
       },
+      defaultItem: {
+        cn: '',
+        mail: '',
+      },
       rules: {
         required: value => !!value || 'Required.',
       },
@@ -65,8 +71,10 @@ export default {
     },
   },
   methods: {
-    close () {
+    reset () {
       this.dialog = false
+      this.edited = false
+      this.editedItem = this.defaultItem
     },
     validate () {
       this.valid = false
@@ -75,59 +83,53 @@ export default {
           console.log("[edit] TBD")
         } else {
           console.log("form valid, gonna create maillist")
-          // this.save()
+          this.save()
         }
       }
       this.valid = true
     },
-    // save () {
-    //   const params = new FormData()
+    save () {
+      const data = {
+        cn: this.editedItem.cn,
+        mail: this.editedItem.
+      }
+      const info = {msg: "", color: ""}
 
-    //   const data = {
-    //     uid: this.editedItem.uid,
-    //     chinese_name: this.editedItem.cn,
-    //     surname: this.editedItem.sn,
-    //     given_name: this.editedItem.givenName,
-    //   }
-    //   const info = {msg: "", color: ""}
-
-    //   if (this.edited) {
-    //   } else {
-    //     // Add new user
-    //     this.$store.dispatch('lu/createUser', data)
-    //     .then(response => {
-    //       if(response && response.status == 200) {
-    //         info.msg = response.data.detail
-    //         info.color = "success"
+      if (this.edited) {
+      } else {
+        // Add new maillist
+        this.$store.dispatch('lm/createMaillist', data)
+        .then(response => {
+          if(response && response.status == 200) {
+            info.msg = response.data.detail
+            info.color = "success"
     //         // Add new user to groups
     //         // (Only when adding user successfully)
     //         this.massiveAddToGroup(this.selectedGroup)
 
-    //         // Reload users in vuex
-    //         this.$store.dispatch('lu/loadUsers')
-    //       } else {
-    //         console.log(response)
-    //         info.msg = "Unknown error"
-    //         info.color = "error"
-    //       }
-    //       this.$store.dispatch('showInfo', info)
-    //     })
-    //     .catch(error => {
-    //       info.color = "error"
-    //       if (error.response) {
-    //         info.msg = error.response.data.detail
-    //       } else {
-    //         info.msg = "Unknown server error"
-    //       }
-    //       this.$store.dispatch('showInfo', info)
-    //     })
-    //     .finally(() => {
-    //       this.dialog = false
-    //       // this.editedItem = this.defaultItem
-    //       this.selectedGroup = []
-    //     })
-    //   }
-    // }, //save()
+            // Reload maillist
+            this.$store.dispatch('lm/loadMaillists')
+          } else {
+            console.log(response)
+            info.msg = "Unknown error"
+            info.color = "error"
+          }
+          this.$store.dispatch('showInfo', info)
+        })
+        .catch(error => {
+          info.color = "error"
+          if (error.response) {
+            info.msg = error.response.data.detail
+          } else {
+            info.msg = "Unknown server error"
+          }
+          this.$store.dispatch('showInfo', info)
+        })
+        .finally(() => {
+          this.reset()
+        })
+      }
+    }, //save()
     // massiveAddToGroup (groupData) {
     //   console.log(`groupData: ${groupData}`)
     //   console.log("[massiveAddToGroup()]")

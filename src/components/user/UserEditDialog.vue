@@ -116,8 +116,6 @@ export default {
       this.valid = true
     },
     save () {
-      const params = new FormData()
-
       const data = {
         uid: this.editedItem.uid,
         chinese_name: this.editedItem.cn,

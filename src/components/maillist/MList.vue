@@ -84,13 +84,14 @@ export default {
       this.$refs.editDialog.dialog = true
     },
     handleEditEvent(item) {
+      console.log("shit")
+      console.log(item)
       const editedItem = {
-        uid: item.uid,
         cn: item.cn,
         mail: item.mail,
-        sn: item.sn,
-        givenName: item.givenName,
       }
+      console.log(editedItem)
+
       this.$refs.editDialog.editedItem = editedItem
       this.$refs.editDialog.dialog = true
       this.$refs.editDialog.edited = true
@@ -98,12 +99,6 @@ export default {
     handleDeleteEvent(item) {
       this.$refs.deleteDialog.maillist= item
       this.$refs.deleteDialog.dialog = true
-    },
-    close () {
-      this.dialog = false
-      this.dialogDelete = false
-      this.edited = false
-      this.selectedGroup = []
     },
   }, //method()
 }
