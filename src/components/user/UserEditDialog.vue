@@ -157,9 +157,6 @@ export default {
           this.$store.dispatch('showInfo', info)
         })
         .finally(() => {
-          // this.dialog = false
-          // this.editedItem = this.defaultItem
-          // this.selectedGroup = []
           this.reset()
         })
       }
