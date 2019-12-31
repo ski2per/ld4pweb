@@ -22,6 +22,7 @@ export default {
     }
   }, //data()
   created() {
+    console.log('[UserListMicro.vue] created')
   },
   methods: {
     selectItem(selectedList) {
