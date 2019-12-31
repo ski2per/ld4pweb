@@ -18,15 +18,6 @@
     <span>删除</span>
   </v-tooltip>
 
-  <v-tooltip bottom>
-    <template v-slot:activator="{ on }">
-      <v-icon medium class="mr-2" v-on="on" @click="addUser">
-        mdi-account-edit
-      </v-icon>
-    </template>
-    <span>增/删用户</span>
-  </v-tooltip>
-
 </v-container>
 </template>
 
@@ -36,12 +27,9 @@ export default {
     maillist: Object,
   },
   methods: {
-    addUser () {
-      console.log("TBD")
-    },
     editItem() {
-      // 向父级发送edit事件，同时传递user对象
-      // this.$emit('edit', this.user)
+      // 向父级发送edit事件，同时传递maillist对象
+      this.$emit('edit', this.maillist)
     },
     deleteItem() {
       console.log(this.maillist)

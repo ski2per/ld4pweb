@@ -29,7 +29,7 @@
           <v-icon>mdi-email-plus </v-icon>
         </v-btn>
         <!--创建/编辑用户对话框-->
-        <user-edit-dialog ref="editDialog"></user-edit-dialog>
+        <ml-edit-dialog ref="editDialog"></ml-edit-dialog>
 
         <ml-delete-dialog ref="deleteDialog"></ml-delete-dialog>
 
@@ -55,15 +55,15 @@
 </template>
 
 <script>
-import MLAction from '@/components/maillist/MLAction.vue'
-import UserEditDialog from '@/components/user/UserEditDialog.vue'
+import MLActionBtn from '@/components/maillist/MLActionBtn.vue'
+import MLEditDialog from '@/components/maillist/MLEditDialog.vue'
 import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
 
 export default {
   name: 'MList',
   components: {
-    'ml-action': MLAction,
-    'user-edit-dialog': UserEditDialog,
+    'ml-action': MLActionBtn,
+    'ml-edit-dialog': MLEditDialog,
     'ml-delete-dialog': MLDeleteDialog,
   },
   data () {
