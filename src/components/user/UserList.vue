@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.state.ldapusers.users"
+    :items="this.$store.state.lu.users"
     :search="search"
     sort-by="uid"
     class="elevation-1"

@@ -122,9 +122,9 @@ const actions = {
 
 export default new Vuex.Store({
   modules: {
-    ldapusers: users,
-    ldapgroups: groups,
-    ldapmaillists: maillists,
+    lu: users,
+    lg: groups,
+    lm: maillists,
   },
   state,
   mutations,

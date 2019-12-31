@@ -33,7 +33,7 @@
 <script>
 export default {
   props: {
-    user: Object,
+    maillist: Object,
   },
   methods: {
     addUser () {
@@ -44,8 +44,9 @@ export default {
       // this.$emit('edit', this.user)
     },
     deleteItem() {
-      // 向父级发送delete事件，同时传递user对象
-      // this.$emit('delete', this.user)
+      console.log(this.maillist)
+      // 向父级发送delete事件，同时传递maillist对象
+      this.$emit('delete', this.maillist)
     },
   },
 

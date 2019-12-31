@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="290">
     <v-card>
-      <v-card-title class="headline">Delete User ?</v-card-title>
-      <v-card-text start="end">{{ user2delete }}</v-card-text>
+      <v-card-title class="headline">删除邮件组?</v-card-title>
+      <v-card-text start="end">{{ ml2delete }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="green darken-1" text @click="close">Cancel</v-btn>
@@ -17,12 +17,16 @@ export default {
   data () {
     return {
       dialog: false,
-      user: Object,
+      maillist: Object,
     }
   },
   computed: {
-    user2delete () {
-      return this.user.cn
+    ml2delete () {
+      if (this.maillist.cn) {
+        return this.maillist.cn
+      } else {
+        return this.maillist.mail
+      }
     }
   },
   methods: {
@@ -30,10 +34,10 @@ export default {
       this.dialog = false
     },
     deleteItem () {
-      console.log(`[UserDeleteDialog.vue]: will delete ${this.user.displayName}`)
-      const uid = this.user.uid
+      console.log(`[MLDeleteDialog.vue]: will delete ${this.ml2delete}`)
+      const uid = this.maillist.uid
 
-      const info = { msg: "", color: "" } 
+      const info = { msg: "", color: "" }
       this.$store.dispatch('lu/deleteUser', uid)
       .then(response => {
         if(response && response.status == 200) {
@@ -41,7 +45,7 @@ export default {
           info.msg = response.data.detail
           info.color = "success"
           // Dispatch store/users.js中的加载用户action, 重新加载用户
-          this.$store.dispatch('lu/loadUsers')
+          this.$store.dispatch('lm/loadMaillists')
         } else {
           info.msg = response.data.detail
           info.color = "error"

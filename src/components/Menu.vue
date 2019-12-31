@@ -55,10 +55,10 @@
       console.log(`isAdmin: ${this.$store.getters.isAdmin}`)
       if (this.$store.getters.isAdmin) {
         // Load users
-        this.$store.dispatch('ldapusers/loadUsers')
-        this.$store.dispatch('ldapgroups/loadGroupTree')
-        this.$store.dispatch('ldapgroups/loadGroups')
-        this.$store.dispatch('ldapmaillists/loadMaillists')
+        this.$store.dispatch('lu/loadUsers')
+        this.$store.dispatch('lg/loadGroupTree')
+        this.$store.dispatch('lg/loadGroups')
+        this.$store.dispatch('lm/loadMaillists')
       }
       this.$store.dispatch('getMenu')
       .then(response => {

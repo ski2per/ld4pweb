@@ -1,7 +1,7 @@
 <template>
 <v-data-table
   :headers="headers"
-  :items="this.$store.state.ldapgroups.groups"
+  :items="this.$store.state.lg.groups"
 >
   <template slot="items" slot-scope="props">
   </template>

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.state.ldapmaillists.maillists"
+    :items="this.$store.state.lm.maillists"
     :search="search"
     sort-by="uid"
     class="elevation-1"
@@ -31,20 +31,20 @@
         <!--创建/编辑用户对话框-->
         <user-edit-dialog ref="editDialog"></user-edit-dialog>
 
-        <user-delete-dialog ref="deleteDialog"></user-delete-dialog>
+        <ml-delete-dialog ref="deleteDialog"></ml-delete-dialog>
 
       </v-toolbar>
     </template>
 
     <!--操作按钮
-      v-slot:item.action跟的"action"对应headers数组对象中，
-      操作这一列的value
+      v-slot:item.action中的"action"对应headers数组对象中，
+      操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
     -->
     <template v-slot:item.action="{ item }">
-      <maillist-action :user="item"
+      <ml-action :maillist="item"
       v-on:delete="handleDeleteEvent($event)"
       v-on:edit="handleEditEvent($event)"
-      ></maillist-action>
+      ></ml-action>
     </template>
 
     <template v-slot:no-data>
@@ -55,16 +55,16 @@
 </template>
 
 <script>
-import MaillistAction from '@/components/maillist/MaillistAction.vue'
+import MLAction from '@/components/maillist/MLAction.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
-import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
+import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
 
 export default {
   name: 'MList',
   components: {
-    'maillist-action': MaillistAction,
+    'ml-action': MLAction,
     'user-edit-dialog': UserEditDialog,
-    'user-delete-dialog': UserDeleteDialog,
+    'ml-delete-dialog': MLDeleteDialog,
   },
   data () {
     return {
