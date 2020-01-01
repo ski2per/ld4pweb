@@ -87,7 +87,7 @@ export default {
           givenName: '',
       },
       rules: {
-        required: value => !!value || 'Required.',
+        required: value => !!value || '不能为空',
       },
     }
   },

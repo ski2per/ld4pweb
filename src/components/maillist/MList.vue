@@ -84,9 +84,6 @@ export default {
       this.$refs.editDialog.dialog = true
     },
     handleEditEvent(item) {
-      // 调用MLEditDialog.vue中的tellMicro2Load，
-      // 让UserListMicro加载当前邮件列表的member
-      this.$refs.editDialog.tellMicro2Load()
       const editedItem = {
         cn: item.cn,
         mail: item.mail,
