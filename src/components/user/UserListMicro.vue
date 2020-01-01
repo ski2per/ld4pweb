@@ -4,11 +4,30 @@
       <template v-if="!members.length">
         <h4>无</h4>
       </template>
+      <v-list dense>
+      <v-list-item-group color="green">
+        <v-list-item
+          v-for="(item, i) in members"
+          :key="i"
+        >
+        <!--
+          <v-list-item-icon>
+            <v-icon v-text="item.icon"></v-icon>
+          </v-list-item-icon>
+          -->
+          <v-list-item-content>
+            <v-list-item-title v-text="item.cn"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+      </v-list>
+      <!--
       <template v-else>
         <div v-for="item in members" :key="item.cn">
           {{ item.cn}}
         </div>
       </template>
+      -->
   </v-container>
 
 </template>
