@@ -132,44 +132,58 @@ export default {
       this.valid = true
     },
     modify () {
+
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
-      // Detect whether cn value changed
-      if(this.oldCN != this.editedItem.cn) {
-        this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
-        .then(response => {
-          if (response && response.status == 200) {
-            this.notification.msg = response.data.detail
-            this.notification.color = "success"
-            this.$store.dispatch('notify', this.notification)
-            // Reload maillists
-            this.$store.dispatch('lm/loadMaillists')
-          }
-        })
-        .catch(error => {
-          console.log(error)
-          this.notification.msg = "Unknown error"
-          this.notification.color = "error"
-        })
-      }
-      // Update maillist member
-      this.selected.forEach((item, index) => {
-        if (mlMember.indexOf(item.cn) == -1) {
-          this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})
+      // NEED optimize later
+      if((this.oldCN == this.editedItem.cn) && (! this.selected.length)) {
+        this.reset()
+      } else {
+        // Detect whether cn value changed
+        if(this.oldCN != this.editedItem.cn) {
+          this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
           .then(response => {
-            if(response && response.status == 200) {
-              console.log(`Add ${item.uid} to ${maillistName} success`)
+            if (response && response.status == 200) {
+              this.notification.msg = response.data.detail
+              this.notification.color = "success"
+              // Reload maillists
+              this.$store.dispatch('lm/loadMaillists')
             }
           })
-          .catch(error => { console.log(error) })
+          .catch(error => {
+            this.notification.msg = "Unknown error"
+            this.notification.color = "error"
+          })
+          .finally(() => {
+              this.$store.dispatch('notify', this.notification)
+              this.reset()
+          })
         }
-      })//forEach
 
-      console.log("hehe")
-      console.log(this.notification)
-      this.$store.dispatch("notify", this.notification)
-      this.reset()
+        if (this.selected.length) {
+          // Update maillist member
+          this.selected.forEach((item, index) => {
+            if (mlMember.indexOf(item.cn) == -1) {
+              this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})
+              .then(response => {
+                if(response && response.status == 200) {
+                  this.notification.msg = `${maillistName} updated`
+                  this.notification.color = "success"
+                  console.log(`Add ${item.uid} to ${maillistName} success`)
+                }
+              })
+              .catch(error => { console.log(error) })
+              .finally(() => {
+                this.$store.dispatch('notify', this.notification)
+                this.reset()
+              })
+            }
+          })//forEach
+        } else {
+          this.reset()
+        }
+      }
     },
     create () {
       const data = {
