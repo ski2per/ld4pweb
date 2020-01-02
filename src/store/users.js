@@ -8,11 +8,9 @@ const getters = {}
 
 const actions = {
   loadUsers({commit}) {
-    console.log('[store/user.js] action: loadUsers()')
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/users/`)
       .then(response => {
-        console.log('[user.js: loadUsers()]')
         commit('LOAD_USERS', response.data)
         resolve(response)
       })
@@ -22,7 +20,6 @@ const actions = {
     })
   },
   createUser({commit}, data) {
-    console.log(data)
     return new Promise((resolve, reject) => {
       httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/users/${data.uid}`, data)
       .then(response => {resolve(response)})
@@ -37,7 +34,6 @@ const actions = {
     })
   },
   updatePassword({commit}, password) {
-    console.log("user action")
     return new Promise((resolve, reject) => {
       httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/users/password`, password)
       .then(response => {resolve(response)})

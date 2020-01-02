@@ -38,15 +38,11 @@ export default {
     maillist: ""
   },
   created() {
-    console.log('[UserListMicro.vue] created')
     this.maillistName = this.maillist.split('@')[0]
     this.loadMember()
   },
   methods: {
     removeItem(item) {
-      console.log("remove")
-      console.log(item)
-      console.log(this.maillistName)
       this.$store.dispatch('lm/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
       .then(response => {
         if(response && response.status == 200) {

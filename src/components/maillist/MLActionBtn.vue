@@ -32,7 +32,6 @@ export default {
       this.$emit('edit', this.maillist)
     },
     deleteItem() {
-      console.log(this.maillist)
       // 向父级发送delete事件，同时传递maillist对象
       this.$emit('delete', this.maillist)
     },

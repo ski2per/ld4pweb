@@ -30,14 +30,12 @@ export default {
       this.dialog = false
     },
     deleteItem () {
-      console.log(`[UserDeleteDialog.vue]: will delete ${this.user.displayName}`)
       const uid = this.user.uid
 
       const info = { msg: "", color: "" } 
       this.$store.dispatch('lu/deleteUser', uid)
       .then(response => {
         if(response && response.status == 200) {
-          console.log(response.data)
           info.msg = response.data.detail
           info.color = "success"
           // Dispatch store/users.js中的加载用户action, 重新加载用户

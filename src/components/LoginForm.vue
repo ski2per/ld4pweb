@@ -60,7 +60,7 @@
         this.$store.dispatch('login', params)
        .then(() => this.$router.push('/user'))
        .catch(err => {
-         console.log(err)
+        //  console.log(err)
          if(err) {console.log(err.response.data)}
        })
       }

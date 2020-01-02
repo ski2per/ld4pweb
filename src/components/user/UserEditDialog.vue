@@ -109,7 +109,6 @@ export default {
         if (this.edited) {
           console.log("[edit] TBD")
         } else {
-          console.log("form valid, gonna create user")
           this.save()
         }
       }
@@ -139,7 +138,6 @@ export default {
             // Reload users in vuex
             this.$store.dispatch('lu/loadUsers')
           } else {
-            console.log(response)
             info.msg = "Unknown error"
             info.color = "error"
           }
@@ -161,8 +159,7 @@ export default {
 
     }, //save()
     massiveAddToGroup (groupData) {
-      console.log(`groupData: ${groupData}`)
-      console.log("[massiveAddToGroup()]")
+      console.log("[massiveAddToGroup()] heavy operation")
       // Need refactor
       groupData.forEach((item, index) => {
         // Think I will put sleep or something here ;P
@@ -172,9 +169,7 @@ export default {
             console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
           }
         })
-        .catch(error => {
-          console.log(error)
-        })
+        .catch(error => { console.log(error) })
       })
 
     }

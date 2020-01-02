@@ -9,7 +9,6 @@ const getters = {}
 
 const actions = {
   loadGroups({commit}) {
-    console.log('[store/groups.js: loadGroups()]')
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
       .then(response => {
@@ -22,7 +21,6 @@ const actions = {
     })
   },
   loadGroupTree({commit}) {
-    console.log('[store/groups.js: loadGroupTree()]')
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
       .then(response => {

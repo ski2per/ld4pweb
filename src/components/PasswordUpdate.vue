@@ -80,7 +80,6 @@
         this.$store.dispatch('lu/updatePassword', psd)
         .then(response => {
           if(response && response.status == 200) {
-            console.log(response.data)
             info.msg = response.data.detail
             info.color = "success"
             } else {

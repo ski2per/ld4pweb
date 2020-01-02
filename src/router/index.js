@@ -67,11 +67,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('[router]')
-  console.log(to.fullPath)
   // console.log(localStorage)
-  console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
-  console.log(`whoami: ${store.getters.whoAmI}`)
+  // console.log(`isLoggedIn: ${store.getters.isLoggedIn}`)
+  // console.log(`whoami: ${store.getters.whoAmI}`)
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of
   // 'record => record.meta.requriesAuth' function
@@ -80,9 +78,6 @@ router.beforeEach((to, from, next) => {
       next('/login')
     } else {
       // Check page permission
-      // console.log(to)
-      // console.log(`Current route: ${to.fullPath}`)
-      // console.log(`Current route requires admin: ${to.meta.requiresAdmin}`)
       if(to.meta.requiresAdmin) {
         if(!store.getters.isAdmin) {
           next('/aboutme')
@@ -95,7 +90,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // Route no auth required goes here
-    console.log('no auth required')
     next()
   }
 })

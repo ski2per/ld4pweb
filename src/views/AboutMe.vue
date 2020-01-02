@@ -56,16 +56,13 @@ export default {
     .then(response => {
       if(response && response.status == 200) {
         const user = response.data
-        console.log(`alias: ${user.shadowAddress}`)
         this.uid = user.uid
         this.cn = user.cn
         this.mail = user.mail
         this.alias = user.shadowAddress
       }
     })
-    .catch(error => {
-      console.log(error)
-    })
+    .catch(error => { console.log(error) })
   },
 
 }

@@ -8,7 +8,6 @@ const getters = {}
 
 const actions = {
   loadMaillists({commit}) {
-    console.log('[store/maillists.js: loadMaillists()]')
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/`)
       .then(response => {
@@ -21,7 +20,6 @@ const actions = {
     })
   },
   createMaillist({commit}, data) {
-    console.log('[store/maillists.js: createMaillist()]')
     return new Promise((resolve, reject) => {
       httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.mail}`, data)
       .then(response => {resolve(response)})
@@ -29,8 +27,6 @@ const actions = {
     })
   },
   deleteMaillist({commit}, maillist) {
-    console.log('[store/maillists.js: deleteMaillist()]')
-
     return new Promise((resolve, reject) => {
       httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}`)
       .then(response => { resolve(response) })
@@ -38,7 +34,6 @@ const actions = {
     })
   },
   updateMaillist({commit}, data) {
-    console.log('[store/maillists.js: deleteMaillist()]')
     return new Promise((resolve, response) => {
       httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}`, data)
       .then(response => { resolve(response) })
@@ -46,7 +41,6 @@ const actions = {
     })
   },
   addUser2Maillist({commit}, data) {
-    console.log('[store/maillists.js: addUser2Maillist()]')
     return new Promise((resolve, reject) => {
       httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}/${data.uid}`)
       .then(response => { resolve(response) })
@@ -54,7 +48,6 @@ const actions = {
     })
   },
   removeUserFromMaillist({commit}, data) {
-    console.log('[store/maillists.js: removeUserFromMaillist()]')
     return new Promise((resolve, reject) => {
       httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}/${data.uid}`)
       .then(response => { resolve(response) })
@@ -63,7 +56,6 @@ const actions = {
 
   },
   loadMaillistMember({commit}, maillist) {
-    console.log('[store/maillists.js: addUser2Maillist()]')
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}/member`)
       .then(response => { resolve(response) })

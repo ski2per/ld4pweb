@@ -54,13 +54,9 @@ const getters = {
 const actions = {
   login({commit}, userdata){
     return new Promise((resolve, reject) => {
-      console.log(process.env.VUE_APP_API_URL)
-      console.log('[login] localStorage')
-      console.log(localStorage)
       commit('AUTH_REQUEST')
       httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
       .then(response => {
-        console.log(response.data)
         const token = response.data.access_token
         const user = userdata.get('username')
         const admin = response.data.admin
@@ -98,8 +94,6 @@ const actions = {
   logout({commit}){
     return new Promise((resolve, reject) => {
       commit('LOGOUT')
-      console.log('[logout] localStorage')
-      console.log(localStorage)
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('admin')

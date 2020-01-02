@@ -52,10 +52,6 @@
       }
     },
     mounted() {
-      console.log("Menu.vue mounted, get menu content") 
-      // console.log(process.env.VUE_APP_VERSION)
-      // console.log(process.env.VUE_APP_API_URL)
-      console.log(`isAdmin: ${this.$store.getters.isAdmin}`)
       this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {
@@ -68,9 +64,7 @@
             this.$store.dispatch('lg/loadGroups')
             this.$store.dispatch('lm/loadMaillists')
           }
-        } else {
-          console.log(response)
-        }
+        } else { console.log(response) }
       })
       .catch(error => {
         console.log(error)

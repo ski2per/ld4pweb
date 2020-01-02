@@ -34,14 +34,11 @@ export default {
       this.dialog = false
     },
     deleteItem () {
-      console.log(`[MLDeleteDialog.vue]: will delete ${this.ml2delete}`)
-
       const info = { msg: "", color: "" }
       const maillistName = this.maillist.mail.split('@')[0]
       this.$store.dispatch('lm/deleteMaillist', maillistName)
       .then(response => {
         if(response && response.status == 200) {
-          console.log(response.data)
           info.msg = response.data.detail
           info.color = "success"
           // 重新加载邮件列表
