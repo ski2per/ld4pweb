@@ -4,30 +4,22 @@
       <template v-if="!members.length">
         <h4>无</h4>
       </template>
-      <v-list dense>
-      <v-list-item-group color="green">
-        <v-list-item
-          v-for="(item, i) in members"
-          :key="i"
-        >
-        <!--
-          <v-list-item-icon>
-            <v-icon v-text="item.icon"></v-icon>
-          </v-list-item-icon>
-          -->
-          <v-list-item-content>
-            <v-list-item-title v-text="item.cn"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+      <!--Will use CSS later-->
+      <v-list dense style="max-height: 200px" class="overflow-y-auto">
+        <v-list-item-group color="green">
+          <v-list-item
+            v-for="(item, i) in members"
+            :key="i"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="item.cn" inactive></v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+              <v-icon @click="removeItem(item)">mdi-minus-circle-outline</v-icon>
+            </v-list-item-icon>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
-      <!--
-      <template v-else>
-        <div v-for="item in members" :key="item.cn">
-          {{ item.cn}}
-        </div>
-      </template>
-      -->
   </v-container>
 
 </template>
@@ -51,6 +43,21 @@ export default {
     this.loadMember()
   },
   methods: {
+    removeItem(item) {
+      console.log("remove")
+      console.log(item)
+      console.log(this.maillistName)
+      this.$store.dispatch('lm/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
+      .then(response => {
+        if(response && response.status == 200) {
+          this.$store.dispatch('showInfo', {msg: response.data.detail, color: "success"})
+        }
+      })
+      .catch(error => {console.log(error)})
+      .finally(() => {
+        this.loadMember()
+      })
+    },
     loadMember() {
       this.$store.dispatch('lm/loadMaillistMember', this.maillistName)
       .then(response => {
