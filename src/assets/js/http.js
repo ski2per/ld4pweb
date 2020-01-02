@@ -6,15 +6,15 @@ const httpCli = axios.create({
 })
 
 //Logout when getting 401 code
-httpCli.interceptors.response.use(undefined, function (err) {
-  return new Promise(function (resolve, reject) {
-    console.log("Caught by axios response interceptor")
-    if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-      this.$store.dispatch(logout)
-    }
-    throw err;
-  });
-});
+// httpCli.interceptors.response.use(undefined, function (err) {
+//   return new Promise(function (resolve, reject) {
+//     console.log("Caught by axios response interceptor")
+//     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+//       this.$store.dispatch(logout)
+//     }
+//     throw err;
+//   });
+// });
 
 httpCli.interceptors.request.use(function (config) {
 // http.interceptors.request.use(function (config) {

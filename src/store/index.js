@@ -75,6 +75,7 @@ const actions = {
         resolve(response)
       })
       .catch(error => {
+        console.log("wtfffffffffff")
         var error_msg = ""
         if(error.response && error.response.status == 401) {
           error_msg = "用户名或密码错误"
@@ -110,10 +111,10 @@ const actions = {
     })
   },
   notify({commit}, info) {
-    console.log([notify])
+    console.log('[notify]')
     console.log(info)
     commit('NOTIFY', info)
-  }
+  },
 }
 
 export default new Vuex.Store({
