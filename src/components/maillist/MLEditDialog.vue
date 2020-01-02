@@ -130,6 +130,8 @@ export default {
     },
     modify () {
       console.log('MLEditDialog.vue: modify()')
+
+      const info = {msg: "", color: ""}
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
@@ -142,12 +144,17 @@ export default {
         .then(response => {
           console.log(response)
           if (response && response.status == 200) {
-            this.$store.dispatch("showInfo", {msg: response.data.detail, color: "success"})
+            info.msg = response.data.detail
+            info.color = "success"
             // Reload maillists
             this.$store.dispatch('lm/loadMaillists')
           }
         })
-        .catch(error => { console.log(error)} )
+        .catch(error => {
+          console.log(error)
+          info.msg = "Unknown error"
+          info.color = "success"
+        })
       }
 
       this.selected.forEach((item, index) => {
@@ -159,12 +166,10 @@ export default {
             }
           })
           .catch(error => { console.log(error) })
-          .finally(() => {
-            this.reset()
-          })
         }
       })//forEach
       this.reset()
+      this.$store.dispatch("showInfo", info)
     },
     create () {
       const data = {
@@ -174,8 +179,6 @@ export default {
       const info = {msg: "", color: ""}
 
       // Add new maillist
-      console.log(`[create] data:`)
-      console.log(data)
       this.$store.dispatch('lm/createMaillist', data)
       .then(response => {
         if(response && response.status == 200) {
