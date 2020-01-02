@@ -10,7 +10,7 @@
           LDAP Menu
         </v-list-item-title>
         <v-list-item-subtitle>
-          Winter is coming ~
+          {{ version }}
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -48,10 +48,13 @@
     data () {
       return {
         items: [],
+        version: process.env.VUE_APP_VERSION,
       }
     },
     mounted() {
       console.log("Menu.vue mounted, get menu content") 
+      // console.log(process.env.VUE_APP_VERSION)
+      // console.log(process.env.VUE_APP_API_URL)
       console.log(`isAdmin: ${this.$store.getters.isAdmin}`)
       if (this.$store.getters.isAdmin) {
         // Load users
