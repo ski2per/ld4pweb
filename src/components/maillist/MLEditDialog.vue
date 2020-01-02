@@ -78,6 +78,8 @@ export default {
       valid: true,
       edited: false,
       selected: [],
+      //Record old cn，invoke maillist update API when value changing
+      oldCN: "",
       editedItem: {
           cn: '',
           mail: '',
@@ -90,9 +92,6 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
-  },
-  created() {
-    console.log('[MLEditDialog.vue] created()')
   },
   computed: {
     dialogTitle() {
@@ -130,8 +129,27 @@ export default {
       this.valid = true
     },
     modify () {
+      console.log('MLEditDialog.vue: modify()')
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
+
+      // Detect whether cn value changed
+      if(this.oldCN != this.editedItem.cn) {
+        console.log("cn changed")
+        console.log(`oldCN: ${this.oldCN}`)
+        console.log(`cn: ${this.editedItem.cn}`)
+        this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
+        .then(response => {
+          console.log(response)
+          if (response && response.status == 200) {
+            this.$store.dispatch("showInfo", {msg: response.data.detail, color: "success"})
+            // Reload maillists
+            this.$store.dispatch('lm/loadMaillists')
+          }
+        })
+        .catch(error => { console.log(error)} )
+      }
+
       this.selected.forEach((item, index) => {
         if (mlMember.indexOf(item.cn) == -1) {
           this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})
@@ -167,6 +185,7 @@ export default {
 
           // Reload maillist
           this.$store.dispatch('lm/loadMaillists')
+          this.$store.dispatch('showInfo')
         } else {
           console.log(response)
           info.msg = "Unknown error"

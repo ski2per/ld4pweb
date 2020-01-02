@@ -28,11 +28,19 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
-  deleteMaillist({commit}, mail) {
+  deleteMaillist({commit}, maillist) {
     console.log('[store/maillists.js: deleteMaillist()]')
 
     return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${mail}`)
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${mailist}`)
+      .then(response => { resolve(response) })
+      .catch(error => { reject(error) })
+    })
+  },
+  updateMaillist({commit}, data) {
+    console.log('[store/maillists.js: deleteMaillist()]')
+    return new Promise((resolve, response) => {
+      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}`, data)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
