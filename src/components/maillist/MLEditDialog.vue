@@ -174,6 +174,8 @@ export default {
       const info = {msg: "", color: ""}
 
       // Add new maillist
+      console.log(`[create] data:`)
+      console.log(data)
       this.$store.dispatch('lm/createMaillist', data)
       .then(response => {
         if(response && response.status == 200) {
@@ -185,24 +187,25 @@ export default {
 
           // Reload maillist
           this.$store.dispatch('lm/loadMaillists')
-          this.$store.dispatch('showInfo')
         } else {
           console.log(response)
           info.msg = "Unknown error"
           info.color = "error"
         }
-        this.$store.dispatch('showInfo', info)
+        // this.$store.dispatch('showInfo', info)
       })
       .catch(error => {
         info.color = "error"
+        console.log("-----------")
+        console.log(error.response)
         if (error.response) {
           info.msg = error.response.data.detail
         } else {
           info.msg = "Unknown server error"
         }
-        this.$store.dispatch('showInfo', info)
       })
       .finally(() => {
+        this.$store.dispatch('showInfo', info)
         this.reset()
       })
     }, //save()

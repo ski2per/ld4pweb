@@ -10,7 +10,7 @@ const actions = {
   loadMaillists({commit}) {
     console.log('[store/maillists.js: loadMaillists()]')
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists`)
+      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/`)
       .then(response => {
         commit('LOAD_MAILLISTS', response.data)
         resolve(response)
@@ -32,7 +32,7 @@ const actions = {
     console.log('[store/maillists.js: deleteMaillist()]')
 
     return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${mailist}`)
+      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}`)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })

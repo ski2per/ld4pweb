@@ -37,8 +37,8 @@ export default {
       console.log(`[MLDeleteDialog.vue]: will delete ${this.ml2delete}`)
 
       const info = { msg: "", color: "" }
-      const maillist_name = this.maillist.mail.split('@')[0]
-      this.$store.dispatch('lm/deleteMaillist', maillist_name)
+      const maillistName = this.maillist.mail.split('@')[0]
+      this.$store.dispatch('lm/deleteMaillist', maillistName)
       .then(response => {
         if(response && response.status == 200) {
           console.log(response.data)
