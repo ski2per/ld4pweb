@@ -169,7 +169,7 @@ export default {
         }
       })//forEach
       this.reset()
-      this.$store.dispatch("showInfo", info)
+      this.$store.dispatch("notify", info)
     },
     create () {
       const data = {
@@ -195,7 +195,7 @@ export default {
           info.msg = "Unknown error"
           info.color = "error"
         }
-        // this.$store.dispatch('showInfo', info)
+        // this.$store.dispatch('notify', info)
       })
       .catch(error => {
         info.color = "error"
@@ -208,7 +208,7 @@ export default {
         }
       })
       .finally(() => {
-        this.$store.dispatch('showInfo', info)
+        this.$store.dispatch('notify', info)
         this.reset()
       })
     }, //save()

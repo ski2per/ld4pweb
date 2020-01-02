@@ -56,17 +56,18 @@
       // console.log(process.env.VUE_APP_VERSION)
       // console.log(process.env.VUE_APP_API_URL)
       console.log(`isAdmin: ${this.$store.getters.isAdmin}`)
-      if (this.$store.getters.isAdmin) {
-        // Load users
-        this.$store.dispatch('lu/loadUsers')
-        this.$store.dispatch('lg/loadGroupTree')
-        this.$store.dispatch('lg/loadGroups')
-        this.$store.dispatch('lm/loadMaillists')
-      }
       this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {
           this.items = response.data
+
+          if (this.$store.getters.isAdmin) {
+            // Load users
+            this.$store.dispatch('lu/loadUsers')
+            this.$store.dispatch('lg/loadGroupTree')
+            this.$store.dispatch('lg/loadGroups')
+            this.$store.dispatch('lm/loadMaillists')
+          }
         } else {
           console.log(response)
         }

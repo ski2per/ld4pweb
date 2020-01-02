@@ -35,7 +35,7 @@ const mutations = {
     state.token = ''
     state.admin = false
   },
-  SHOW_INFO(state, info){
+  NOTIFY(state, info){
     state.info = info.msg
     state.infoColor = info.color 
   }
@@ -85,7 +85,7 @@ const actions = {
         } else {
           error_msg = "Unknown error"
         }
-        this.dispatch('showInfo', {"msg": error_msg, color: 'error'})
+        this.dispatch('notify', {"msg": error_msg, color: 'error'})
 
         commit('AUTH_ERROR')
         localStorage.removeItem('token')
@@ -115,8 +115,8 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
-  showInfo({commit}, info) {
-    commit('SHOW_INFO', info)
+  notify({commit}, info) {
+    commit('NOTIFY', info)
   }
 }
 

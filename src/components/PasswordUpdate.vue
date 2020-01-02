@@ -87,7 +87,7 @@
               info.msg = response.data.detail
               info.color = "error"
           }
-          this.$store.dispatch("showInfo", info)
+          this.$store.dispatch("notify", info)
         })
         .catch(error => {
           info.color = "error"
@@ -96,7 +96,7 @@
           } else {
             info.msg = "Unknown server error"
           }
-          this.$store.dispatch('showInfo', info)
+          this.$store.dispatch('notify', info)
         })
       },
     },

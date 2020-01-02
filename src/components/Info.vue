@@ -32,7 +32,7 @@
       snackbar: {
         get () { return this.$store.getters.isInfo},
         set (value) {
-          this.$store.dispatch('showInfo', { msg: "", color: "error" })
+          this.$store.dispatch('notify', { msg: "", color: "error" })
         }
       },
       info: function () {
@@ -44,7 +44,7 @@
     },
     methods: {
       dismiss: function() {
-        this.$store.dispatch('showInfo', { msg: "", color: "error" })
+        this.$store.dispatch('notify', { msg: "", color: "error" })
       }
     },
   }

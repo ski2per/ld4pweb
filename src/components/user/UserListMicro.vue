@@ -50,7 +50,7 @@ export default {
       this.$store.dispatch('lm/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
       .then(response => {
         if(response && response.status == 200) {
-          this.$store.dispatch('showInfo', {msg: response.data.detail, color: "success"})
+          this.$store.dispatch('notify', {msg: response.data.detail, color: "success"})
         }
       })
       .catch(error => {console.log(error)})

@@ -46,7 +46,7 @@ export default {
           info.msg = response.data.detail
           info.color = "error"
         }
-        this.$store.dispatch("showInfo", info)
+        this.$store.dispatch("notify", info)
       })
       .catch(error => {
         // Also need to refactor
@@ -56,7 +56,7 @@ export default {
         } else {
           info.msg = "Unknown server error"
         }
-        this.$store.dispatch('showInfo', info)
+        this.$store.dispatch('notify', info)
       })
       .finally(() => {
         this.dialog = false
