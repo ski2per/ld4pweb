@@ -61,9 +61,7 @@ export default {
           this.members = response.data
         }
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch(error => { console.log(error) })
 
     },
     selectItem(selectedList) {

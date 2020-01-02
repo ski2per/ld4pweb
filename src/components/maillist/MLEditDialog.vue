@@ -124,18 +124,14 @@ export default {
       this.valid = false
       if(this.$refs.maillistForm.validate()) {
         if (this.edited) {
-          console.log("[edit] TBD")
           this.modify()
         } else {
-          console.log("form valid, gonna create maillist")
           this.create()
         }
       }
       this.valid = true
     },
     modify () {
-      console.log('MLEditDialog.vue: modify()')
-
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
@@ -143,11 +139,8 @@ export default {
       if(this.oldCN != this.editedItem.cn) {
         this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
         .then(response => {
-          console.log(response)
           if (response && response.status == 200) {
             this.notification.msg = response.data.detail
-            console.log("+++++++")
-            console.log(this.notification.msg)
             this.notification.color = "success"
             this.$store.dispatch('notify', this.notification)
             // Reload maillists
@@ -160,9 +153,7 @@ export default {
           this.notification.color = "error"
         })
       }
-      console.log("##############")
-      console.log(this.notification)
-
+      // Update maillist member
       this.selected.forEach((item, index) => {
         if (mlMember.indexOf(item.cn) == -1) {
           this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})
@@ -200,15 +191,12 @@ export default {
           // Reload maillist
           this.$store.dispatch('lm/loadMaillists')
         } else {
-          console.log(response)
           this.notification.msg = "Unknown error"
           this.notification.color = "error"
         }
       })
       .catch(error => {
         this.notification.color = "error"
-        console.log("-----------")
-        console.log(error.response)
         if (error.response) {
           this.notification.msg = error.response.data.detail
         } else {
@@ -224,15 +212,12 @@ export default {
       console.log("[massiveAdd2Maillist()]")
       // Need refactor
       users.forEach((item, index) => {
-        console.log(item.uid)
-        console.log(this.editedItem.mail)
         const currentML = this.editedItem.cn
 
         // Think I will put sleep or something here ;P
         this.$store.dispatch('lm/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
         .then(response => {
           if(response && response.status == 200) {
-            console.log(response.data.detail)
             console.log(`Add ${item.uid} to ${currentML} success`)
           }
         })
