@@ -5,6 +5,16 @@ const httpCli = axios.create({
   timeout: 2000,
 })
 
+//Logout when getting 401 code
+httpCli.interceptors.response.use(undefined, function (err) {
+  return new Promise(function (resolve, reject) {
+    if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+      this.$store.dispatch(logout)
+    }
+    throw err;
+  });
+});
+
 httpCli.interceptors.request.use(function (config) {
 // http.interceptors.request.use(function (config) {
   // Do something before request is sent
