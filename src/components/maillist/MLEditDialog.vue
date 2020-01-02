@@ -74,6 +74,10 @@ export default {
   },
   data () {
     return {
+      notification: {
+        msg: '',
+        color: '',
+      },
       dialog: false,
       valid: true,
       edited: false,
@@ -114,6 +118,7 @@ export default {
       this.editedItem = this.defaultItem
       this.selected = []
       this.$refs.userMini.selectedUsers = []
+      this.notification= {msg: "", color: ""}
     },
     validate () {
       this.valid = false
@@ -131,31 +136,32 @@ export default {
     modify () {
       console.log('MLEditDialog.vue: modify()')
 
-      const info = {msg: "", color: ""}
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
       // Detect whether cn value changed
       if(this.oldCN != this.editedItem.cn) {
-        console.log("cn changed")
-        console.log(`oldCN: ${this.oldCN}`)
-        console.log(`cn: ${this.editedItem.cn}`)
         this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
         .then(response => {
           console.log(response)
           if (response && response.status == 200) {
-            info.msg = response.data.detail
-            info.color = "success"
+            this.notification.msg = response.data.detail
+            console.log("+++++++")
+            console.log(this.notification.msg)
+            this.notification.color = "success"
+            this.$store.dispatch('notify', this.notification)
             // Reload maillists
             this.$store.dispatch('lm/loadMaillists')
           }
         })
         .catch(error => {
           console.log(error)
-          info.msg = "Unknown error"
-          info.color = "success"
+          this.notification.msg = "Unknown error"
+          this.notification.color = "error"
         })
       }
+      console.log("##############")
+      console.log(this.notification)
 
       this.selected.forEach((item, index) => {
         if (mlMember.indexOf(item.cn) == -1) {
@@ -168,22 +174,25 @@ export default {
           .catch(error => { console.log(error) })
         }
       })//forEach
+
+      console.log("hehe")
+      console.log(this.notification)
+      this.$store.dispatch("notify", this.notification)
       this.reset()
-      this.$store.dispatch("notify", info)
     },
     create () {
       const data = {
         cn: this.editedItem.cn,
         mail: this.editedItem.mail
       }
-      const info = {msg: "", color: ""}
+      // const info = {msg: "", color: ""}
 
       // Add new maillist
       this.$store.dispatch('lm/createMaillist', data)
       .then(response => {
         if(response && response.status == 200) {
-          info.msg = response.data.detail
-          info.color = "success"
+          this.notification.msg = response.data.detail
+          this.notification.color = "success"
           // Add selected users to maillist
           // (Only when adding maillist successfully)
           this.massiveAdd2Maillist(this.selected)
@@ -192,28 +201,26 @@ export default {
           this.$store.dispatch('lm/loadMaillists')
         } else {
           console.log(response)
-          info.msg = "Unknown error"
-          info.color = "error"
+          this.notification.msg = "Unknown error"
+          this.notification.color = "error"
         }
-        // this.$store.dispatch('notify', info)
       })
       .catch(error => {
-        info.color = "error"
+        this.notification.color = "error"
         console.log("-----------")
         console.log(error.response)
         if (error.response) {
-          info.msg = error.response.data.detail
+          this.notification.msg = error.response.data.detail
         } else {
-          info.msg = "Unknown server error"
+          this.notification.msg = "Unknown server error"
         }
       })
       .finally(() => {
-        this.$store.dispatch('notify', info)
+        this.$store.dispatch('notify', this.notification)
         this.reset()
       })
     }, //save()
     massiveAdd2Maillist (users) {
-      console.log(`groupData: ${users}`)
       console.log("[massiveAdd2Maillist()]")
       // Need refactor
       users.forEach((item, index) => {
@@ -225,6 +232,7 @@ export default {
         this.$store.dispatch('lm/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
         .then(response => {
           if(response && response.status == 200) {
+            console.log(response.data.detail)
             console.log(`Add ${item.uid} to ${currentML} success`)
           }
         })

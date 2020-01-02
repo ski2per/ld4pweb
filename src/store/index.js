@@ -110,6 +110,8 @@ const actions = {
     })
   },
   notify({commit}, info) {
+    console.log([notify])
+    console.log(info)
     commit('NOTIFY', info)
   }
 }

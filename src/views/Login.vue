@@ -17,7 +17,7 @@
         <v-col class="green darken-1">
           <v-chip class="my-2" color="white" outlined label >
             <v-icon left>mdi-contact-mail-outline</v-icon>
-            OpenLDAP Management
+            统一账号管理系统
           </v-chip>
           <v-row justify="start" class="pl-2">
             <login-form />

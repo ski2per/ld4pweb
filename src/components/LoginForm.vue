@@ -6,7 +6,7 @@
     <v-text-field
       v-model="username"
       :rules="[rules.required]"
-      label="Username"
+      label="用户名"
       color="white"
     ></v-text-field>
 
@@ -16,7 +16,7 @@
       :rules="[rules.required, rules.min]"
       :type="show ? 'text' : 'password'"
       name="input-password"
-      label="Password"
+      label="密码"
       color="white"
       @click:append="show = !show"
     ></v-text-field>
@@ -35,7 +35,7 @@
         password : "",
         show: false,
         rules: {
-          required: value => !!value || 'Required.',
+          required: value => !!value || '不能为空',
           min: v => v.length >= 1 || 'Min 1 characters',
           emailMatch: () => ('The email and password you entered don\'t match'),
         },

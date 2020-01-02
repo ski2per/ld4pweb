@@ -7,7 +7,7 @@
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="title">
-          LDAP Menu
+          统一账号管理
         </v-list-item-title>
         <v-list-item-subtitle>
           {{ version }}
