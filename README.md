@@ -1,7 +1,7 @@
 # ld4pman-web
 
 ## Environment Variable
-* VUE_APP_API_URL
+* VUE_APP_API_HOST
 
 ## Project setup
 ```

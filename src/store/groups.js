@@ -10,7 +10,7 @@ const getters = {}
 const actions = {
   loadGroups({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
       .then(response => {
         commit('LOAD_GROUPS', response.data)
         resolve(response)
@@ -22,7 +22,7 @@ const actions = {
   },
   loadGroupTree({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/groups/tree`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/tree`)
       .then(response => {
         commit('LOAD_GROUP_TREE', response.data)
         resolve(response)
@@ -34,14 +34,14 @@ const actions = {
   },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
-      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/groups/${data.pgroup}/${data.group}/${data.uid}`)
+      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
   },
   deleteGroup({commit}, item) {
     return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/users/${item.uid}`)
+      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${item.uid}`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })

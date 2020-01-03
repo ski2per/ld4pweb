@@ -9,7 +9,7 @@ const getters = {}
 const actions = {
   loadMaillists({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
       .then(response => {
         commit('LOAD_MAILLISTS', response.data)
         resolve(response)
@@ -21,35 +21,35 @@ const actions = {
   },
   createMaillist({commit}, data) {
     return new Promise((resolve, reject) => {
-      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.mail}`, data)
+      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
   },
   deleteMaillist({commit}, maillist) {
     return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}`)
+      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
   },
   updateMaillist({commit}, data) {
     return new Promise((resolve, response) => {
-      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}`, data)
+      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
   },
   addUser2Maillist({commit}, data) {
     return new Promise((resolve, reject) => {
-      httpCli.put(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}/${data.uid}`)
+      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
   },
   removeUserFromMaillist({commit}, data) {
     return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${data.maillist}/${data.uid}`)
+      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
@@ -57,7 +57,7 @@ const actions = {
   },
   loadMaillistMember({commit}, maillist) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/maillists/${maillist}/member`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })

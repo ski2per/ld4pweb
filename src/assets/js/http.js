@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const httpCli = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
+  baseURL: process.env.VUE_APP_API_HOST,
   timeout: 2000,
 })
 

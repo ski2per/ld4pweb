@@ -55,7 +55,7 @@ const actions = {
   login({commit}, userdata){
     return new Promise((resolve, reject) => {
       commit('AUTH_REQUEST')
-      httpCli.post(`${process.env.VUE_APP_API_URL}/api/v1/auth/login`, userdata)
+      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/auth/login`, userdata)
       .then(response => {
         const token = response.data.access_token
         const user = userdata.get('username')
@@ -104,7 +104,7 @@ const actions = {
   },
   getMenu({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_URL}/api/v1/common/menu`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/menu`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
