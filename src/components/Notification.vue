@@ -1,6 +1,6 @@
 <template>
   <v-snackbar
-    v-model="snackbar"
+    v-model="this.$store.getters.showNoti"
     :bottom="y === 'bottom'"
     :color="color"
     :left="x === 'left'"
@@ -29,12 +29,12 @@
       }
     },
     computed: {
-      snackbar: {
-        get () { return this.$store.getters.isInfo},
-        set (value) {
-          this.$store.dispatch('notify', { msg: "", color: "error" })
-        }
-      },
+      // snackbar: {
+      //   get () { return this.$store.getters.isInfo},
+      //   set (value) {
+      //     this.$store.dispatch('notify', { msg: "", color: "error" })
+      //   }
+      // },
       info: function () {
         return this.$store.getters.getInfo
       },

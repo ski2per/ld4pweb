@@ -83,7 +83,7 @@ export default {
       edited: false,
       selected: [],
       //Record old cn，invoke maillist update API when value changing
-      oldCN: "",
+      lastCN: "",
       editedItem: {
           cn: '',
           mail: '',
@@ -136,28 +136,31 @@ export default {
       const maillistName = this.editedItem.mail.split('@')[0]
 
       // NEED optimize later
-      if((this.oldCN == this.editedItem.cn) && (! this.selected.length)) {
+      if((this.lastCN == this.editedItem.cn) && (! this.selected.length)) {
         this.reset()
       } else {
         // Detect whether cn value changed
-        if(this.oldCN != this.editedItem.cn) {
+        if(this.lastCN != this.editedItem.cn) {
           this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
-          .then(response => {
-            if (response && response.status == 200) {
-              this.notification.msg = response.data.detail
-              this.notification.color = "success"
-              // Reload maillists
-              this.$store.dispatch('lm/loadMaillists')
-            }
-          })
-          .catch(error => {
-            this.notification.msg = "Unknown error"
-            this.notification.color = "error"
-          })
-          .finally(() => {
-              this.$store.dispatch('notify', this.notification)
-              this.reset()
-          })
+          // .then(response => {
+          //   if (response && response.status == 200) {
+          //     this.notification.msg = response.data.detail
+          //     this.notification.color = "success"
+          //     // Reload maillists
+          //     this.$store.dispatch('lm/loadMaillists')
+          //   }
+          // })
+          // .catch(error => {
+          //   this.notification.msg = "Unknown error"
+          //   this.notification.color = "error"
+          // })
+          // .finally(() => {
+          //     this.$store.dispatch('notify', this.notification)
+          //     this.reset()
+          // })
+          this.$store.dispatch('notify', this.notification)
+          this.reset()
+
         }
 
         if (this.selected.length) {

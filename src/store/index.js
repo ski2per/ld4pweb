@@ -13,8 +13,9 @@ const state = {
   token: localStorage.getItem('token') || '',
   currentUser: localStorage.getItem('user') || '',
   admin: localStorage.getItem('admin') || false,
-  info: '',
-  infoColor: '',
+  showNotification: false,
+  notificationText: '',
+  notificationColor: '',
 }
 
 const mutations = {
@@ -27,17 +28,21 @@ const mutations = {
     state.currentUser = authData.user
     state.admin = authData.admin
   },
-  AUTH_ERROR(state){
+  AUTH_ERROR(state) {
     state.status = 'error'
   },
-  LOGOUT(state){
+  LOGOUT(state) {
     state.status = ''
     state.token = ''
     state.admin = false
   },
-  NOTIFY(state, info){
-    state.info = info.msg
-    state.infoColor = info.color 
+  NOTIFY(state, data){
+    // data = {
+    //   msg: "yo, check it out",
+    //   color: "success"
+    // }
+    state.notificationText = data.msg
+    state.notificationColor = data.color 
   }
 }
 
@@ -46,9 +51,9 @@ const getters = {
   isAdmin: state => state.admin,
   whoAmI: state => state.currentUser,
   authStatus: state => state.status,
-  isInfo: state => !!state.info,
-  getInfo: state => state.info,
-  getInfoColor: state => state.infoColor
+  showNoti: state => state.showNotification,
+  getNotiText: state => state.notificationText,
+  getNotiColor: state => state.notificationColor,
 }
 
 const actions = {
@@ -110,6 +115,8 @@ const actions = {
     })
   },
   notify({commit}, info) {
+    console.log('------')
+    console.log(info)
     commit('NOTIFY', info)
   },
 }

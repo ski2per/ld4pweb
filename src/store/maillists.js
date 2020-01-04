@@ -43,11 +43,15 @@ const actions = {
     })
   },
   updateMaillist({commit}, data) {
-    return new Promise((resolve, response) => {
-      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
-      .then(response => { resolve(response) })
-      .catch(error => { reject(error) })
-    })
+    console.log('[maillists.js: updateMaillist]')
+    console.log(data)
+    this.dispatch('notify', {msg: "shush, no invoking backend api", color: "error"}, { root: true })
+    commit('UPDATE_MAILLIST', data)
+    // return new Promise((resolve, response) => {
+    //   httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
+    //   .then(response => { resolve(response) })
+    //   .catch(error => { reject(error) })
+    // })
   },
   addUser2Maillist({commit}, data) {
     return new Promise((resolve, reject) => {
@@ -65,13 +69,10 @@ const actions = {
 
   },
   loadMaillistMember({commit}, maillist) {
-    console.log(maillist)
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
       .then(response => {
-        console.log(response.data)
         commit('SET_MAILLIST_MEMBER', {maillist: maillist, members: response.data})
-
         resolve(response)
       })
       .catch(error => { reject(error) })
@@ -84,8 +85,20 @@ const mutations = {
     state.maillists = maillists 
   },
   SET_MAILLIST_MEMBER(state, data) {
+    // data = {
+    //   maillist: "xxx_group",
+    //   members: [],
+    // }
     // "members"要跟RESTful API匹配
     state.maillists[data.maillist].members = data.members
+  },
+  UPDATE_MAILLIST(state, data) {
+    // data = {
+    //   maillist: "xxx_group",
+    //   cn: "xxx_group cn",
+    // }
+    // only update "cn"
+    state.maillists[data.maillist].cn = data.cn
   },
 }
 
