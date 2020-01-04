@@ -22,6 +22,7 @@ export default {
   },
   computed: {
     ml2delete () {
+      // 如果邮件列表的cn未定义，则返回mail
       if (this.maillist.cn) {
         return this.maillist.cn
       } else {
@@ -37,31 +38,32 @@ export default {
       const info = { msg: "", color: "" }
       const maillistName = this.maillist.mail.split('@')[0]
       this.$store.dispatch('lm/deleteMaillist', maillistName)
-      .then(response => {
-        if(response && response.status == 200) {
-          info.msg = response.data.detail
-          info.color = "success"
-          // 重新加载邮件列表
-          this.$store.dispatch('lm/loadMaillists')
-        } else {
-          info.msg = response.data.detail
-          info.color = "error"
-        }
-        this.$store.dispatch("notify", info)
-      })
-      .catch(error => {
-        // Also need to refactor
-        info.color = "error"
-        if (error.response) {
-          info.msg = error.response.data.detail
-        } else {
-          info.msg = "Unknown server error"
-        }
-        this.$store.dispatch('notify', info)
-      })
-      .finally(() => {
-        this.dialog = false
-      })
+      this.dialog = false
+      // .then(response => {
+      //   if(response && response.status == 200) {
+      //     info.msg = response.data.detail
+      //     info.color = "success"
+      //     // 重新加载邮件列表
+      //     this.$store.dispatch('lm/loadMaillists')
+      //   } else {
+      //     info.msg = response.data.detail
+      //     info.color = "error"
+      //   }
+      //   this.$store.dispatch("notify", info)
+      // })
+      // .catch(error => {
+      //   // Also need to refactor
+      //   info.color = "error"
+      //   if (error.response) {
+      //     info.msg = error.response.data.detail
+      //   } else {
+      //     info.msg = "Unknown server error"
+      //   }
+      //   this.$store.dispatch('notify', info)
+      // })
+      // .finally(() => {
+      //   this.dialog = false
+      // })
     },
   },
 }

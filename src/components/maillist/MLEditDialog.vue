@@ -112,7 +112,7 @@ export default {
       li.forEach((item, index) => {
         newArr[index] = item.cn
       })
-      return 
+      return newArr
     },
     reset () {
       this.dialog = false
@@ -134,6 +134,9 @@ export default {
       this.valid = true
     },
     modify () {
+      console.log("mod")
+      console.log(this.$refs.userMicro.members)
+      console.log( this.filterList(this.$refs.userMicro.members))
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
@@ -144,29 +147,13 @@ export default {
         // Detect whether cn value changed
         if(this.lastCN != this.editedItem.cn) {
           this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
-          // .then(response => {
-          //   if (response && response.status == 200) {
-          //     this.notification.msg = response.data.detail
-          //     this.notification.color = "success"
-          //     // Reload maillists
-          //     this.$store.dispatch('lm/loadMaillists')
-          //   }
-          // })
-          // .catch(error => {
-          //   this.notification.msg = "Unknown error"
-          //   this.notification.color = "error"
-          // })
-          // .finally(() => {
-          //     this.$store.dispatch('notify', this.notification)
-          //     this.reset()
-          // })
-          // this.$store.dispatch('notify', this.notification)
           this.reset()
-
         }
 
         if (this.selected.length) {
           // Update maillist member
+          console.log(this.selectd)
+          console.log(mlMember)
           this.selected.forEach((item, index) => {
             if (mlMember.indexOf(item.cn) == -1) {
               this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})

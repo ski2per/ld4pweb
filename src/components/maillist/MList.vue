@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.getters['lm/maillistArr']"
+    :items="this.$store.getters['lm/maillistArr']()"
     :search="search"
     sort-by="uid"
     class="elevation-1"
@@ -67,6 +67,9 @@ export default {
     'ml-edit-dialog': MLEditDialog,
     'ml-delete-dialog': MLDeleteDialog,
   },
+  created() {
+    console.log(this.$store.getters)
+  },
   data () {
     return {
       valid: true,  
@@ -92,7 +95,7 @@ export default {
       this.$refs.editDialog.editedItem = editedItem
       this.$refs.editDialog.dialog = true
       this.$refs.editDialog.edited = true
-      this.$refs.editDialog.lastCN = item.cn
+      this.$refs.editDialog.oldCN = item.cn
     },
     handleDeleteEvent(item) {
       this.$refs.deleteDialog.maillist= item

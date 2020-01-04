@@ -6,8 +6,7 @@ const state = {
 
 const getters = {
   // return values in "maillists"
-  maillistArr: state => {
-
+  maillistArr: (state) => () => {
     return Object.values(state.maillists)
   },
   maillistMember: (state) => (mlst) => {
@@ -39,11 +38,13 @@ const actions = {
     })
   },
   deleteMaillist({commit}, maillist) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
-      .then(response => { resolve(response) })
-      .catch(error => { reject(error) })
-    })
+    commit("DELETE_MAILLIST", maillist)
+    // return new Promise((resolve, reject) => {
+      // httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
+      // .then(response => {
+      // })
+      // .catch(error => { reject(error) })
+    // })
   },
   updateMaillist({commit}, data) {
     commit('UPDATE_MAILLIST', data)
@@ -101,6 +102,9 @@ const mutations = {
     // only update "cn"
     state.maillists[data.maillist].cn = data.cn
   },
+  DELETE_MAILLIST(state, maillist) {
+    delete state.maillists[maillist]
+  }
 }
 
 export default {
