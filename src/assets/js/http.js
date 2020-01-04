@@ -9,6 +9,7 @@ const httpCli = axios.create({
 httpCli.interceptors.response.use(undefined, function (err) {
   return new Promise(function (resolve, reject) {
     console.log("Caught by axios response interceptor")
+    console.log(err.response)
     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
       this.$store.dispatch(logout)
     }

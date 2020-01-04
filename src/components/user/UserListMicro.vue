@@ -39,7 +39,13 @@ export default {
   },
   created() {
     this.maillistName = this.maillist.split('@')[0]
-    this.loadMember()
+
+    this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
+    console.log(`members: ${this.members}`)
+    if (!this.members.length) {
+      console.log('No maillist member, load member')
+      this.loadMember()
+    }
   },
   methods: {
     removeItem(item) {
@@ -57,12 +63,9 @@ export default {
     loadMember() {
       this.$store.dispatch('lm/loadMaillistMember', this.maillistName)
       .then(response => {
-        if(response && response.status == 200) {
-          this.members = response.data
-        }
+        this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
       })
       .catch(error => { console.log(error) })
-
     },
     selectItem(selectedList) {
       // 向MLEditDialog发送selected事件，并传递当前选中用户列表

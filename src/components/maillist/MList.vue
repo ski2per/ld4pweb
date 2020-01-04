@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.state.lm.maillists"
+    :items="this.$store.getters['lm/maillistArr']"
     :search="search"
     sort-by="uid"
     class="elevation-1"

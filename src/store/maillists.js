@@ -1,10 +1,19 @@
 import httpCli from '@/assets/js/http'
 
 const state = {
-  maillists: [],
+  maillists: Object,
 }
 
-const getters = {}
+const getters = {
+  // return values in "maillists"
+  maillistArr: state => {
+    return Object.values(state.maillists)
+  },
+  maillistMember: (state) => (maillist) => {
+    // "members" 跟RESTful API返回值要匹配
+    return state.maillists[maillist].members
+  },
+}
 
 const actions = {
   loadMaillists({commit}) {
@@ -56,9 +65,15 @@ const actions = {
 
   },
   loadMaillistMember({commit}, maillist) {
+    console.log(maillist)
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
-      .then(response => { resolve(response) })
+      .then(response => {
+        console.log(response.data)
+        commit('SET_MAILLIST_MEMBER', {maillist: maillist, members: response.data})
+
+        resolve(response)
+      })
       .catch(error => { reject(error) })
     })
   },
@@ -67,6 +82,10 @@ const actions = {
 const mutations = {
   LOAD_MAILLISTS(state, maillists){
     state.maillists = maillists 
+  },
+  SET_MAILLIST_MEMBER(state, data) {
+    // "members"要跟RESTful API匹配
+    state.maillists[data.maillist].members = data.members
   },
 }
 

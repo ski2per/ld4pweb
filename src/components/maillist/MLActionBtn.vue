@@ -28,11 +28,11 @@ export default {
   },
   methods: {
     editItem() {
-      // 向父级发送edit事件，同时传递maillist对象
+      // 向父级[MList.vue]发送edit事件，同时传递maillist对象
       this.$emit('edit', this.maillist)
     },
     deleteItem() {
-      // 向父级发送delete事件，同时传递maillist对象
+      // 向父级[MList.vue]发送delete事件，同时传递maillist对象
       this.$emit('delete', this.maillist)
     },
   },
