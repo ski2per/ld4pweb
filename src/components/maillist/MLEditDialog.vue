@@ -132,7 +132,6 @@ export default {
       this.valid = true
     },
     modify () {
-
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 

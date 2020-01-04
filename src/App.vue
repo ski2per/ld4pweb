@@ -11,13 +11,13 @@
 
 <script>
 import Menu from '@/components/Menu.vue'
-import Info from "@/components/Info.vue"
+import Notification from "@/components/Notification.vue"
 
 export default {
   name: 'App',
   components: {
     'nav-menu': Menu,
-    'my-info': Info
+    'my-info': Notification
   },
   computed: {
     isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
