@@ -107,10 +107,12 @@ export default {
       this.selected = data
     },
     filterList(li) {
-      li.forEach((item, index, arr) => {
-        arr[index] = item.cn
+      // Create a new
+      let newArr = []
+      li.forEach((item, index) => {
+        newArr[index] = item.cn
       })
-      return li
+      return 
     },
     reset () {
       this.dialog = false
@@ -158,7 +160,7 @@ export default {
           //     this.$store.dispatch('notify', this.notification)
           //     this.reset()
           // })
-          this.$store.dispatch('notify', this.notification)
+          // this.$store.dispatch('notify', this.notification)
           this.reset()
 
         }

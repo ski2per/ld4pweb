@@ -7,11 +7,14 @@ const state = {
 const getters = {
   // return values in "maillists"
   maillistArr: state => {
+
     return Object.values(state.maillists)
   },
-  maillistMember: (state) => (maillist) => {
+  maillistMember: (state) => (mlst) => {
     // "members" 跟RESTful API返回值要匹配
-    return state.maillists[maillist].members
+    // How to use:
+    // this.$store.getters['lm/maillistMember'](this.maillistName)
+    return state.maillists[mlst].members
   },
 }
 
@@ -43,15 +46,14 @@ const actions = {
     })
   },
   updateMaillist({commit}, data) {
-    console.log('[maillists.js: updateMaillist]')
-    console.log(data)
-    this.dispatch('notify', {msg: "shush, no invoking backend api", color: "error"}, { root: true })
     commit('UPDATE_MAILLIST', data)
-    // return new Promise((resolve, response) => {
-    //   httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
-    //   .then(response => { resolve(response) })
-    //   .catch(error => { reject(error) })
-    // })
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
+    .then(response => { 
+      if (response && response.status == 200) {
+        this.dispatch('notify', {msg: `${data.cn} 已更新 `, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => { console.log(error) })
   },
   addUser2Maillist({commit}, data) {
     return new Promise((resolve, reject) => {
@@ -66,7 +68,6 @@ const actions = {
       .then(response => { resolve(response) })
       .catch(error => { reject(error) })
     })
-
   },
   loadMaillistMember({commit}, maillist) {
     return new Promise((resolve, reject) => {

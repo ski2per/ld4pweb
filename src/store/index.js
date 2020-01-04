@@ -13,7 +13,6 @@ const state = {
   token: localStorage.getItem('token') || '',
   currentUser: localStorage.getItem('user') || '',
   admin: localStorage.getItem('admin') || false,
-  showNotification: false,
   notificationText: '',
   notificationColor: '',
 }
@@ -51,7 +50,7 @@ const getters = {
   isAdmin: state => state.admin,
   whoAmI: state => state.currentUser,
   authStatus: state => state.status,
-  showNoti: state => state.showNotification,
+  showNoti: state => !!state.notificationText,
   getNotiText: state => state.notificationText,
   getNotiColor: state => state.notificationColor,
 }
@@ -102,7 +101,6 @@ const actions = {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       localStorage.removeItem('admin')
-      // delete http.defaults.headers.common['Authorization']
       delete httpCli.defaults.headers.common['Authorization']
       resolve()
     })
@@ -114,10 +112,8 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
-  notify({commit}, info) {
-    console.log('------')
-    console.log(info)
-    commit('NOTIFY', info)
+  notify({commit}, data) {
+    commit('NOTIFY', data)
   },
 }
 

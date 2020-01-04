@@ -40,8 +40,9 @@ export default {
   created() {
     this.maillistName = this.maillist.split('@')[0]
 
-    this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
-    console.log(`members: ${this.members}`)
+    this.members = this.$store.state.lm.maillists[this.maillistName].members
+    // this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
+
     if (!this.members.length) {
       console.log('No maillist member, load member')
       this.loadMember()
@@ -63,7 +64,8 @@ export default {
     loadMember() {
       this.$store.dispatch('lm/loadMaillistMember', this.maillistName)
       .then(response => {
-        this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
+        // console.log(this.$store.state.lm.maillists[this.maillistName])
+        this.members = this.$store.state.lm.maillists[this.maillistName].members
       })
       .catch(error => { console.log(error) })
     },

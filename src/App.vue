@@ -4,7 +4,7 @@
 
   <v-content transition="slide-x-transition">
     <router-view></router-view>
-    <my-info></my-info>
+    <my-noti></my-noti>
   </v-content>
 </v-app>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: 'App',
   components: {
     'nav-menu': Menu,
-    'my-info': Notification
+    'my-noti': Notification
   },
   computed: {
     isLoggedIn : function(){ return this.$store.getters.isLoggedIn },

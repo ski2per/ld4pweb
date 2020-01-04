@@ -1,16 +1,14 @@
 <template>
   <v-snackbar
-    v-model="this.$store.getters.showNoti"
+    v-model="snackbar"
     :bottom="y === 'bottom'"
-    :color="color"
+    :color="myColor"
     :left="x === 'left'"
-    :multi-line="mode === 'multi-line'"
     :right="x === 'right'"
     :timeout="timeout"
     :top="y === 'top'"
-    :vertical="mode === 'vertical'"
   >
-    {{ info }}
+    {{ myText }}
     <v-btn dark text @click="dismiss" >
       <v-icon>mdi-cancel</v-icon>
     </v-btn>
@@ -21,30 +19,28 @@
   export default {
     data () {
       return {
-        // color: 'error',
-        mode: '',
-        timeout: 3600,
+        timeout: 3000,
         x: 'right',
         y: 'top',
       }
     },
     computed: {
-      // snackbar: {
-      //   get () { return this.$store.getters.isInfo},
-      //   set (value) {
-      //     this.$store.dispatch('notify', { msg: "", color: "error" })
-      //   }
-      // },
-      info: function () {
-        return this.$store.getters.getInfo
+      snackbar: {
+        get: function() { return this.$store.getters.showNoti},
+        set: function(value) {
+          this.$store.dispatch('notify', { msg: "", color: "" })
+        }
       },
-      color: function () {
-        return this.$store.getters.getInfoColor
+      myText: function () {
+        return this.$store.getters. getNotiText
+      },
+      myColor: function () {
+        return this.$store.getters.getNotiColor
       }
     },
     methods: {
       dismiss: function() {
-        this.$store.dispatch('notify', { msg: "", color: "error" })
+        this.$store.dispatch('notify', { msg: "", color: "" })
       }
     },
   }
