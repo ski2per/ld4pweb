@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.getters['lm/maillistArr']()"
+    :items="maillistArr"
     :search="search"
     sort-by="uid"
     class="elevation-1"
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MLActionBtn from '@/components/maillist/MLActionBtn.vue'
 import MLEditDialog from '@/components/maillist/MLEditDialog.vue'
 import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
@@ -67,13 +68,9 @@ export default {
     'ml-edit-dialog': MLEditDialog,
     'ml-delete-dialog': MLDeleteDialog,
   },
-  created() {
-    console.log(this.$store.getters)
-  },
   data () {
     return {
       valid: true,  
-      // users: [],
       search: '',
       headers: [
         { text: "邮件列表", value: "cn"},
@@ -82,6 +79,14 @@ export default {
       ],
     }
   }, //data()
+  computed: {
+    ...mapGetters({
+      maillistArr: 'lm/maillistArr',
+    })
+    // maillistArr: function() {
+    //   return this.$store.getters['lm/maillistArr']
+    // }
+  },
   methods: {
     handleCreate() {
       this.$refs.editDialog.editedItem = {}

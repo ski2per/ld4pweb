@@ -134,9 +134,6 @@ export default {
       this.valid = true
     },
     modify () {
-      console.log("mod")
-      console.log(this.$refs.userMicro.members)
-      console.log( this.filterList(this.$refs.userMicro.members))
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
@@ -179,39 +176,41 @@ export default {
     create () {
       const data = {
         cn: this.editedItem.cn,
-        mail: this.editedItem.mail
+        mail: this.editedItem.mail,
+        members: this.selected,
       }
-      // const info = {msg: "", color: ""}
 
       // Add new maillist
       this.$store.dispatch('lm/createMaillist', data)
-      .then(response => {
-        if(response && response.status == 200) {
-          this.notification.msg = response.data.detail
-          this.notification.color = "success"
-          // Add selected users to maillist
-          // (Only when adding maillist successfully)
-          this.massiveAdd2Maillist(this.selected)
+      this.reset()
+      // this.massiveAdd2Maillist(this.selected)
+      // .then(response => {
+      //   if(response && response.status == 200) {
+      //     this.notification.msg = response.data.detail
+      //     this.notification.color = "success"
+      //     // Add selected users to maillist
+      //     // (Only when adding maillist successfully)
+      //     this.massiveAdd2Maillist(this.selected)
 
-          // Reload maillist
-          this.$store.dispatch('lm/loadMaillists')
-        } else {
-          this.notification.msg = "Unknown error"
-          this.notification.color = "error"
-        }
-      })
-      .catch(error => {
-        this.notification.color = "error"
-        if (error.response) {
-          this.notification.msg = error.response.data.detail
-        } else {
-          this.notification.msg = "Unknown server error"
-        }
-      })
-      .finally(() => {
-        this.$store.dispatch('notify', this.notification)
-        this.reset()
-      })
+      //     // Reload maillist
+      //     this.$store.dispatch('lm/loadMaillists')
+      //   } else {
+      //     this.notification.msg = "Unknown error"
+      //     this.notification.color = "error"
+      //   }
+      // })
+      // .catch(error => {
+      //   this.notification.color = "error"
+      //   if (error.response) {
+      //     this.notification.msg = error.response.data.detail
+      //   } else {
+      //     this.notification.msg = "Unknown server error"
+      //   }
+      // })
+      // .finally(() => {
+      //   this.$store.dispatch('notify', this.notification)
+      //   this.reset()
+      // })
     }, //save()
     massiveAdd2Maillist (users) {
       console.log("[massiveAdd2Maillist()]")

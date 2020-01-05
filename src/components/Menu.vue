@@ -58,7 +58,6 @@
           this.items = response.data
 
           if (this.$store.getters.isAdmin) {
-            // Load users
             this.$store.dispatch('lu/loadUsers')
             this.$store.dispatch('lg/loadGroupTree')
             this.$store.dispatch('lg/loadGroups')
