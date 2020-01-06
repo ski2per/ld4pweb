@@ -34,13 +34,13 @@ const actions = {
     })
   },
   createMaillist({commit}, data) {
-    let key = data.mail + '_group'
-    let mlMail = key + '@cetcxl.com'
+    let maillistName = data.mail + '_group'
+    let mlMail = maillistName + '@cetcxl.com'
     let newCN = ""
 
     // Assign maillist key to CN, if CN not exists
     if (!data.cn ) {
-      newCN = key
+      newCN = maillistName
     } else {
       newCN = data.cn
     }
@@ -49,8 +49,10 @@ const actions = {
       ...data,
       mail: mlMail,
       cn: newCN,
+      // members will be created by "addUser2Maillist"
+      members: []
     }
-    commit("CREATE_MAILLIST", {key: key, data: newData})
+    commit("CREATE_MAILLIST", {key: maillistName, data: newData})
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
     .then(response => {
       console.info(`[Invoke API] POST: /maillists/{maillist}, http code: ${response.status}`)
@@ -58,19 +60,11 @@ const actions = {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
         // Then try to add members
         if (data.members.length) {
-          data.members.forEach((item, index) => {
-            // Think I will put sleep or something here ;P
-            httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${key}/${item.uid}`)
-            .then(response => {
-              if(response && response.status == 200) {
-                console.info(`[Invoke API] PUT: /api/maillists/{maillist}/{user}, http code: ${response.status}`)
-                console.log(`Add ${item.uid} to ${newCN} success`)
-              }
-            })
-            // Refactor later
-            // 如果出现错误，可能选择删除maillist
-            .catch(error => { console.log(error) })
-          })
+          let payload = {
+            maillist: maillistName,
+            members: data.members,
+          }
+          this.dispatch('mlst/addUser2Maillist', payload)
         }
       }
     })
@@ -80,8 +74,8 @@ const actions = {
     commit("DELETE_MAILLIST", maillist)
       httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
       .then(response => {
-        console.info(`[Invoke API] DELETE: /maillists/{maillist}, http code: ${response.status}`)
         if (response && response.status == 200) {
+          console.info(`[Invoke API] DELETE: /maillists/{maillist}, http code: ${response.status}`)
           this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
         }
       })
@@ -91,26 +85,43 @@ const actions = {
     commit('UPDATE_MAILLIST', data)
     httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
     .then(response => { 
-      console.info(`[Invoke API] PUT: /maillists/{maillist}, http code: ${response.status}`)
       if (response && response.status == 200) {
-        this.dispatch('notify', {msg: `${data.cn} 已更新 `, color: "success"}, { root: true })
+        console.info(`[Invoke API] PUT: /maillists/{maillist}, http code: ${response.status}`)
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
       }
     })
     .catch(error => { console.log(error) })
   },
-  // addUser2Maillist({commit}, data) {
-  //   return new Promise((resolve, reject) => {
-  //     httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
-  //     .then(response => { resolve(response) })
-  //     .catch(error => { reject(error) })
-  //   })
-  // },
-  removeUserFromMaillist({commit}, data) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
-      .then(response => { resolve(response) })
-      .catch(error => { reject(error) })
+  addUser2Maillist({commit}, payload) {
+    // payload = {
+    //   maillist: "xxx",
+    //   members: [],
+    // }
+    commit('SET_MAILLIST_MEMBER', payload)
+    payload.members.forEach((item, index) => {
+      // Think I will put sleep or something here ;P
+      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${payload.maillist}/${item.uid}`)
+      .then(response => {
+        if(response && response.status == 200) {
+          console.info(`[Invoke API] PUT: /maillists/{maillist}/{user}, http code: ${response.status}`)
+          console.log(`Add ${item.uid} to ${payload.maillist} success`)
+        }
+      })
+      // Refactor later
+      // 如果出现错误，可能选择删除maillist
+      .catch(error => { console.log(error) })
     })
+  },
+  removeUserFromMaillist({commit}, data) {
+    commit('REMOVE_MAILLIST_MEMBER', data)
+    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
+    .then(response => {
+      if (response && response.status == 200) {
+        console.info(`[Invoke API] DELETE: /maillists/{maillist}/{user}, http code: ${response.status}`)
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => { reject(error) })
   },
   loadMaillistMember({commit}, maillist) {
     return new Promise((resolve, reject) => {
@@ -134,7 +145,18 @@ const mutations = {
     //   members: [],
     // }
     // "members"要跟RESTful API匹配
-    state.maillists[payload.maillist].members = payload.members
+
+    // 将新增成员添加到现有成员
+    let arr = state.maillists[payload.maillist].members.concat(payload.members)
+    Vue.set(state.maillists[payload.maillist], "members", arr)
+  },
+  REMOVE_MAILLIST_MEMBER(state, payload) {
+    // payload = {
+    //   maillist: "xxx_group",
+    //   uid: "User ID",
+    // }
+    let current = state.maillists[payload.maillist].members
+    current.splice(current.findIndex(item => item.uid === payload.uid), 1)
   },
   CREATE_MAILLIST(state, payload) {
     // payload = {

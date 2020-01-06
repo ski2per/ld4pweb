@@ -82,7 +82,7 @@ export default {
       valid: true,
       edited: false,
       selected: [],
-      //Record old cn，invoke maillist update API when value changing
+      //Record last cn，invoke maillist update API when value changing
       lastCN: "",
       editedItem: {
         cn: '',
@@ -138,11 +138,7 @@ export default {
       const maillistName = this.editedItem.mail.split('@')[0]
 
       // NEED optimize later
-      console.log(this.lastCN)
-      console.log(this.editedItem.cn)
-      console.log(this.selected)
       if((this.lastCN == this.editedItem.cn) && (! this.selected.length)) {
-        console.log("no change")
         this.reset()
       } else {
         // Detect whether cn value changed
@@ -153,26 +149,14 @@ export default {
 
         if (this.selected.length) {
           // Update maillist member
-          console.log(this.selectd)
-          console.log(mlMember)
+          let members = []
           this.selected.forEach((item, index) => {
+            // 过滤掉重复选择的用户
             if (mlMember.indexOf(item.cn) == -1) {
-              this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, uid: item.uid})
-              .then(response => {
-                if(response && response.status == 200) {
-                  this.notification.msg = `${maillistName} updated`
-                  this.notification.color = "success"
-                  console.log(`Add ${item.uid} to ${maillistName} success`)
-                }
-              })
-              .catch(error => { console.log(error) })
-              .finally(() => {
-                this.$store.dispatch('notify', this.notification)
-                this.reset()
-              })
+              members.push(item)
             }
           })//forEach
-        } else {
+          this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
           this.reset()
         }
       }
