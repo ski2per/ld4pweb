@@ -138,7 +138,11 @@ export default {
       const maillistName = this.editedItem.mail.split('@')[0]
 
       // NEED optimize later
+      console.log(this.lastCN)
+      console.log(this.editedItem.cn)
+      console.log(this.selected)
       if((this.lastCN == this.editedItem.cn) && (! this.selected.length)) {
+        console.log("no change")
         this.reset()
       } else {
         // Detect whether cn value changed

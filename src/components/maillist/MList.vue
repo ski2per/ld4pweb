@@ -100,7 +100,7 @@ export default {
       this.$refs.editDialog.editedItem = editedItem
       this.$refs.editDialog.dialog = true
       this.$refs.editDialog.edited = true
-      this.$refs.editDialog.oldCN = item.cn
+      this.$refs.editDialog.lastCN = item.cn
     },
     handleDeleteEvent(item) {
       this.$refs.deleteDialog.maillist= item
