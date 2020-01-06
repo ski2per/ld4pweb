@@ -8,8 +8,8 @@ const state = {
 
 const getters = {
   // return values in "maillists"
-  // maillistArr: (state) => () => {
-  maillistArr: state => {
+  // allMaillists: (state) => () => {
+  allMaillists: state => {
     return Object.values(state.maillists)
   },
   maillistMember: (state) => (mlst) => {
@@ -34,48 +34,47 @@ const actions = {
     })
   },
   createMaillist({commit}, data) {
-    console.debug(data)
     let key = data.mail + '_group'
     let mlMail = key + '@cetcxl.com'
     let newCN = ""
+
+    // Assign maillist key to CN, if CN not exists
     if (!data.cn ) {
       newCN = key
     } else {
       newCN = data.cn
     }
+
     let newData = {
       ...data,
       mail: mlMail,
       cn: newCN,
     }
-    console.log(newData)
-    console.log(data)
     commit("CREATE_MAILLIST", {key: key, data: newData})
-    // httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
-    // .then(response => {
-    //   console.info(`[Invoke API] POST: /maillists/{maillist}, http code: ${response.status}`)
-    //   if (response && response.status == 200) {
-    //     this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
-    //     // Then try to add members
-    //     if (data.members.length) {
-    //       console.debug('try to add members')
-    //       data.members.forEach((item, index) => {
-    //         console.debug(item)
-    //         // const currentML = this.editedItem.cn
-    
-    //         // Think I will put sleep or something here ;P
-    //         // this.$store.dispatch('mlst/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
-    //         // .then(response => {
-    //         //   if(response && response.status == 200) {
-    //         //     console.log(`Add ${item.uid} to ${currentML} success`)
-    //         //   }
-    //         // })
-    //         // .catch(error => { console.log(error) })
-    //       })
-    //     }
-    //   }
-    // })
-    // .catch(error => {console.error(error)})
+    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
+    .then(response => {
+      console.info(`[Invoke API] POST: /maillists/{maillist}, http code: ${response.status}`)
+      if (response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+        // Then try to add members
+        if (data.members.length) {
+          data.members.forEach((item, index) => {
+            // Think I will put sleep or something here ;P
+            httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${key}/${item.uid}`)
+            .then(response => {
+              if(response && response.status == 200) {
+                console.info(`[Invoke API] PUT: /api/maillists/{maillist}/{user}, http code: ${response.status}`)
+                console.log(`Add ${item.uid} to ${newCN} success`)
+              }
+            })
+            // Refactor later
+            // 如果出现错误，可能选择删除maillist
+            .catch(error => { console.log(error) })
+          })
+        }
+      }
+    })
+    .catch(error => {console.error(error)})
   },
   deleteMaillist({commit}, maillist) {
     commit("DELETE_MAILLIST", maillist)

@@ -44,7 +44,7 @@ export default {
     // this.members = this.$store.getters['mlst/maillistMember'](this.maillistName)
 
     if (!this.members.length) {
-      console.log('No maillist member, load member')
+      console.log('No maillist member in Vuex, load from API')
       this.loadMember()
     }
   },

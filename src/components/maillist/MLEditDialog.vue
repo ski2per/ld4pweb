@@ -85,8 +85,8 @@ export default {
       //Record old cn，invoke maillist update API when value changing
       lastCN: "",
       editedItem: {
-          cn: '',
-          mail: '',
+        cn: '',
+        mail: '',
       },
       defaultItem: {
         cn: '',
@@ -179,55 +179,10 @@ export default {
         mail: this.editedItem.mail,
         members: this.selected,
       }
-
       // Add new maillist
       this.$store.dispatch('mlst/createMaillist', data)
       this.reset()
-      // this.massiveAdd2Maillist(this.selected)
-      // .then(response => {
-      //   if(response && response.status == 200) {
-      //     this.notification.msg = response.data.detail
-      //     this.notification.color = "success"
-      //     // Add selected users to maillist
-      //     // (Only when adding maillist successfully)
-      //     this.massiveAdd2Maillist(this.selected)
-
-      //     // Reload maillist
-      //     this.$store.dispatch('mlst/loadMaillists')
-      //   } else {
-      //     this.notification.msg = "Unknown error"
-      //     this.notification.color = "error"
-      //   }
-      // })
-      // .catch(error => {
-      //   this.notification.color = "error"
-      //   if (error.response) {
-      //     this.notification.msg = error.response.data.detail
-      //   } else {
-      //     this.notification.msg = "Unknown server error"
-      //   }
-      // })
-      // .finally(() => {
-      //   this.$store.dispatch('notify', this.notification)
-      //   this.reset()
-      // })
-    }, //save()
-    massiveAdd2Maillist (users) {
-      console.log("[massiveAdd2Maillist()]")
-      // Need refactor
-      users.forEach((item, index) => {
-        const currentML = this.editedItem.cn
-
-        // Think I will put sleep or something here ;P
-        this.$store.dispatch('mlst/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
-        .then(response => {
-          if(response && response.status == 200) {
-            console.log(`Add ${item.uid} to ${currentML} success`)
-          }
-        })
-        .catch(error => { console.log(error) })
-      })
-    }//massiveAdd2Maillist()
+    }, 
   }//methods(),
 }
 </script>

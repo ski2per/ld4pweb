@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="maillistArr"
+    :items="allMaillists"
     :search="search"
     sort-by="uid"
     class="elevation-1"
@@ -81,10 +81,10 @@ export default {
   }, //data()
   computed: {
     ...mapGetters({
-      maillistArr: 'mlst/maillistArr',
+      allMaillists: 'mlst/allMaillists',
     })
-    // maillistArr: function() {
-    //   return this.$store.getters['mlst/maillistArr']
+    // allMaillists: function() {
+    //   return this.$store.getters['mlst/allMaillists']
     // }
   },
   methods: {
