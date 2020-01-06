@@ -58,10 +58,10 @@
           this.items = response.data
 
           if (this.$store.getters.isAdmin) {
-            this.$store.dispatch('lu/loadUsers')
-            this.$store.dispatch('lg/loadGroupTree')
-            this.$store.dispatch('lg/loadGroups')
-            this.$store.dispatch('lm/loadMaillists')
+            this.$store.dispatch('usr/loadUsers')
+            this.$store.dispatch('grp/loadGroupTree')
+            this.$store.dispatch('grp/loadGroups')
+            this.$store.dispatch('mlst/loadMaillists')
           }
         } else { console.log(response) }
       })

@@ -119,9 +119,9 @@ const actions = {
 
 export default new Vuex.Store({
   modules: {
-    lu: users,
-    lg: groups,
-    lm: maillists,
+    usr: users,
+    grp: groups,
+    mlst: maillists,
   },
   state,
   mutations,

@@ -52,7 +52,7 @@ export default {
     'password-update': PasswordUpdate
   },
   created() {
-    this.$store.dispatch('lu/getMyInfo')
+    this.$store.dispatch('usr/getMyInfo')
     .then(response => {
       if(response && response.status == 200) {
         const user = response.data

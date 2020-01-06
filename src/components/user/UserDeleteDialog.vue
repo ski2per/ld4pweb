@@ -33,13 +33,13 @@ export default {
       const uid = this.user.uid
 
       const info = { msg: "", color: "" } 
-      this.$store.dispatch('lu/deleteUser', uid)
+      this.$store.dispatch('usr/deleteUser', uid)
       .then(response => {
         if(response && response.status == 200) {
           info.msg = response.data.detail
           info.color = "success"
           // Dispatch store/users.js中的加载用户action, 重新加载用户
-          this.$store.dispatch('lu/loadUsers')
+          this.$store.dispatch('usr/loadUsers')
         } else {
           info.msg = response.data.detail
           info.color = "error"

@@ -40,8 +40,8 @@ export default {
   created() {
     this.maillistName = this.maillist.split('@')[0]
 
-    this.members = this.$store.state.lm.maillists[this.maillistName].members
-    // this.members = this.$store.getters['lm/maillistMember'](this.maillistName)
+    this.members = this.$store.state.mlst.maillists[this.maillistName].members
+    // this.members = this.$store.getters['mlst/maillistMember'](this.maillistName)
 
     if (!this.members.length) {
       console.log('No maillist member, load member')
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     removeItem(item) {
-      this.$store.dispatch('lm/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
+      this.$store.dispatch('mlst/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
       .then(response => {
         if(response && response.status == 200) {
           this.$store.dispatch('notify', {msg: response.data.detail, color: "success"})
@@ -62,10 +62,10 @@ export default {
       })
     },
     loadMember() {
-      this.$store.dispatch('lm/loadMaillistMember', this.maillistName)
+      this.$store.dispatch('mlst/loadMaillistMember', this.maillistName)
       .then(response => {
-        // console.log(this.$store.state.lm.maillists[this.maillistName])
-        this.members = this.$store.state.lm.maillists[this.maillistName].members
+        // console.log(this.$store.state.mlst.maillists[this.maillistName])
+        this.members = this.$store.state.mlst.maillists[this.maillistName].members
       })
       .catch(error => { console.log(error) })
     },

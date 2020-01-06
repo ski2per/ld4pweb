@@ -143,7 +143,7 @@ export default {
       } else {
         // Detect whether cn value changed
         if(this.lastCN != this.editedItem.cn) {
-          this.$store.dispatch('lm/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
+          this.$store.dispatch('mlst/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
           this.reset()
         }
 
@@ -153,7 +153,7 @@ export default {
           console.log(mlMember)
           this.selected.forEach((item, index) => {
             if (mlMember.indexOf(item.cn) == -1) {
-              this.$store.dispatch('lm/addUser2Maillist', {maillist: maillistName, uid: item.uid})
+              this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, uid: item.uid})
               .then(response => {
                 if(response && response.status == 200) {
                   this.notification.msg = `${maillistName} updated`
@@ -181,7 +181,7 @@ export default {
       }
 
       // Add new maillist
-      this.$store.dispatch('lm/createMaillist', data)
+      this.$store.dispatch('mlst/createMaillist', data)
       this.reset()
       // this.massiveAdd2Maillist(this.selected)
       // .then(response => {
@@ -193,7 +193,7 @@ export default {
       //     this.massiveAdd2Maillist(this.selected)
 
       //     // Reload maillist
-      //     this.$store.dispatch('lm/loadMaillists')
+      //     this.$store.dispatch('mlst/loadMaillists')
       //   } else {
       //     this.notification.msg = "Unknown error"
       //     this.notification.color = "error"
@@ -219,7 +219,7 @@ export default {
         const currentML = this.editedItem.cn
 
         // Think I will put sleep or something here ;P
-        this.$store.dispatch('lm/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
+        this.$store.dispatch('mlst/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
         .then(response => {
           if(response && response.status == 200) {
             console.log(`Add ${item.uid} to ${currentML} success`)

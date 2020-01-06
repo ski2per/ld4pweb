@@ -15,7 +15,7 @@ const getters = {
   maillistMember: (state) => (mlst) => {
     // "members" 跟RESTful API返回值要匹配
     // How to use:
-    // this.$store.getters['lm/maillistMember'](this.maillistName)
+    // this.$store.getters['mlst/maillistMember'](this.maillistName)
     return state.maillists[mlst].members
   },
 }
@@ -64,7 +64,7 @@ const actions = {
     //         // const currentML = this.editedItem.cn
     
     //         // Think I will put sleep or something here ;P
-    //         // this.$store.dispatch('lm/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
+    //         // this.$store.dispatch('mlst/addUser2Maillist', {maillist: this.editedItem.mail, uid: item.uid})
     //         // .then(response => {
     //         //   if(response && response.status == 200) {
     //         //     console.log(`Add ${item.uid} to ${currentML} success`)

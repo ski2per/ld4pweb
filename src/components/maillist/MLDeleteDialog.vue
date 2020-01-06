@@ -37,14 +37,14 @@ export default {
     deleteItem () {
       const info = { msg: "", color: "" }
       const maillistName = this.maillist.mail.split('@')[0]
-      this.$store.dispatch('lm/deleteMaillist', maillistName)
+      this.$store.dispatch('mlst/deleteMaillist', maillistName)
       this.dialog = false
       // .then(response => {
       //   if(response && response.status == 200) {
       //     info.msg = response.data.detail
       //     info.color = "success"
       //     // 重新加载邮件列表
-      //     this.$store.dispatch('lm/loadMaillists')
+      //     this.$store.dispatch('mlst/loadMaillists')
       //   } else {
       //     info.msg = response.data.detail
       //     info.color = "error"

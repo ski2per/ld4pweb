@@ -77,7 +77,7 @@
           old_password: this.oldPassword,
           new_password: this.newPassword
         }
-        this.$store.dispatch('lu/updatePassword', psd)
+        this.$store.dispatch('usr/updatePassword', psd)
         .then(response => {
           if(response && response.status == 200) {
             info.msg = response.data.detail

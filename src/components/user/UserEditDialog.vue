@@ -43,7 +43,7 @@
             <v-treeview
               v-model="selectedGroup"
               selectedGroup-type="leaf"
-              :items="this.$store.state.lg.groupTree"
+              :items="this.$store.state.grp.groupTree"
               item-disabled="locked"
               selectable
               return-object
@@ -126,7 +126,7 @@ export default {
       if (this.edited) {
       } else {
         // Add new user
-        this.$store.dispatch('lu/createUser', data)
+        this.$store.dispatch('usr/createUser', data)
         .then(response => {
           if(response && response.status == 200) {
             info.msg = response.data.detail
@@ -136,7 +136,7 @@ export default {
             this.massiveAddToGroup(this.selectedGroup)
 
             // Reload users in vuex
-            this.$store.dispatch('lu/loadUsers')
+            this.$store.dispatch('usr/loadUsers')
           } else {
             info.msg = "Unknown error"
             info.color = "error"
@@ -163,7 +163,7 @@ export default {
       // Need refactor
       groupData.forEach((item, index) => {
         // Think I will put sleep or something here ;P
-        this.$store.dispatch('lg/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
+        this.$store.dispatch('grp/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
         .then(response => {
           if(response && response.status == 200) {
             console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)

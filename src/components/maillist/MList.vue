@@ -81,10 +81,10 @@ export default {
   }, //data()
   computed: {
     ...mapGetters({
-      maillistArr: 'lm/maillistArr',
+      maillistArr: 'mlst/maillistArr',
     })
     // maillistArr: function() {
-    //   return this.$store.getters['lm/maillistArr']
+    //   return this.$store.getters['mlst/maillistArr']
     // }
   },
   methods: {
