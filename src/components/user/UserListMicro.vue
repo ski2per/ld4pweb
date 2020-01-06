@@ -1,8 +1,11 @@
 <template>
   <v-container>
-    <h3>当前邮件组用户</h3>
+    <h3>当前邮件组用户({{members.length}})</h3>
       <template v-if="!members.length">
-        <h4>无</h4>
+        <v-progress-circular v-if="loading"
+          indeterminate
+          color="green"
+        ></v-progress-circular>
       </template>
       <!--Will use CSS later-->
       <v-list dense style="max-height: 200px" class="overflow-y-auto">
@@ -30,8 +33,8 @@ export default {
   name: 'UserListMicro',
   data () {
     return {
-      // members: [],
-      maillistName: ""
+      maillistName: "",
+      loading: false
     }
   }, //data()
   props: {
@@ -47,7 +50,11 @@ export default {
 
     if (!this.members.length) {
       console.log('No maillist member in Vuex, load from API')
+      this.loading = true
       this.$store.dispatch('mlst/loadMaillistMember', this.maillistName)
+      .then(response => {
+        this.loading = false
+      })
     }
   },
   methods: {
