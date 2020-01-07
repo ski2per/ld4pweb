@@ -10,6 +10,8 @@
 * VUE_APP_API_PATH: RESTful API path(api_v1)
 
 ## Project setup
+**Tested npm version: 6.12.0**
+
 ```
 npm install
 ```
