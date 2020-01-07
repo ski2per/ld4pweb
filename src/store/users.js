@@ -2,6 +2,7 @@ import httpCli from '@/assets/js/http'
 
 const state = {
   users: [],
+  me: Object,
 }
 
 const getters = {}
@@ -11,12 +12,25 @@ const actions = {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/`)
       .then(response => {
-        commit('LOAD_USERS', response.data)
+        commit('SET_USERS', response.data)
         resolve(response)
       })
       .catch(error => {
         reject(error)
       })
+    })
+  },
+  loadMyInfo({commit}) {
+    return new Promise((resolve, reject) => {
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/me`)
+      .then(response => {
+        if(response && response.status == 200) {
+          console.info(`[Invoke API] GET: /users/me, http code: ${response.status}`)
+          commit('SET_ME', response.data)
+        }
+        // resolve(response)
+      })
+      .catch(error => {reject(error)})
     })
   },
   createUser({commit}, data) {
@@ -40,18 +54,14 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
-  getMyInfo({commit}) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/me`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
-    })
-  },
 }
 
 const mutations = {
-  LOAD_USERS(state, users){
+  SET_USERS(state, users){
     state.users = users
+  },
+  SET_ME(state, me) {
+    state.me = me
   },
 }
 

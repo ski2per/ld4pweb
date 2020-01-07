@@ -62,6 +62,7 @@
             this.$store.dispatch('grp/loadGroupTree')
             this.$store.dispatch('grp/loadGroups')
             this.$store.dispatch('mlst/loadMaillists')
+            this.$store.dispatch('usr/loadMyInfo')
           }
         } else { console.log(response) }
       })
