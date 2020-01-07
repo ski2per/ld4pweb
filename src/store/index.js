@@ -102,6 +102,9 @@ const actions = {
       localStorage.removeItem('user')
       localStorage.removeItem('admin')
       delete httpCli.defaults.headers.common['Authorization']
+      this.dispatch('usr/resetState')
+      this.dispatch('grp/resetState')
+      this.dispatch('mlst/resetState')
       resolve()
     })
   },

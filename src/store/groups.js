@@ -1,13 +1,20 @@
 import httpCli from '@/assets/js/http'
 
-const state = {
-  groups: [],
-  groupTree: [],
+const getDefaultState = () => {
+  return {
+    groups: [],
+    groupTree: [],
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {}
 
 const actions = {
+  resetState({commit}) {
+    commit('RESET_STATE')
+  },
   loadGroups({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
@@ -49,6 +56,9 @@ const actions = {
 }
 
 const mutations = {
+  RESET_STATE (state) {
+    Object.assign(state, getDefaultState())
+  },
   LOAD_GROUP_TREE(state, tree){
     state.groupTree = tree
   },

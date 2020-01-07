@@ -51,18 +51,19 @@
         version: process.env.VUE_APP_VERSION,
       }
     },
-    mounted() {
+    created() {
+    // mounted() {
       this.$store.dispatch('getMenu')
       .then(response => {
         if(response && response.status == 200) {
           this.items = response.data
+          this.$store.dispatch('usr/loadMyInfo')
 
           if (this.$store.getters.isAdmin) {
             this.$store.dispatch('usr/loadUsers')
             this.$store.dispatch('grp/loadGroupTree')
             this.$store.dispatch('grp/loadGroups')
             this.$store.dispatch('mlst/loadMaillists')
-            this.$store.dispatch('usr/loadMyInfo')
           }
         } else { console.log(response) }
       })

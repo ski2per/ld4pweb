@@ -1,13 +1,21 @@
 import httpCli from '@/assets/js/http'
+import { stat } from 'fs'
 
-const state = {
-  users: [],
-  me: Object,
+const getDefaultState = () => {
+  return {
+    users: [],
+    me: Object,
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {}
 
 const actions = {
+  resetState({commit}) {
+    commit('RESET_STATE')
+  },
   loadUsers({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/`)
@@ -57,6 +65,9 @@ const actions = {
 }
 
 const mutations = {
+  RESET_STATE (state) {
+    Object.assign(state, getDefaultState())
+  },
   SET_USERS(state, users){
     state.users = users
   },

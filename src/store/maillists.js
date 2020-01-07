@@ -2,9 +2,13 @@ import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 import { stat } from 'fs'
 
-const state = {
-  maillists: Object,
+const getDefaultState = () => {
+  return {
+    maillists: Object,
+  }
 }
+
+const state = getDefaultState()
 
 const getters = {
   // return values in "maillists"
@@ -21,6 +25,9 @@ const getters = {
 }
 
 const actions = {
+  resetState({commit}) {
+    commit('RESET_STATE')
+  },
   loadMaillists({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
@@ -136,6 +143,9 @@ const actions = {
 }
 
 const mutations = {
+  RESET_STATE (state) {
+    Object.assign(state, getDefaultState())
+  },
   LOAD_MAILLISTS(state, maillists){
     state.maillists = maillists 
   },
