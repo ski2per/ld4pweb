@@ -1,5 +1,10 @@
 # ld4pman-web
 
+## Backend RESTful API Version
+```
+3.3.2
+```
+
 ## Environment Variable
 * VUE_APP_API_HOST: RESTful API host(http://IP:Port)
 * VUE_APP_API_PATH: RESTful API path(api_v1)
