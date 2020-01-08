@@ -10,7 +10,11 @@ const getDefaultState = () => {
 
 const state = getDefaultState()
 
-const getters = {}
+const getters = {
+  allUsers: state => {
+    return state.users
+  }
+}
 
 const actions = {
   resetState({commit}) {
@@ -42,11 +46,14 @@ const actions = {
     })
   },
   createUser({commit}, data) {
-    return new Promise((resolve, reject) => {
-      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
+    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
+    .then(response => {
+      console.info(`[Invoke API] POST: /users/{user}, http code: ${response.status}`)
+      if (response && response.status == 200) {
+        commit('CREATE_USER', response.data)
+      }
     })
+    .catch(error => { console.log(error) })
   },
   deleteUser({commit}, uid) {
     return new Promise((resolve, reject) => {
@@ -74,6 +81,10 @@ const mutations = {
   SET_ME(state, me) {
     state.me = me
   },
+  CREATE_USER(state, user) {
+    // state.users.$set(0, user)
+    state.users.push(user)
+  }
 }
 
 export default {

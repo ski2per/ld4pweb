@@ -5,12 +5,14 @@
     :search="search"
     sort-by="uid"
     class="elevation-1"
+    :loading="loading"
+    loading-text="Loading..."
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--
-        <v-toolbar-title>LDAP Users</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical ></v-divider>
+          <v-toolbar-title>LDAP Users</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical ></v-divider>
         -->
 
         <v-spacer></v-spacer>
@@ -31,7 +33,6 @@
         </v-btn>
         <!--创建/编辑用户对话框-->
         <user-edit-dialog ref="editDialog"></user-edit-dialog>
-
         <user-delete-dialog ref="deleteDialog"></user-delete-dialog>
 
       </v-toolbar>
@@ -51,6 +52,11 @@
     <template v-slot:no-data>
       No data : P
     </template>
+    <!--
+    <template v-slot:loading>
+      Loading...
+    </template>
+    -->
 
   </v-data-table>
 </template>
@@ -70,7 +76,7 @@ export default {
   data () {
     return {
       valid: true,  
-      users: [],
+      loading: false,
       search: '',
       headers: [
         {
@@ -85,6 +91,16 @@ export default {
       ],
     }
   }, //data()
+  created() {
+    // console.log(this.users.length)
+    if(!this.$store.state.usr.users.length) {
+      this.loading = true
+      this.$store.dispatch('usr/loadUsers')
+      .then(response => {
+        this.loading = false
+      })
+    }
+  },
   methods: {
     handleCreate() {
       this.$refs.editDialog.editedItem = {}

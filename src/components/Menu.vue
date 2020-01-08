@@ -60,7 +60,6 @@
           this.$store.dispatch('usr/loadMyInfo')
 
           if (this.$store.getters.isAdmin) {
-            this.$store.dispatch('usr/loadUsers')
             this.$store.dispatch('grp/loadGroupTree')
             this.$store.dispatch('grp/loadGroups')
             this.$store.dispatch('mlst/loadMaillists')
