@@ -4,10 +4,31 @@
     :items="this.$store.state.usr.users"
     :search="search"
     sort-by="uid"
-    class="elevation-1"
     :loading="loading"
     loading-text="Loading..."
   >
+    <!-- Use Dynamic Slot Names -->
+    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
+      <span class="green-text">{{h.text}}</span>
+    </template>z`z`
+    <!--
+      "item"为v-slot:item中的属性，
+      貌似必须为"item"
+    -->
+    <template v-slot:item="{item}"
+    >
+      <tr>
+        <td>{{item.uid}}</td>
+        <td>{{item.cn}}</td>
+        <td>{{item.mail}}</td>
+        <td>
+          <user-list-action :user="item"
+          v-on:delete="handleDeleteEvent($event)"
+          v-on:edit="handleEditEvent($event)"
+          ></user-list-action>
+        </td>
+      </tr>
+    </template>
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--
@@ -41,13 +62,13 @@
     <!--操作按钮
       v-slot:item.action跟的"action"对应headers数组对象中，
       操作这一列的value
-    -->
     <template v-slot:item.action="{ item }">
       <user-list-action :user="item"
       v-on:delete="handleDeleteEvent($event)"
       v-on:edit="handleEditEvent($event)"
       ></user-list-action>
     </template>
+    -->
 
     <template v-slot:no-data>
       No data : P
@@ -83,11 +104,11 @@ export default {
             text: "User ID",
             align: "left",
             sortable: true,
-            value: "uid"
+            value: "uid",
         },
         { text: "姓名", value: "cn"},
         { text: "Email", value: "mail", sortable: false},
-        { text: "操作", value: "action", sortable: false, align: 'center'},
+        { text: "操作", value: "action", sortable: false, align: 'left'},
       ],
     }
   }, //data()
@@ -131,3 +152,13 @@ export default {
   }, //method()
 }
 </script>
+
+<style scoped>
+.banned {
+  text-decoration-line: line-through;
+  text-decoration-color: red;
+}
+.green-text {
+  color: green;
+}
+</style>

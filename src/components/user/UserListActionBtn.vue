@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container class="px-0">
   <v-tooltip bottom>
     <template v-slot:activator="{ on }">
       <v-icon v-on="on" medium class="mr-2" @click="editItem">
