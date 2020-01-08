@@ -34,31 +34,32 @@ export default {
 
       const info = { msg: "", color: "" } 
       this.$store.dispatch('usr/deleteUser', uid)
-      .then(response => {
-        if(response && response.status == 200) {
-          info.msg = response.data.detail
-          info.color = "success"
-          // Dispatch store/users.js中的加载用户action, 重新加载用户
-          this.$store.dispatch('usr/loadUsers')
-        } else {
-          info.msg = response.data.detail
-          info.color = "error"
-        }
-        this.$store.dispatch("notify", info)
-      })
-      .catch(error => {
-        // Also need to refactor
-        info.color = "error"
-        if (error.response) {
-          info.msg = error.response.data.detail
-        } else {
-          info.msg = "Unknown server error"
-        }
-        this.$store.dispatch('notify', info)
-      })
-      .finally(() => {
-        this.dialog = false
-      })
+      this.dialog = false
+      // .then(response => {
+      //   if(response && response.status == 200) {
+      //     info.msg = response.data.detail
+      //     info.color = "success"
+      //     // Dispatch store/users.js中的加载用户action, 重新加载用户
+      //     this.$store.dispatch('usr/loadUsers')
+      //   } else {
+      //     info.msg = response.data.detail
+      //     info.color = "error"
+      //   }
+      //   this.$store.dispatch("notify", info)
+      // })
+      // .catch(error => {
+      //   // Also need to refactor
+      //   info.color = "error"
+      //   if (error.response) {
+      //     info.msg = error.response.data.detail
+      //   } else {
+      //     info.msg = "Unknown server error"
+      //   }
+      //   this.$store.dispatch('notify', info)
+      // })
+      // .finally(() => {
+      //   this.dialog = false
+      // })
     },
   },
 }

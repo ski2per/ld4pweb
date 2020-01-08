@@ -13,6 +13,9 @@ const state = getDefaultState()
 const getters = {
   allUsers: state => {
     return state.users
+  },
+  getIndexByUid: (state) => (uid) => {
+    return state.users.map(function(x){ return x.uid}).indexOf(uid)
   }
 }
 
@@ -54,11 +57,16 @@ const actions = {
     .catch(error => { console.log(error) })
   },
   deleteUser({commit}, uid) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
+    commit('DELETE_USER', uid)
+    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}`)
+    .then(response => {
+      console.info(`[Invoke API] DELETE: /users/{user}, http code: ${response.status}`)
+      if(response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+
     })
+    .catch(error => {console.log(error)})
   },
   updatePassword({commit}, password) {
     return new Promise((resolve, reject) => {
@@ -81,6 +89,10 @@ const mutations = {
   },
   CREATE_USER(state, user) {
     state.users.push(user)
+  },
+  DELETE_USER(state, uid) {
+    let idx = this.getters['usr/getIndexByUid'](uid)
+    state.users.splice(idx, 1)
   }
 }
 
