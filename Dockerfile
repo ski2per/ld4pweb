@@ -1,5 +1,5 @@
 # build stage
-FROM node:lts-alpine as build-stage
+FROM node:12.14.0-stretch-slim as build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm config set registry https://registry.npm.taobao.org
