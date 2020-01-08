@@ -10,7 +10,7 @@
     <!-- Use Dynamic Slot Names -->
     <template v-for="h in headers" v-slot:[`header.${h.value}`]>
       <span class="green-text">{{h.text}}</span>
-    </template>z`z`
+    </template>
     <!--
       "item"为v-slot:item中的属性，
       貌似必须为"item"
@@ -18,7 +18,7 @@
     <template v-slot:item="{item}"
     >
       <tr>
-        <td>{{item.uid}}</td>
+        <uid-col :user="item"></uid-col>
         <td>{{item.cn}}</td>
         <td>{{item.mail}}</td>
         <td>
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import UIDCol from '@/components/user/UIDCol.vue'
 import UserListActionBtn from '@/components/user/UserListActionBtn.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
 import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
@@ -93,6 +94,7 @@ export default {
     'user-list-action': UserListActionBtn,
     'user-edit-dialog': UserEditDialog,
     'user-delete-dialog': UserDeleteDialog,
+    'uid-col': UIDCol,
   },
   data () {
     return {
@@ -113,13 +115,17 @@ export default {
     }
   }, //data()
   created() {
-    // console.log(this.users.length)
     if(!this.$store.state.usr.users.length) {
       this.loading = true
       this.$store.dispatch('usr/loadUsers')
       .then(response => {
         this.loading = false
       })
+    }
+  },
+  computed: {
+    isActive: function(item) {
+      console.log(item)
     }
   },
   methods: {
