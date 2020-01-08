@@ -33,17 +33,14 @@ const actions = {
     })
   },
   loadMyInfo({commit}) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/me`)
-      .then(response => {
-        if(response && response.status == 200) {
-          console.info(`[Invoke API] GET: /users/me, http code: ${response.status}`)
-          commit('SET_ME', response.data)
-        }
-        // resolve(response)
-      })
-      .catch(error => {reject(error)})
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/me`)
+    .then(response => {
+      if(response && response.status == 200) {
+        console.info(`[Invoke API] GET: /users/me, http code: ${response.status}`)
+        commit('SET_ME', response.data)
+      }
     })
+    .catch(error => {console.log(error)})
   },
   createUser({commit}, data) {
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
@@ -51,6 +48,7 @@ const actions = {
       console.info(`[Invoke API] POST: /users/{user}, http code: ${response.status}`)
       if (response && response.status == 200) {
         commit('CREATE_USER', response.data)
+        this.dispatch('notify', {msg: `${data.chinese_name} 创建成功`, color: "success"}, { root: true })
       }
     })
     .catch(error => { console.log(error) })
@@ -82,7 +80,6 @@ const mutations = {
     state.me = me
   },
   CREATE_USER(state, user) {
-    // state.users.$set(0, user)
     state.users.push(user)
   }
 }

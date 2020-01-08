@@ -128,34 +128,6 @@ export default {
         // Add new user
         this.$store.dispatch('usr/createUser', data)
         this.reset()
-        // .then(response => {
-        //   if(response && response.status == 200) {
-        //     info.msg = response.data.detail
-        //     info.color = "success"
-        //     // Add new user to groups
-        //     // (Only when adding user successfully)
-        //     this.massiveAddToGroup(this.selectedGroup)
-
-        //     // Reload users in vuex
-        //     this.$store.dispatch('usr/loadUsers')
-        //   } else {
-        //     info.msg = "Unknown error"
-        //     info.color = "error"
-        //   }
-        //   this.$store.dispatch('notify', info)
-        // })
-        // .catch(error => {
-        //   info.color = "error"
-        //   if (error.response) {
-        //     info.msg = error.response.data.detail
-        //   } else {
-        //     info.msg = "Unknown server error"
-        //   }
-        //   this.$store.dispatch('notify', info)
-        // })
-        // .finally(() => {
-        //   this.reset()
-        // })
       }
 
     }, //save()

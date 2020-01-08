@@ -58,7 +58,8 @@
         if(response && response.status == 200) {
           this.items = response.data
           this.$store.dispatch('usr/loadMyInfo')
-
+          
+          //加载管理员数据
           if (this.$store.getters.isAdmin) {
             this.$store.dispatch('grp/loadGroupTree')
             this.$store.dispatch('grp/loadGroups')
