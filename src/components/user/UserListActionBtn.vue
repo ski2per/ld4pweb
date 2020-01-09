@@ -2,7 +2,7 @@
 <v-container class="px-0">
   <v-tooltip bottom>
     <template v-slot:activator="{ on }">
-      <v-icon v-on="on" medium class="mr-2" @click="editItem">
+      <v-icon v-on="on" medium class="mr-2" @click="editUser">
         mdi-account-edit
       </v-icon>
     </template>
@@ -11,7 +11,7 @@
 
   <v-tooltip bottom>
     <template v-slot:activator="{ on }">
-      <v-icon v-on="on" medium class="mr-2" @click="deleteItem">
+      <v-icon v-on="on" medium class="mr-2" @click="deleteUser">
         mdi-account-minus
       </v-icon>
     </template>
@@ -48,13 +48,12 @@ export default {
       console.log("TBD")
     },
     resetPassword () {
-      console.log("TBD")
     },
-    editItem() {
+    editUser() {
       // 向父级发送edit事件，同时传递user对象
       this.$emit('edit', this.user)
     },
-    deleteItem() {
+    deleteUser() {
       // 向父级发送delete事件，同时传递user对象
       this.$emit('delete', this.user)
     },

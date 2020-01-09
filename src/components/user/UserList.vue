@@ -31,11 +31,6 @@
     </template>
     <template v-slot:top>
       <v-toolbar flat color="white">
-        <!--
-          <v-toolbar-title>LDAP Users</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical ></v-divider>
-        -->
-
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -73,17 +68,12 @@
     <template v-slot:no-data>
       No data : P
     </template>
-    <!--
-    <template v-slot:loading>
-      Loading...
-    </template>
-    -->
 
   </v-data-table>
 </template>
 
 <script>
-import UIDCol from '@/components/user/UIDCol.vue'
+import UidCol from '@/components/user/UidCol.vue'
 import UserListActionBtn from '@/components/user/UserListActionBtn.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
 import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
@@ -94,7 +84,7 @@ export default {
     'user-list-action': UserListActionBtn,
     'user-edit-dialog': UserEditDialog,
     'user-delete-dialog': UserDeleteDialog,
-    'uid-col': UIDCol,
+    'uid-col': UidCol,
   },
   data () {
     return {
@@ -125,7 +115,6 @@ export default {
   },
   computed: {
     isActive: function(item) {
-      console.log(item)
     }
   },
   methods: {
@@ -160,10 +149,6 @@ export default {
 </script>
 
 <style scoped>
-.banned {
-  text-decoration-line: line-through;
-  text-decoration-color: red;
-}
 .green-text {
   color: green;
 }
