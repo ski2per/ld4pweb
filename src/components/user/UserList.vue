@@ -25,6 +25,7 @@
           <user-list-action :user="item"
           v-on:delete="handleDeleteEvent($event)"
           v-on:edit="handleEditEvent($event)"
+          v-on:reset="handleResetPsdEvent($event)"
           ></user-list-action>
         </td>
       </tr>
@@ -50,6 +51,7 @@
         <!--创建/编辑用户对话框-->
         <user-edit-dialog ref="editDialog"></user-edit-dialog>
         <user-delete-dialog ref="deleteDialog"></user-delete-dialog>
+        <user-action-dialog ref="actionDialog"></user-action-dialog>
 
       </v-toolbar>
     </template>
@@ -76,7 +78,7 @@
 import UidCol from '@/components/user/UidCol.vue'
 import UserListActionBtn from '@/components/user/UserListActionBtn.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
-import UserDeleteDialog from '@/components/user/UserDeleteDialog.vue'
+import UserActionDialog from '@/components/user/UserActionDialog.vue'
 
 export default {
   name: 'UserList',
@@ -84,6 +86,7 @@ export default {
     'user-list-action': UserListActionBtn,
     'user-edit-dialog': UserEditDialog,
     'user-delete-dialog': UserDeleteDialog,
+    'user-action-dialog': UserActionDialog,
     'uid-col': UidCol,
   },
   data () {
@@ -135,8 +138,14 @@ export default {
       this.$refs.editDialog.edited = true
     },
     handleDeleteEvent(item) {
-      this.$refs.deleteDialog.user= item
-      this.$refs.deleteDialog.dialog = true
+      this.$refs.actionDialog.action = "delete"
+      this.$refs.actionDialog.user= item
+      this.$refs.actionDialog.dialog = true
+    },
+    handleResetPsdEvent(item) {
+      this.$refs.actionDialog.action = "reset"
+      this.$refs.actionDialog.user = item
+      this.$refs.actionDialog.dialog = true
     },
     close () {
       this.dialog = false

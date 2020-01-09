@@ -48,6 +48,7 @@ export default {
       console.log("TBD")
     },
     resetPassword () {
+      this.$emit('reset', this.user)
     },
     editUser() {
       // 向父级发送edit事件，同时传递user对象
