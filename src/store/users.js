@@ -89,6 +89,12 @@ const actions = {
       console.log(error)
     })
   },
+  lockUser({commit}, uid) {
+    commit('LOCK_USER', uid)
+  },
+  unlockUser({commit}, uid) {
+    commit('UNLOCK_USER', uid)
+  }
 }
 
 const mutations = {
@@ -107,7 +113,19 @@ const mutations = {
   DELETE_USER(state, uid) {
     let idx = this.getters['usr/getIndexByUid'](uid)
     state.users.splice(idx, 1)
-  }
+  },
+  LOCK_USER(state, uid) {
+    let idx = this.getters['usr/getIndexByUid'](uid)
+    let target = state.users[idx]
+    target.accountStatus = "inactive"
+    state.users.splice(idx, 1, target)
+  },
+  UNLOCK_USER(state, uid) {
+    let idx = this.getters['usr/getIndexByUid'](uid)
+    let target = state.users[idx]
+    target.accountStatus = "active"
+    state.users.splice(idx, 1, target)
+  },
 }
 
 export default {

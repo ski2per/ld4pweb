@@ -25,6 +25,7 @@
           <user-list-action :user="item"
           v-on:delete="handleDeleteEvent($event)"
           v-on:edit="handleEditEvent($event)"
+          v-on:lock="handleLockEvent($event)"
           v-on:reset="handleResetPsdEvent($event)"
           ></user-list-action>
         </td>
@@ -138,6 +139,16 @@ export default {
     handleDeleteEvent(item) {
       this.$refs.actionDialog.action = "delete"
       this.$refs.actionDialog.user= item
+      this.$refs.actionDialog.dialog = true
+    },
+    handleLockEvent(item) {
+      console.log(item.accountStatus)
+      if(item.accountStatus == "active") {
+        this.$refs.actionDialog.action = "lock"
+      } else {
+        this.$refs.actionDialog.action = "unlock"
+      }
+      this.$refs.actionDialog.user = item
       this.$refs.actionDialog.dialog = true
     },
     handleResetPsdEvent(item) {

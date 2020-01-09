@@ -44,12 +44,6 @@ export default {
     user: Object,
   },
   methods: {
-    lockUser () {
-      console.log("TBD")
-    },
-    resetPassword () {
-      this.$emit('reset', this.user)
-    },
     editUser() {
       // 向父级发送edit事件，同时传递user对象
       this.$emit('edit', this.user)
@@ -57,6 +51,12 @@ export default {
     deleteUser() {
       // 向父级发送delete事件，同时传递user对象
       this.$emit('delete', this.user)
+    },
+    lockUser () {
+      this.$emit('lock', this.user)
+    },
+    resetPassword () {
+      this.$emit('reset', this.user)
     },
   },
 

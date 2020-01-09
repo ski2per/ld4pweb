@@ -30,6 +30,9 @@ export default {
         case "lock":
           return "锁定用户？";
           break;
+        case "unlock":
+          return "解锁用户？";
+          break;
         default:
           return "重置密码？"
       }
@@ -56,7 +59,12 @@ export default {
           this.dialog = false
           break;
         case "lock":
-          console.log(`will lock ${this.user.cn}`);
+          this.$store.dispatch('usr/lockUser', uid)
+          this.dialog = false
+          break;
+        case "unlock":
+          this.$store.dispatch('usr/unlockUser', uid)
+          this.dialog = false
           break;
         // reset password
         default:
