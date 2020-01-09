@@ -142,7 +142,6 @@ export default {
       this.$refs.actionDialog.dialog = true
     },
     handleLockEvent(item) {
-      console.log(item.accountStatus)
       if(item.accountStatus == "active") {
         this.$refs.actionDialog.action = "lock"
       } else {

@@ -91,9 +91,29 @@ const actions = {
   },
   lockUser({commit}, uid) {
     commit('LOCK_USER', uid)
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/lock`)
+    .then(response => {
+      if(response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => {
+      this.dispatch('notify', {msg: "锁定用户时发生错误", color: "error"}, { root: true })
+      console.log(error)
+    })
   },
   unlockUser({commit}, uid) {
     commit('UNLOCK_USER', uid)
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/unlock`)
+    .then(response => {
+      if(response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => {
+      this.dispatch('notify', {msg: "解锁用户时发生错误", color: "error"}, { root: true })
+      console.log(error)
+    })
   }
 }
 
