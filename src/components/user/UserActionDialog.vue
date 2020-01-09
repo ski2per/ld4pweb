@@ -58,8 +58,9 @@ export default {
         case "lock":
           console.log(`will lock ${this.user.cn}`);
           break;
+        // reset password
         default:
-          console.log(`will reset ${this.user.cn}`);
+          this.$store.dispatch('usr/resetPassword', uid)
           this.dialog = false
       }
     }

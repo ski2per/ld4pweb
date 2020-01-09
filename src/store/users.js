@@ -75,6 +75,20 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
+  resetPassword({commit}, uid) {
+    // 直接调用后端API，但不更改Vuex state，
+    // state中的密码Hash暂无卵用
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/password/reset`)
+    .then(response => {
+      if(response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => {
+      this.dispatch('notify', {msg: "重置密码时发生错误", color: "error"}, { root: true })
+      console.log(error)
+    })
+  },
 }
 
 const mutations = {
