@@ -1,16 +1,16 @@
 <template>
   <v-container justify="start">
-    <group-list />
+    <group-content/>
   </v-container>
 </template>
 
 <script>
-import GroupList from '@/components/group/GroupList.vue'
+import GroupContent from '@/components/group/GroupContent.vue'
 
 export default {
   name: 'Group',
   components: {
-    'group-list': GroupList
+    'group-content': GroupContent
   }
 }
 </script>

@@ -39,6 +39,19 @@ const actions = {
       })
     })
   },
+  loadSubgroup({commit}, groupName) {
+    return new Promise((resolve, reject) => {
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
+      .then(response => {
+        // commit('LOAD_GROUP_TREE', response.data)
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+    })
+
+  },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
       httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
