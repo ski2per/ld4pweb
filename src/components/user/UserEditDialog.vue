@@ -3,7 +3,7 @@
 
   <v-card>
     <v-card-title>
-      <span class="headline">{{ dialogTitle }}</span>
+      <span class="headline">{{ title }}</span>
     </v-card-title>
 
     <v-card-text>
@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    dialogTitle() {
+    title() {
       return this.edited ? '编辑' : '创建用户'
     },
   },
@@ -106,11 +106,7 @@ export default {
     validate () {
       this.valid = false
       if(this.$refs.userForm.validate()) {
-        if (this.edited) {
-          console.log("[edit] TBD")
-        } else {
-          this.save()
-        }
+        this.save()
       }
       this.valid = true
     },
@@ -121,16 +117,16 @@ export default {
         surname: this.editedItem.sn,
         given_name: this.editedItem.givenName,
       }
-      const info = {msg: "", color: ""}
 
       if (this.edited) {
+        this.$store.dispatch('usr/updateUser', data)
       } else {
         // Add new user
         this.$store.dispatch('usr/createUser', data)
         // WILL refactor later~~~~
         this.massiveAddToGroup(this.selectedGroup)
-        this.reset()
       }
+      this.reset()
 
     }, //save()
     massiveAddToGroup (groupData) {

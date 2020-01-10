@@ -56,6 +56,17 @@ const actions = {
     })
     .catch(error => { console.log(error) })
   },
+  updateUser({commit}, data) {
+    commit('UPDATE_USER', data)
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
+    .then(response => { 
+      console.info(`[Invoke API] PUT: /users/{user}, http code: ${response.status}`)
+      if (response && response.status == 200) {
+        this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      }
+    })
+    .catch(error => { console.log(error) })
+  },
   deleteUser({commit}, uid) {
     commit('DELETE_USER', uid)
     httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}`)
@@ -64,9 +75,11 @@ const actions = {
       if(response && response.status == 200) {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
       }
-
     })
-    .catch(error => {console.log(error)})
+    .catch(error => {
+      this.dispatch('notify', {msg: "更新用户时发生错误", color: "error"}, { root: true })
+      console.log(error)
+    })
   },
   updatePassword({commit}, password) {
     return new Promise((resolve, reject) => {
@@ -129,6 +142,15 @@ const mutations = {
   },
   CREATE_USER(state, user) {
     state.users.push(user)
+  },
+  UPDATE_USER(state, user) {
+    let idx = this.getters['usr/getIndexByUid'](user.uid)
+    let target = state.users[idx]
+    target.cn = user.chinese_name
+    target.displayName = user.chinese_name
+    target.sn = user.surname
+    target.givenName = user.given_name
+    state.users.splice(idx, 1, target)
   },
   DELETE_USER(state, uid) {
     let idx = this.getters['usr/getIndexByUid'](uid)

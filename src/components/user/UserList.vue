@@ -115,10 +115,6 @@ export default {
       })
     }
   },
-  computed: {
-    isActive: function(item) {
-    }
-  },
   methods: {
     handleCreate() {
       this.$refs.editDialog.editedItem = {}
@@ -133,8 +129,8 @@ export default {
         givenName: item.givenName,
       }
       this.$refs.editDialog.editedItem = editedItem
-      this.$refs.editDialog.dialog = true
       this.$refs.editDialog.edited = true
+      this.$refs.editDialog.dialog = true
     },
     handleDeleteEvent(item) {
       this.$refs.actionDialog.action = "delete"
