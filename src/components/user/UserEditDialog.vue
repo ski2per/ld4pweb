@@ -113,9 +113,9 @@ export default {
     save () {
       const data = {
         uid: this.editedItem.uid,
-        chinese_name: this.editedItem.cn,
-        surname: this.editedItem.sn,
-        given_name: this.editedItem.givenName,
+        cn: this.editedItem.cn,
+        sn: this.editedItem.sn,
+        givenName: this.editedItem.givenName,
       }
 
       if (this.edited) {

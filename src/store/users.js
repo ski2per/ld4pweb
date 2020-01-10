@@ -57,6 +57,7 @@ const actions = {
     .catch(error => { console.log(error) })
   },
   updateUser({commit}, data) {
+    console.log(data)
     commit('UPDATE_USER', data)
     httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => { 
@@ -65,7 +66,10 @@ const actions = {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
       }
     })
-    .catch(error => { console.log(error) })
+    .catch(error => { 
+      this.dispatch('notify', {msg: "更新用户时发生错误", color: "error"}, { root: true })
+      console.log(error)
+    })
   },
   deleteUser({commit}, uid) {
     commit('DELETE_USER', uid)
@@ -77,7 +81,6 @@ const actions = {
       }
     })
     .catch(error => {
-      this.dispatch('notify', {msg: "更新用户时发生错误", color: "error"}, { root: true })
       console.log(error)
     })
   },
