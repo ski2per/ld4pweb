@@ -127,6 +127,8 @@ export default {
       } else {
         // Add new user
         this.$store.dispatch('usr/createUser', data)
+        // WILL refactor later~~~~
+        this.massiveAddToGroup(this.selectedGroup)
         this.reset()
       }
 
