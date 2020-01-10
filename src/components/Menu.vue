@@ -9,7 +9,7 @@
         <v-list-item-title class="title">
           统一账号管理
         </v-list-item-title>
-        <v-list-item-subtitle>
+        <v-list-item-subtitle style="color: #FF8F00;">
           {{ version }}
         </v-list-item-subtitle>
       </v-list-item-content>
