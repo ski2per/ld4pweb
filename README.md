@@ -7,7 +7,7 @@
 
 ### Backend RESTful API Version
 ```
-3.3.3
+3.3.4
 ```
 ### Node Version
 ```
