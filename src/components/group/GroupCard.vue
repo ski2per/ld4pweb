@@ -145,6 +145,8 @@ export default {
     deleteGroup: function(){
       console.log(this.group.ou)
       this.$store.dispatch('grp/deleteGroup', this.group)
+      console.log(`is expand:${this.expand}`)
+      this.expand = false
     },
   }//methods
 }
