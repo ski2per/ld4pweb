@@ -53,6 +53,11 @@ const actions = {
   },
   createGroup({commit}, data) {
     commit('CREATE_GROUP', data)
+    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => { console.log(error) })
   },
   preCreateGroup({commit}, data) {
     commit('PRE_CREATE_GROUP', data)

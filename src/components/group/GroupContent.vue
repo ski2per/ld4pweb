@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleCreate: function(){
-      this.$store.dispatch("grp/preCreateGroup", {ou: "组名", description: "关于该组", edited: true})
+      this.$store.dispatch("grp/preCreateGroup", {ou: "新建组名", description: "新建组描述", edited: true})
     }
   },
 }
