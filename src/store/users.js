@@ -48,8 +48,6 @@ const actions = {
   // 创建用户Action, 先调用后台API创建用户成功之后，
   // 将返回的用户字典提交给state
   createUser({commit}, data) {
-    console.log(['user.js: createddUser'])
-    console.log(data)
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => {
       console.info(`[Invoke API] POST: /users/{user}, http code: ${response.status}`)

@@ -11,7 +11,7 @@
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
         <v-icon v-on="on" medium class="mx-0">
-          mdi-square-edit-outline
+          mdi-pencil
         </v-icon>
       </template>
       <span>编辑该组</span>
@@ -21,7 +21,7 @@
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0">
+        <v-icon v-on="on" medium class="mx-0" color="red">
           mdi-delete-outline
         </v-icon>
       </template>

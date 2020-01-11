@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 
 const getDefaultState = () => {
@@ -9,7 +10,11 @@ const getDefaultState = () => {
 
 const state = getDefaultState()
 
-const getters = {}
+const getters = {
+  getIndexByOu: (state) => (ou) => {
+    return state.groups.map(function(x){ return x.ou}).indexOf(ou)
+  },
+}
 
 const actions = {
   resetState({commit}) {
@@ -19,7 +24,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
       .then(response => {
-        commit('LOAD_GROUPS', response.data)
+        commit('SET_GROUPS', response.data)
         resolve(response)
       })
       .catch(error => {
@@ -31,7 +36,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/tree`)
       .then(response => {
-        commit('LOAD_GROUP_TREE', response.data)
+        commit('SET_GROUP_TREE', response.data)
         resolve(response)
       })
       .catch(error => {
@@ -40,17 +45,11 @@ const actions = {
     })
   },
   loadSubgroup({commit}, groupName) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
-      .then(response => {
-        // commit('LOAD_GROUP_TREE', response.data)
-        resolve(response)
-      })
-      .catch(error => {
-        reject(error)
-      })
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
+    .then(response => {
+      commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
     })
-
+    .catch(error => { console.log(error) })
   },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
@@ -72,12 +71,21 @@ const mutations = {
   RESET_STATE (state) {
     Object.assign(state, getDefaultState())
   },
-  LOAD_GROUP_TREE(state, tree){
+  SET_GROUP_TREE(state, tree){
     state.groupTree = tree
   },
-  LOAD_GROUPS(state, groups){
+  SET_GROUPS(state, groups){
     state.groups = groups
   },
+  SET_SUBGROUPS(state, data) {
+    // data = {
+    //   group: "group name",
+    //   subgroups: []
+    // }
+    let idx = this.getters['grp/getIndexByOu'](data.group)
+    let target = state.groups[idx]
+    Vue.set(target, 'subgroups', data.subgroups)
+  }
 }
 
 export default {
