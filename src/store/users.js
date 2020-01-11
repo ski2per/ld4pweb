@@ -61,8 +61,6 @@ const actions = {
     .catch(error => { console.log(error) })
   },
   updateUser({commit}, data) {
-    console.log(['user.js: updateddUser'])
-    console.log(data)
     commit('UPDATE_USER', data)
     httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => { 
