@@ -45,18 +45,23 @@ const actions = {
     })
     .catch(error => {console.log(error)})
   },
+  // 创建用户Action, 先调用后台API创建用户成功之后，
+  // 将返回的用户字典提交给state
   createUser({commit}, data) {
+    console.log(['user.js: createddUser'])
+    console.log(data)
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => {
       console.info(`[Invoke API] POST: /users/{user}, http code: ${response.status}`)
       if (response && response.status == 200) {
         commit('CREATE_USER', response.data)
-        this.dispatch('notify', {msg: `${data.chinese_name} 创建成功`, color: "success"}, { root: true })
+        this.dispatch('notify', {msg: `${data.cn} 创建成功`, color: "success"}, { root: true })
       }
     })
     .catch(error => { console.log(error) })
   },
   updateUser({commit}, data) {
+    console.log(['user.js: updateddUser'])
     console.log(data)
     commit('UPDATE_USER', data)
     httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
@@ -149,10 +154,10 @@ const mutations = {
   UPDATE_USER(state, user) {
     let idx = this.getters['usr/getIndexByUid'](user.uid)
     let target = state.users[idx]
-    target.cn = user.chinese_name
-    target.displayName = user.chinese_name
-    target.sn = user.surname
-    target.givenName = user.given_name
+    target.cn = user.cn
+    target.displayName = user.cn
+    target.sn = user.sn
+    target.givenName = user.givenName
     state.users.splice(idx, 1, target)
   },
   DELETE_USER(state, uid) {

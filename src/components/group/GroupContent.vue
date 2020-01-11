@@ -27,5 +27,10 @@ export default {
       return this.$store.state.grp.groups
     }
   },
+  methods: {
+    handleCreate: function(){
+      
+    }
+  },
 }
 </script>

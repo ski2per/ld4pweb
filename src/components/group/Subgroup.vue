@@ -10,7 +10,7 @@
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0" @click="">
+        <v-icon v-on="on" medium class="mx-0">
           mdi-square-edit-outline
         </v-icon>
       </template>
@@ -21,7 +21,7 @@
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0" @click="">
+        <v-icon v-on="on" medium class="mx-0">
           mdi-delete-outline
         </v-icon>
       </template>
