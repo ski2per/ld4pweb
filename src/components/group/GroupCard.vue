@@ -38,7 +38,17 @@
       <v-divider></v-divider>
       <v-card-text>
         <v-list>
-          <v-btn text color="red" v-if="!isSubgroup">删除</v-btn>
+          <!-- 删除按钮 -->
+          <v-row justify="center" v-if="!isSubgroup">
+            <v-btn icon color="red" @click="deleteGroup">
+              <v-tooltip bottom >
+                <template v-slot:activator="{ on }">
+                      <v-icon v-on="on" large>mdi-delete-empty</v-icon>
+                </template>
+                <span>删除该组</span>
+              </v-tooltip>
+            </v-btn>
+          </v-row>
           <subgroup v-for="sg in this.group.subgroups" :subgroup="sg"></subgroup>
         </v-list>
       </v-card-text>
@@ -131,7 +141,11 @@ export default {
         console.log('[GroupCard]: Loading subgroup')
         this.$store.dispatch('grp/loadSubgroup', this.group.ou)
       }
-    }
-  },
+    },
+    deleteGroup: function(){
+      console.log(this.group.ou)
+      this.$store.dispatch('grp/deleteGroup', this.group)
+    },
+  }//methods
 }
 </script>

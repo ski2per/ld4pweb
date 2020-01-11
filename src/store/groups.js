@@ -69,11 +69,15 @@ const actions = {
       .catch(error => {reject(error)})
     })
   },
-  deleteGroup({commit}, item) {
-    return new Promise((resolve, reject) => {
-      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${item.uid}`)
-      .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
+  deleteGroup({commit}, data) {
+    commit('DELETE_GROUP', data)
+    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`)
+    .then(response => {
+      console.info(`[Invoke API] DELETE: /groups/{group}, http code: ${response.status}`)
+      this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+    })
+    .catch(error => {
+      console.log(error)
     })
   },
 }
@@ -113,7 +117,11 @@ const mutations = {
     state.groups.splice(idx, 1, newGroup)
   },
   UPDATE_GROUP(state, data) {
-  }
+  },
+  DELETE_GROUP(state, data) {
+    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    state.groups.splice(idx, 1)
+  },
 }
 
 export default {
