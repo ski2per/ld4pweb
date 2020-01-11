@@ -6,7 +6,7 @@
         </v-btn>
   </v-row>
   <v-row col="12" alignment="start" justify="start">
-    <v-col v-for="group in groups">
+    <v-col v-for="(group, index) in groups" v-bind:key="index">
       <group-card v-bind:group="group">
       </group-card>
     </v-col>
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleCreate: function(){
-      
+      this.$store.dispatch("grp/preCreateGroup", {ou: "组名", description: "关于该组", edited: true})
     }
   },
 }

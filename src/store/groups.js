@@ -51,6 +51,12 @@ const actions = {
     })
     .catch(error => { console.log(error) })
   },
+  createGroup({commit}, data) {
+    commit('CREATE_GROUP', data)
+  },
+  preCreateGroup({commit}, data) {
+    commit('PRE_CREATE_GROUP', data)
+  },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
       httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
@@ -85,6 +91,23 @@ const mutations = {
     let idx = this.getters['grp/getIndexByOu'](data.group)
     let target = state.groups[idx]
     Vue.set(target, 'subgroups', data.subgroups)
+  },
+  PRE_CREATE_GROUP(state, data) {
+    state.groups.push(data)
+  },
+  CREATE_GROUP(state, data) {
+    delete data.edited
+
+    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    let target = state.groups[idx]
+    // Merge data
+    let newGroup = {
+      ...target,
+      ...data
+    }
+    state.groups.splice(idx, 1, newGroup)
+  },
+  UPDATE_GROUP(state, data) {
   }
 }
 
