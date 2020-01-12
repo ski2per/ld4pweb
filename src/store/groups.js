@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
+import { stat } from 'fs'
 
 const getDefaultState = () => {
   return {
@@ -51,6 +52,9 @@ const actions = {
     })
     .catch(error => { console.log(error) })
   },
+  preCreateGroup({commit}, data) {
+    commit('PRE_CREATE_GROUP', data)
+  },
   createGroup({commit}, data) {
     commit('CREATE_GROUP', data)
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
@@ -59,8 +63,16 @@ const actions = {
     })
     .catch(error => { console.log(error) })
   },
-  preCreateGroup({commit}, data) {
-    commit('PRE_CREATE_GROUP', data)
+  updateGroup({commit}, data) {
+    commit('UPDATE_GROUP', data)
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
+    .then(response => {
+      console.info(`[Invoke API] PUT: /groups/{group}, http code: ${response.status}`)
+      this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+    })
+    .catch(error => {
+      console.log(error)
+    })
   },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
@@ -117,6 +129,8 @@ const mutations = {
     state.groups.splice(idx, 1, newGroup)
   },
   UPDATE_GROUP(state, data) {
+    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    state.groups.splice(idx, 1, data)
   },
   DELETE_GROUP(state, data) {
     let idx = this.getters['grp/getIndexByOu'](data.ou)

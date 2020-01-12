@@ -6,17 +6,27 @@
   max-width="360"
 >
   <v-card-title>{{ group.ou }}</v-card-title>
-  <v-card-subtitle>{{ group.description}}</v-card-subtitle>
+  <v-card-subtitle v-if="groupEdited">
+    <v-text-field
+      solo
+      autofocus
+      v-model="group.description"
+      @blur="updateGroup"
+      ></v-text-field>
+    </v-card-subtitle>
+  <v-card-subtitle v-else @click="editGroup">{{ group.description}}</v-card-subtitle>
 
   <v-card-actions>
+  <!--暂时注释
     <v-tooltip bottom >
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0">
+        <v-icon v-on="on" medium class="mx-0" @click="editGroup">
           mdi-square-edit-outline
         </v-icon>
       </template>
       <span>编辑</span>
     </v-tooltip>
+  -->
   
     <v-tooltip bottom v-if="expand">
       <template v-slot:activator="{ on }">
@@ -56,7 +66,9 @@
   </v-expand-transition>
 </v-card>
 
-<!--New group card-->
+<!--
+  新建组的卡片，当'group'对象中包含'edited: true'时渲染
+ -->
 <v-card v-else
   class="mx-auto"
   min-width="360"
@@ -66,7 +78,7 @@
     <v-form ref="newGroupForm">
       <v-row>
         <v-col>
-          <v-text-field v-model="group.ou" label=""
+          <v-text-field v-model="group.ou" label="组名"
             :rules="[rules.required]"
           ></v-text-field>
         </v-col>
@@ -74,7 +86,7 @@
 
       <v-row>
         <v-col>
-          <v-text-field v-model="group.description" label=""
+          <v-text-field v-model="group.description" label="组描述"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -100,6 +112,8 @@ export default {
       btnValid: true,
       expand: false,
       showDel: false,
+      groupEdited: false,
+      lastDesc: "",
       rules: {
         required: value => !!value || '不能为空',
       },
@@ -125,11 +139,11 @@ export default {
     validate: function(){
       this.valid = false
       if(this.$refs.newGroupForm.validate()) {
-        this.save()
+        this.createGroup()
       }
       this.valid = true
     },
-    save: function() {
+    createGroup: function() {
       this.$store.dispatch('grp/createGroup', this.group)
     },
     showSubGroup: function(){
@@ -140,6 +154,17 @@ export default {
       if(this.expand && !this.isSubgroup){
         console.log('[GroupCard]: Loading subgroup')
         this.$store.dispatch('grp/loadSubgroup', this.group.ou)
+      }
+    },
+    editGroup: function() {
+      console.log(`edit ${this.group.ou}`)
+      this.groupEdited = true
+      this.lastDesc = this.group.description
+    },
+    updateGroup: function() {
+      this.groupEdited = false
+      if(this.lastDesc != this.group.description){
+        this.$store.dispatch('grp/updateGroup', this.group)
       }
     },
     deleteGroup: function(){
