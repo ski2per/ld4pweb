@@ -30,7 +30,7 @@
   
     <v-tooltip bottom v-if="expand">
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-2" color="green">
+        <v-icon v-on="on" medium class="mx-2" color="green" @click="preCreateSubgroup">
           mdi-folder-plus
         </v-icon>
       </template>
@@ -53,13 +53,15 @@
             <v-btn icon color="red" @click="deleteGroup">
               <v-tooltip bottom >
                 <template v-slot:activator="{ on }">
-                      <v-icon v-on="on" large>mdi-delete-empty</v-icon>
+                  <v-icon v-on="on" large>mdi-delete-empty</v-icon>
                 </template>
                 <span>删除该组</span>
               </v-tooltip>
             </v-btn>
           </v-row>
-          <subgroup v-for="sg in this.group.subgroups" :subgroup="sg"></subgroup>
+          <v-row v-for="(sg, index) in this.group.subgroups" :key="index">
+            <subgroup :subgroup="sg" v-on:addsg="handleAddSubgroup($event)"></subgroup>
+          </v-row>
         </v-list>
       </v-card-text>
     </div>
@@ -68,7 +70,7 @@
 
 <!--
   新建组的卡片，当'group'对象中包含'edited: true'时渲染
- -->
+-->
 <v-card v-else
   class="mx-auto"
   min-width="360"
@@ -92,9 +94,9 @@
       </v-row>
 
       <v-row justify="end">
-          <v-icon medium class="mr-2" color="green" :disabled="!btnValid" @click="validate">
-            mdi-content-save
-          </v-icon>
+        <v-icon medium class="mr-2" color="green" :disabled="!btnValid" @click="validateForm">
+          mdi-content-save
+        </v-icon>
       </v-row>
     </v-form>
   </v-container>
@@ -136,28 +138,29 @@ export default {
     }
   },
   methods: {
-    validate: function(){
+    validateForm: function(){
       this.valid = false
       if(this.$refs.newGroupForm.validate()) {
+        // valid, create group
+        this.$store.dispatch('grp/createGroup', this.group)
         this.createGroup()
       }
       this.valid = true
     },
-    createGroup: function() {
-      this.$store.dispatch('grp/createGroup', this.group)
-    },
-    showSubGroup: function(){
-      this.expand = !this.expand
-
-      // Only load subgroup when expanding,
-      // and subgroups array is empty
-      if(this.expand && !this.isSubgroup){
-        console.log('[GroupCard]: Loading subgroup')
-        this.$store.dispatch('grp/loadSubgroup', this.group.ou)
+    //处理子组件传递的创建子组事件
+    handleAddSubgroup(data) {
+      console.log("handleAddSubgroup")
+      console.log(data)
+      console.log(this.group.ou)
+      let payload = {
+        group: this.group.ou,
+        ...data
       }
+      this.$store.dispatch('grp/createSubgroup', payload)
     },
+
+    // Methods for group
     editGroup: function() {
-      console.log(`edit ${this.group.ou}`)
       this.groupEdited = true
       this.lastDesc = this.group.description
     },
@@ -170,9 +173,24 @@ export default {
     deleteGroup: function(){
       console.log(this.group.ou)
       this.$store.dispatch('grp/deleteGroup', this.group)
-      console.log(`is expand:${this.expand}`)
       this.expand = false
     },
+
+    // Methods for subgroup
+    showSubGroup: function(){
+      this.expand = !this.expand
+
+      // Only load subgroup when expanding,
+      // and subgroups array is empty
+      if(this.expand && !this.isSubgroup){
+        console.log('[GroupCard]: Loading subgroup')
+        this.$store.dispatch('grp/loadSubgroup', this.group.ou)
+      }
+    },
+    preCreateSubgroup: function() {
+      console.log(`create subgroup for ${this.group.ou}`)
+      this.$store.dispatch('grp/preCreateSubgroup', this.group.ou)
+    }
   }//methods
 }
 </script>

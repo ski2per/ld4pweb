@@ -12,15 +12,24 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const getters = {
-  getIndexByOu: (state) => (ou) => {
+  // For group
+  getIndexByOU: (state) => (ou) => {
     return state.groups.map(function(x){ return x.ou}).indexOf(ou)
   },
+
+  // For subgroup
+  getIdexByCn: (state) => (data) => {
+    console.log('getIndexByCn')
+    console.log(data)
+  }
 }
 
 const actions = {
   resetState({commit}) {
     commit('RESET_STATE')
   },
+
+  //Actions for group
   loadGroups({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
@@ -45,15 +54,8 @@ const actions = {
       })
     })
   },
-  loadSubgroup({commit}, groupName) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
-    .then(response => {
-      commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
-    })
-    .catch(error => { console.log(error) })
-  },
-  preCreateGroup({commit}, data) {
-    commit('PRE_CREATE_GROUP', data)
+  preCreateGroup({commit}) {
+    commit('PRE_CREATE_GROUP', {ou: "", description: "", edited: true})
   },
   createGroup({commit}, data) {
     commit('CREATE_GROUP', data)
@@ -92,34 +94,44 @@ const actions = {
       console.log(error)
     })
   },
+
+  //Actions for subgroup
+  loadSubgroup({commit}, groupName) {
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
+    .then(response => {
+      commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
+    })
+    .catch(error => { console.log(error) })
+  },
+  preCreateSubgroup({commit}, groupOU) {
+    commit('PRE_CREATE_SUBGROUP', groupOU)
+  },
+  createSubgroup({commit}, data) {
+    console.log('[group.js: createSubgroup]')
+    console.log(data)
+  },
 }
 
 const mutations = {
   RESET_STATE (state) {
     Object.assign(state, getDefaultState())
   },
+
+  // Mutations for group
   SET_GROUP_TREE(state, tree){
     state.groupTree = tree
   },
   SET_GROUPS(state, groups){
     state.groups = groups
   },
-  SET_SUBGROUPS(state, data) {
-    // data = {
-    //   group: "group name",
-    //   subgroups: []
-    // }
-    let idx = this.getters['grp/getIndexByOu'](data.group)
-    let target = state.groups[idx]
-    Vue.set(target, 'subgroups', data.subgroups)
-  },
   PRE_CREATE_GROUP(state, data) {
+    // Can this mutation be canceled?
     state.groups.push(data)
   },
   CREATE_GROUP(state, data) {
     delete data.edited
 
-    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    let idx = this.getters['grp/getIndexByOU'](data.ou)
     let target = state.groups[idx]
     // Merge data
     let newGroup = {
@@ -129,12 +141,35 @@ const mutations = {
     state.groups.splice(idx, 1, newGroup)
   },
   UPDATE_GROUP(state, data) {
-    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    let idx = this.getters['grp/getIndexByOU'](data.ou)
     state.groups.splice(idx, 1, data)
   },
   DELETE_GROUP(state, data) {
-    let idx = this.getters['grp/getIndexByOu'](data.ou)
+    let idx = this.getters['grp/getIndexByOU'](data.ou)
     state.groups.splice(idx, 1)
+  },
+
+  // Mutations for subgroup
+  SET_SUBGROUPS(state, data) {
+    // data = {
+    //   group: "group name",
+    //   subgroups: []
+    // }
+    let idx = this.getters['grp/getIndexByOU'](data.group)
+    let target = state.groups[idx]
+    Vue.set(target, 'subgroups', data.subgroups)
+  },
+  PRE_CREATE_SUBGROUP(state, groupOU) {
+    console.log("PRE_CREATE_SUBGROUP")
+    console.log(groupOU)
+    let idx = this.getters['grp/getIndexByOU'](groupOU)
+    let target = state.groups[idx]
+
+    // unshift() 导致不能监听Subgroup.vue的addsg事件，暂时未解决
+    // target.subgroups.unshift({cn: "", description: "", edited: true})
+    target.subgroups.push({cn: "", description: "", edited: true})
+  },
+  CREATE_SUBGROUP(state, data) {
   },
 }
 

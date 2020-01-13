@@ -1,7 +1,7 @@
 <template>
 <v-container fluid>
   <v-row col="12" justify="end">
-          <v-btn small color="green" fab dark @click="handleCreate">
+          <v-btn small color="green" fab dark @click="handleCreateGroup">
           <v-icon>mdi-account-multiple-plus</v-icon>
         </v-btn>
   </v-row>
@@ -28,8 +28,8 @@ export default {
     }
   },
   methods: {
-    handleCreate: function(){
-      this.$store.dispatch("grp/preCreateGroup", {ou: "", description: "", edited: true})
+    handleCreateGroup: function(){
+      this.$store.dispatch("grp/preCreateGroup")
     }
   },
 }
