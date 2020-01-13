@@ -166,8 +166,8 @@ const mutations = {
     let target = state.groups[idx]
 
     // unshift() 导致不能监听Subgroup.vue的addsg事件，暂时未解决
-    // target.subgroups.unshift({cn: "", description: "", edited: true})
-    target.subgroups.push({cn: "", description: "", edited: true})
+    target.subgroups.unshift({cn: "", description: "", edited: true})
+    // target.subgroups.push({cn: "", description: "", edited: true})
   },
   CREATE_SUBGROUP(state, data) {
   },

@@ -59,7 +59,7 @@
               </v-tooltip>
             </v-btn>
           </v-row>
-          <v-row v-for="(sg, index) in this.group.subgroups" :key="index">
+          <v-row v-for="(sg, index) in group.subgroups" :key="index">
             <subgroup :subgroup="sg" v-on:addsg="handleAddSubgroup($event)"></subgroup>
           </v-row>
         </v-list>
@@ -120,6 +120,10 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
+  },
+  created() {
+    console.log('[GroupCard.vue] created')
+    console.log(this.group.subgroups)
   },
   components: {
     'subgroup': Subgroup

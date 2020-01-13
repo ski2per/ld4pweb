@@ -6,7 +6,7 @@
         </v-btn>
   </v-row>
   <v-row col="12" alignment="start" justify="start">
-    <v-col v-for="(group, index) in groups" v-bind:key="index">
+    <v-col v-for="(group, cardIdx) in groups" v-bind:key="cardIdx">
       <group-card v-bind:group="group">
       </group-card>
     </v-col>
