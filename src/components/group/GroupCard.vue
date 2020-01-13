@@ -30,7 +30,7 @@
   
     <v-tooltip bottom v-if="expand">
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-2" color="green" @click="preCreateSubgroup">
+        <v-icon v-on="on" medium class="mx-2" color="green" :disabled="!addSubgroupBtnValid" @click="preCreateSubgroup">
           mdi-folder-plus
         </v-icon>
       </template>
@@ -59,9 +59,11 @@
               </v-tooltip>
             </v-btn>
           </v-row>
+          <subgroup v-for="(sg, index) in group.subgroups" :subgroup="sg" :key="index" v-on:addsg="handleAddSubgroup($event)"></subgroup>
+          <!--
           <v-row v-for="(sg, index) in group.subgroups" :key="index">
-            <subgroup :subgroup="sg" v-on:addsg="handleAddSubgroup($event)"></subgroup>
           </v-row>
+          -->
         </v-list>
       </v-card-text>
     </div>
@@ -94,7 +96,7 @@
       </v-row>
 
       <v-row justify="end">
-        <v-icon medium class="mr-2" color="green" :disabled="!btnValid" @click="validateForm">
+        <v-icon medium class="mr-2" color="green" :disabled="!newGroupFormBtnValid" @click="validateForm">
           mdi-content-save
         </v-icon>
       </v-row>
@@ -111,7 +113,8 @@ import Subgroup from '@/components/group/Subgroup.vue'
 export default {
   data () {
     return {
-      btnValid: true,
+      newGroupFormBtnValid: true,
+      addSubgroupBtnValid: true,
       expand: false,
       showDel: false,
       groupEdited: false,
@@ -120,10 +123,6 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
-  },
-  created() {
-    console.log('[GroupCard.vue] created')
-    console.log(this.group.subgroups)
   },
   components: {
     'subgroup': Subgroup
@@ -143,24 +142,23 @@ export default {
   },
   methods: {
     validateForm: function(){
-      this.valid = false
+      this.newGroupFormBtnValid = false
       if(this.$refs.newGroupForm.validate()) {
         // valid, create group
         this.$store.dispatch('grp/createGroup', this.group)
         this.createGroup()
       }
-      this.valid = true
+      this.newGroupFormBtnValid = true
     },
     //处理子组件传递的创建子组事件
     handleAddSubgroup(data) {
-      console.log("handleAddSubgroup")
-      console.log(data)
-      console.log(this.group.ou)
+
       let payload = {
         group: this.group.ou,
         ...data
       }
       this.$store.dispatch('grp/createSubgroup', payload)
+      this.addSubgroupBtnValid = true
     },
 
     // Methods for group
@@ -192,6 +190,9 @@ export default {
       }
     },
     preCreateSubgroup: function() {
+      // 防止多次添加子组
+      this.addSubgroupBtnValid = false
+
       console.log(`create subgroup for ${this.group.ou}`)
       this.$store.dispatch('grp/preCreateSubgroup', this.group.ou)
     }

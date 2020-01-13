@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 import { stat } from 'fs'
+import { transcode } from 'buffer'
 
 const getDefaultState = () => {
   return {
@@ -108,7 +109,19 @@ const actions = {
   },
   createSubgroup({commit}, data) {
     console.log('[group.js: createSubgroup]')
-    console.log(data)
+    console.log(data.group)
+
+    let groupName = data.group
+    commit('CREATE_SUBGROUP', data)
+    let postData = {
+      members: [],
+      description: data.description
+    }
+    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}/${data.cn}`, postData)
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(error => { console.log(error) })
   },
 }
 
@@ -160,16 +173,36 @@ const mutations = {
     Vue.set(target, 'subgroups', data.subgroups)
   },
   PRE_CREATE_SUBGROUP(state, groupOU) {
-    console.log("PRE_CREATE_SUBGROUP")
-    console.log(groupOU)
     let idx = this.getters['grp/getIndexByOU'](groupOU)
     let target = state.groups[idx]
 
-    // unshift() 导致不能监听Subgroup.vue的addsg事件，暂时未解决
-    target.subgroups.unshift({cn: "", description: "", edited: true})
-    // target.subgroups.push({cn: "", description: "", edited: true})
+    // --- DEBUG ---
+    // console.log(target.subgroups)
+    // let arr = [...target.subgroups]
+    // arr.unshift({cn: "", description: "", edited: true})
+    // arr.push({cn: "", description: "", edited: true})
+    // Vue.set(target, "subgroups", arr)
+
+    // unshift() 导致不能监听Subgroup.vue的自定义addsg事件，暂时未解决
+    // Still stuck
+    // target.subgroups.unshift({cn: "", description: "", edited: true})
+    target.subgroups.push({cn: "", description: "", edited: true})
   },
-  CREATE_SUBGROUP(state, data) {
+  CREATE_SUBGROUP(state, payload) {
+    // payload = {
+    //   group: "group name",
+    //   cn: "subgroup name",
+    //   description: "subgroup description"
+    // }
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    let target = state.groups[groupIdx]
+
+    // 由于在PRE_CREATE_SUBGROUP中使用了push
+    // 默认数组最后一个元素为新加元素
+    let subgroupIdx = target.subgroups.length - 1
+
+    delete payload.group
+    target.subgroups.splice(subgroupIdx, 1, payload)
   },
 }
 

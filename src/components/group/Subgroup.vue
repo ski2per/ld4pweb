@@ -41,7 +41,6 @@
         :rules="[rules.required]"
       ></v-text-field>
       <v-text-field v-model="subgroup.description" label="子组描述"
-        :rules="[rules.required]"
       ></v-text-field>
     </v-form>
   </v-list-item-content>
