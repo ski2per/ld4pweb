@@ -44,17 +44,17 @@
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
         <v-icon v-on="on" medium class="mx-0" @click="editSubgroup">
-          mdi-pencil
+          mdi-account-edit
         </v-icon>
       </template>
-      <span>编辑该组</span>
+      <span>修改成员</span>
     </v-tooltip>
   </v-list-item-action>
 
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="ml-2" color="red" :disabled="!deleteValid" @click="overlay = true">
+        <v-icon v-on="on" medium class="ml-2" :disabled="!deleteValid" @click="overlay = true">
           mdi-delete-outline
         </v-icon>
       </template>

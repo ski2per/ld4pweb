@@ -1,53 +1,32 @@
 <template>
-<v-dialog v-model="dialog" persistent max-width="600px">
+<v-dialog v-model="dialog" persistent max-width="800px">
 
   <v-card>
     <v-card-title>
-      <span class="headline">{{ dialogTitle }}</span>
+      <span class="headline">编辑成员</span>
     </v-card-title>
 
     <v-card-text>
       <v-container>
-        <v-row>
-          <!--User info(left)-->
-          <v-col>
-            <v-form ref="maillistForm">
-              <v-col>
-                <v-text-field v-model="editedItem.cn" label="邮件列表名(建议中文)"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.mail" label="邮件列表地址(不用输入@域名)" 
-                  v-if="!edited" :rules="[rules.required]"
-                ></v-text-field>
-                <v-text-field v-model="editedItem.mail" label="邮件列表地址" v-if="edited" :disabled="edited"
-                ></v-text-field>
-              </v-col>
-            </v-form>
-          </v-col>
-          <!--Only visible in edit mode-->
-          <v-col v-if="edited">
-            <userlist-micro ref="userMicro"
-              :maillist="this.editedItem.mail"
-            ></userlist-micro>
-          </v-col>
-        </v-row>
         <!--User Addition-->
         <v-row>
           <v-col>
-          <userlist-mini ref="userMini"
-            v-on:selected="handleSelectedEvent($event)"
-          ></userlist-mini>
+            <userlist-mini ref="userMini"
+              v-on:selected="handleSelectedEvent($event)"
+            ></userlist-mini>
           </v-col>
           <v-col>
             <template v-if="!selected.length">
-              <h4>从左侧选择要加入邮件列表的用户</h4>
+              <h4><- 选择要加入的用户</h4>
             </template>
             <template v-else>
               <div v-for="item in selected" :key="item.uid">
                 {{ item.cn}}
               </div>
             </template>
+          </v-col>
+          <v-col>
+          group member
           </v-col>
         </v-row>
       </v-container>
@@ -65,12 +44,10 @@
 
 <script>
 import UserListMini from '@/components/user/UserListMini.vue'
-import UserListMicro from '@/components/user/UserListMicro.vue'
 
 export default {
   components: {
     'userlist-mini': UserListMini,
-    'userlist-micro': UserListMicro
   },
   data () {
     return {
@@ -96,11 +73,6 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
-  },
-  computed: {
-    dialogTitle() {
-      return this.edited ? '编辑邮件列表' : '创建邮件列表'
-    },
   },
   methods: {
     handleSelectedEvent(data) {

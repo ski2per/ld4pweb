@@ -10,7 +10,7 @@
     show-select
     hide-default-header
     class="elevation-1"
-    :items-per-page="6"
+    :items-per-page="8"
     :footer-props="{
       'disable-items-per-page': true,
     }"

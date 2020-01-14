@@ -1,5 +1,6 @@
 <template>
 <v-container fluid>
+  <subgroup-edit ref="subgroupEdit"></subgroup-edit>
   <v-row col="12" justify="end">
           <v-btn small color="green" fab dark @click="handleCreateGroup">
           <v-icon>mdi-account-multiple-plus</v-icon>
@@ -16,11 +17,13 @@
 
 <script>
 import GroupCard from '@/components/group/GroupCard.vue'
+import SubgroupEdit from '@/components/group/SubgroupEdit.vue'
 
 export default {
   name: 'GroupCard',
   components: {
-    "group-card": GroupCard
+    "group-card": GroupCard,
+    'subgroup-edit': SubgroupEdit
   },
   computed: {
     groups() {
@@ -34,6 +37,7 @@ export default {
     handleEditSubgroupEvent(payload){
       console.log(payload.group)
       console.log(payload.subgroup)
+      this.$refs.subgroupEdit.dialog = true
     }
   },
 }

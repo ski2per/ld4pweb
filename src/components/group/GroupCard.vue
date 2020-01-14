@@ -132,7 +132,7 @@ export default {
     }
   },
   components: {
-    'subgroup': Subgroup
+    'subgroup': Subgroup,
   },
   props: {
     group: Object,
