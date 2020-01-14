@@ -132,6 +132,21 @@ const actions = {
       this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
     })
     .catch(error => {console.log(error)})
+  },
+  updateSubgroupDesc({commit}, data) {
+    // data = {
+    //   group: group Object,
+    //   subgroup: subgroup Object
+    // }
+    commit('UPDATE_SUBGROUP_DESC', data.group)
+    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group.ou}/${data.subgroup.cn}`, 
+                  {description: data.subgroup.description})
+    .then(response => {
+      console.log(response.data.detail)
+      // this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+    })
+    .catch(error => {console.log(error)})
+    console.log(data.subgroup)
 
   }
 }
@@ -141,7 +156,9 @@ const mutations = {
     Object.assign(state, getDefaultState())
   },
 
+  // ====================================
   // Mutations for group
+  // ====================================
   SET_GROUP_TREE(state, tree){
     state.groupTree = tree
   },
@@ -164,16 +181,19 @@ const mutations = {
     }
     state.groups.splice(idx, 1, newGroup)
   },
-  UPDATE_GROUP(state, data) {
-    let idx = this.getters['grp/getIndexByOU'](data.ou)
-    state.groups.splice(idx, 1, data)
+  UPDATE_GROUP(state, payload) {
+    // payload is a whole group object
+    let idx = this.getters['grp/getIndexByOU'](payload.ou)
+    state.groups.splice(idx, 1, payload)
   },
   DELETE_GROUP(state, data) {
     let idx = this.getters['grp/getIndexByOU'](data.ou)
     state.groups.splice(idx, 1)
   },
 
+  // ====================================
   // Mutations for subgroup
+  // ====================================
   SET_SUBGROUPS(state, data) {
     // data = {
     //   group: "group name",
@@ -197,7 +217,7 @@ const mutations = {
     // unshift() 导致不能监听Subgroup.vue的自定义addsg事件，暂时未解决
     // Still stuck
     // target.subgroups.unshift({cn: "", description: "", edited: true})
-    target.subgroups.push({cn: "", description: "", edited: true})
+    target.subgroups.push({cn: "", description: "", state: "create"})
   },
   CREATE_SUBGROUP(state, payload) {
     // payload = {
@@ -214,6 +234,11 @@ const mutations = {
 
     delete payload.group
     target.subgroups.splice(subgroupIdx, 1, payload)
+  },
+  UPDATE_SUBGROUP_DESC(state, payload) {
+    // payload is a whole group object
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    state.groups.splice(groupIdx, 1)
   },
   DELETE_SUBGROUP(state, payload) {
     // payload = {

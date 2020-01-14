@@ -1,52 +1,9 @@
 <template>
-<!--Normal Subgroup-->
-<v-list-item
-  v-if="!subgroup.edited"
->
-  <v-list-item-content>
-    <v-list-item-title v-text="subgroup.cn"></v-list-item-title>
-    <v-list-item-subtitle v-text="subgroup.description"></v-list-item-subtitle>
-  </v-list-item-content>
-
-  <v-list-item-action>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0">
-          mdi-pencil
-        </v-icon>
-      </template>
-      <span>编辑该组</span>
-    </v-tooltip>
-  </v-list-item-action>
-
-  <v-list-item-action>
-    <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="ml-2" color="red" :disabled="!deleteValid" @click="overlay = true">
-          mdi-delete-outline
-        </v-icon>
-      </template>
-      <span>删除该组</span>
-    </v-tooltip>
-  </v-list-item-action>
-  <v-overlay
-    absolute
-    opacity="0.8"
-    :value="overlay"
-  >
-    <v-icon medium class="mr-6" color="green" @click="overlay = false">
-      mdi-close-outline
-    </v-icon>
-    <v-icon medium class="ml-6" color="green" @click="deleteSubgroup">
-      mdi-check-outline
-    </v-icon>
-  </v-overlay>
-</v-list-item>
-
 <!--
-  新建子组的列表项，当'subgroup'对象中包含'edited: true'时渲染
+  新建子组的列表项，当'subgroup'对象中包含'state: create'时渲染
+  state:create在group.js的mutation: PRE_CREATE_SUBGROUP中修改
 -->
-<v-list-item v-else>
+<v-list-item v-if="subgroup.state === 'create'">
   <v-list-item-content>
     <v-form ref="newSubgroupForm">
       <v-text-field v-model="subgroup.cn" label="子组名"
@@ -66,8 +23,60 @@
       <span>保存</span>
     </v-tooltip>
   </v-list-item-action>
-
 </v-list-item>
+<!--正常的子组条目，包含点击编辑描述功能-->
+<v-list-item v-else >
+  <v-list-item-content>
+    <v-list-item-title @click="editDesc">{{subgroup.cn}}</v-list-item-title>
+    <!--单击子组描述修改-->
+    <v-list-item-subtitle v-if="subgroupEdited">
+      <v-text-field
+        solo
+        autofocus
+        v-model="subgroup.description"
+        @blur="updateDesc"
+        ></v-text-field>
+      </v-list-item-subtitle>
+    <v-list-item-subtitle v-else>{{subgroup.description}}</v-list-item-subtitle>
+  </v-list-item-content>
+
+  <v-list-item-action>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" medium class="mx-0" @click="editSubgroup">
+          mdi-pencil
+        </v-icon>
+      </template>
+      <span>编辑该组</span>
+    </v-tooltip>
+  </v-list-item-action>
+
+  <v-list-item-action>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" medium class="ml-2" color="red" :disabled="!deleteValid" @click="overlay = true">
+          mdi-delete-outline
+        </v-icon>
+      </template>
+      <span>删除该组</span>
+    </v-tooltip>
+  </v-list-item-action>
+  <!--使用overlay组件来进行子组删除确认-->
+  <v-overlay
+    absolute
+    opacity="0.7"
+    :value="overlay"
+  >
+    <v-icon medium class="mr-6" color="orange" @click="overlay = false">
+      mdi-close-outline
+    </v-icon>
+    <v-icon medium class="ml-6" color="orange" @click="deleteSubgroup">
+      mdi-check-outline
+    </v-icon>
+  </v-overlay>
+</v-list-item>
+
+
 
 </template>
 
@@ -77,6 +86,8 @@ export default {
     return {
       createValid: true,//防止重复提交?
       deleteValid: true,
+      subgroupEdited: false,
+      lastDesc: "",
       overlay: false,
       rules: {
         required: value => !!value || '不能为空',
@@ -91,20 +102,32 @@ export default {
       this.valid = false
       if(this.$refs.newSubgroupForm.validate()) {
         // form valid, create subgroup
-        console.log("valid")
         let payload = {
           cn: this.subgroup.cn,
           description: this.subgroup.description 
         }
         // 向父级(GroupCard.vue)发送'addsg'事件，
-        // 并传递subgroup创建数据
+        // 并传递创建subgroup的数据
         this.$emit('addsg', payload)
       }
       this.valid = true
     },
+    editDesc: function() {
+      this.subgroupEdited = true
+      this.lastDesc = this.subgroup.description
+    },
+    updateDesc: function() {
+      this.subgroupEdited = false
+      if(this.lastDesc != this.subgroup.description){
+        this.$emit('editdesc', this.subgroup)
+      }
+    },
     deleteSubgroup: function() {
       this.$emit('delsg', this.subgroup.cn)
       this.overlay = false
+    },
+    editSubgroup: function() {
+      this.$emit('editsg', this.subgroup)
     }
   },
 }

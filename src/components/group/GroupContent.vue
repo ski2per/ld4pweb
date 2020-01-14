@@ -7,7 +7,7 @@
   </v-row>
   <v-row col="12" alignment="start" justify="start">
     <v-col v-for="(group, cardIdx) in groups" v-bind:key="cardIdx">
-      <group-card v-bind:group="group">
+      <group-card v-bind:group="group" v-on:editSubgroup="handleEditSubgroupEvent($event)">
       </group-card>
     </v-col>
   </v-row>
@@ -30,6 +30,10 @@ export default {
   methods: {
     handleCreateGroup: function(){
       this.$store.dispatch("grp/preCreateGroup")
+    },
+    handleEditSubgroupEvent(payload){
+      console.log(payload.group)
+      console.log(payload.subgroup)
     }
   },
 }

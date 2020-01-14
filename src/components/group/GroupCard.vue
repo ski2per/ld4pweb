@@ -5,7 +5,9 @@
   min-width="360"
   max-width="360"
 >
-  <v-card-title>{{ group.ou }}</v-card-title>
+  <v-card-title
+    @click="editGroup"
+  >{{ group.ou }}</v-card-title>
   <v-card-subtitle v-if="groupEdited">
     <v-text-field
       solo
@@ -14,7 +16,7 @@
       @blur="updateGroup"
       ></v-text-field>
     </v-card-subtitle>
-  <v-card-subtitle v-else @click="editGroup">{{ group.description}}</v-card-subtitle>
+  <v-card-subtitle v-else>{{ group.description}}</v-card-subtitle>
 
   <v-card-actions>
   <!--暂时注释
@@ -62,6 +64,8 @@
           <subgroup v-for="(sg, index) in group.subgroups" :subgroup="sg" :key="index"
             v-on:addsg="handleAddSubgroup($event)"
             v-on:delsg="handleDelSubgroup($event)"
+            v-on:editsg="handleEditSubgroup($event)"
+            v-on:editdesc="handleEditSubgroupDesc($event)"
           ></subgroup>
           <!--
           <v-row v-for="(sg, index) in group.subgroups" :key="index">
@@ -149,13 +153,13 @@ export default {
       if(this.$refs.newGroupForm.validate()) {
         // valid, create group
         this.$store.dispatch('grp/createGroup', this.group)
-        this.createGroup()
       }
       this.newGroupFormBtnValid = true
     },
+    // ====================================
     //处理子组件传递的创建子组事件
+    // ====================================
     handleAddSubgroup(data) {
-
       let payload = {
         group: this.group.ou,
         ...data
@@ -170,8 +174,21 @@ export default {
       }
       this.$store.dispatch('grp/deleteSubgroup', data)
     },
+    // 继续向上一级（GroupContent.vue）发送事件
+    handleEditSubgroup(subgroup) {
+      this.$emit('editSubgroup', {group: this.group, subgroup: subgroup})
+    },
+    handleEditSubgroupDesc(subgroup) {
+      let payload = {
+        group: this.group,
+        subgroup: subgroup
+      }
+      this.$store.dispatch('grp/updateSubgroupDesc', payload)
+    },
 
+    // ====================================
     // Methods for group
+    // ====================================
     editGroup: function() {
       this.groupEdited = true
       this.lastDesc = this.group.description
@@ -188,7 +205,9 @@ export default {
       this.expand = false
     },
 
+    // ====================================
     // Methods for subgroup
+    // ====================================
     showSubGroup: function(){
       this.expand = !this.expand
 
