@@ -59,7 +59,10 @@
               </v-tooltip>
             </v-btn>
           </v-row>
-          <subgroup v-for="(sg, index) in group.subgroups" :subgroup="sg" :key="index" v-on:addsg="handleAddSubgroup($event)"></subgroup>
+          <subgroup v-for="(sg, index) in group.subgroups" :subgroup="sg" :key="index"
+            v-on:addsg="handleAddSubgroup($event)"
+            v-on:delsg="handleDelSubgroup($event)"
+          ></subgroup>
           <!--
           <v-row v-for="(sg, index) in group.subgroups" :key="index">
           </v-row>
@@ -160,6 +163,13 @@ export default {
       this.$store.dispatch('grp/createSubgroup', payload)
       this.addSubgroupBtnValid = true
     },
+    handleDelSubgroup(subgroup) {
+      let data = {
+        group: this.group.ou,
+        subgroup: subgroup
+      }
+      this.$store.dispatch('grp/deleteSubgroup', data)
+    },
 
     // Methods for group
     editGroup: function() {
@@ -192,8 +202,6 @@ export default {
     preCreateSubgroup: function() {
       // 防止多次添加子组
       this.addSubgroupBtnValid = false
-
-      console.log(`create subgroup for ${this.group.ou}`)
       this.$store.dispatch('grp/preCreateSubgroup', this.group.ou)
     }
   }//methods

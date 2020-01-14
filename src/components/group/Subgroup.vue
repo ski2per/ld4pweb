@@ -22,13 +22,25 @@
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0" color="red">
+        <v-icon v-on="on" medium class="ml-2" color="red" :disabled="!deleteValid" @click="overlay = true">
           mdi-delete-outline
         </v-icon>
       </template>
       <span>删除该组</span>
     </v-tooltip>
   </v-list-item-action>
+  <v-overlay
+    absolute
+    opacity="0.8"
+    :value="overlay"
+  >
+    <v-icon medium class="mr-6" color="green" @click="overlay = false">
+      mdi-close-outline
+    </v-icon>
+    <v-icon medium class="ml-6" color="green" @click="deleteSubgroup">
+      mdi-check-outline
+    </v-icon>
+  </v-overlay>
 </v-list-item>
 
 <!--
@@ -47,7 +59,7 @@
   <v-list-item-action>
     <v-tooltip bottom>
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-0" color="green" :disabled="!valid" @click="validateForm">
+        <v-icon v-on="on" medium class="mx-0" color="green" :disabled="!createValid" @click="validateForm">
           mdi-check-bold
         </v-icon>
       </template>
@@ -63,7 +75,9 @@
 export default {
   data () {
     return {
-      valid: true,//防止重复提交?
+      createValid: true,//防止重复提交?
+      deleteValid: true,
+      overlay: false,
       rules: {
         required: value => !!value || '不能为空',
       },
@@ -74,7 +88,6 @@ export default {
   },
   methods: {
     validateForm: function() {
-      console.log("shit")
       this.valid = false
       if(this.$refs.newSubgroupForm.validate()) {
         // form valid, create subgroup
@@ -89,7 +102,10 @@ export default {
       }
       this.valid = true
     },
-
+    deleteSubgroup: function() {
+      this.$emit('delsg', this.subgroup.cn)
+      this.overlay = false
+    }
   },
 }
 </script>

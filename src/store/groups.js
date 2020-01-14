@@ -19,9 +19,12 @@ const getters = {
   },
 
   // For subgroup
-  getIdexByCn: (state) => (data) => {
-    console.log('getIndexByCn')
-    console.log(data)
+  getIndexByCN: (state) => (data) => {
+    // data = {
+    //   subgroups: [],
+    //   cn: "subgroup cn"
+    // }
+    return data.subgroups.map(function(x){return x.cn}).indexOf(data.cn)
   }
 }
 
@@ -109,7 +112,6 @@ const actions = {
   },
   createSubgroup({commit}, data) {
     console.log('[group.js: createSubgroup]')
-    console.log(data.group)
 
     let groupName = data.group
     commit('CREATE_SUBGROUP', data)
@@ -123,6 +125,15 @@ const actions = {
     })
     .catch(error => { console.log(error) })
   },
+  deleteSubgroup({commit}, data) {
+    commit('DELETE_SUBGROUP', data)
+    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}`)
+    .then(response => {
+      this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+    })
+    .catch(error => {console.log(error)})
+
+  }
 }
 
 const mutations = {
@@ -204,8 +215,20 @@ const mutations = {
     delete payload.group
     target.subgroups.splice(subgroupIdx, 1, payload)
   },
+  DELETE_SUBGROUP(state, payload) {
+    // payload = {
+    //   group: "group name",
+    //   subgroup: "subgroup name"
+    // }
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    let data = {
+      subgroups: state.groups[groupIdx].subgroups,
+      cn: payload.subgroup
+    }
+    let subgroupIdx = this.getters['grp/getIndexByCN'](data)
+    state.groups[groupIdx].subgroups.splice(subgroupIdx, 1)
+  }
 }
-
 export default {
   namespaced: true,
   state,
