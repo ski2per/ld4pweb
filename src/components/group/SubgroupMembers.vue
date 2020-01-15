@@ -30,28 +30,32 @@
 <script>
 
 export default {
-  name: 'SubgroupMember',
+  name: 'SubgroupMembers',
   data () {
     return {
-      maillistName: "",
       loading: false
     }
   }, //data()
   props: {
-    maillist: ""
+    group: "",
+    subgroup: "",
   },
   computed: {
-    members: function(){
-      return this.$store.getters['mlst/maillistMember'](this.maillistName)
+    members: function() {
+      console.log("rick")
+      return this.$store.getters['grp/subgroupMembers']({group: this.group, subgroup: this.subgroup})
     } 
   },
+  mounted() {
+    console.log("mmmmmm")
+  },
   created() {
-    this.maillistName = this.maillist.split('@')[0]
-
+    console.log('==================')
+    console.log(`members:${this.members}`)
     if (!this.members.length) {
-      console.log('No maillist member in Vuex, load from API')
+      console.log('No subgroup member in Vuex, load from API')
       this.loading = true
-      this.$store.dispatch('mlst/loadMaillistMember', this.maillistName)
+      this.$store.dispatch('grp/loadSubgroupMembers', {group: this.group, subgroup: this.subgroup})
       .then(response => {
         this.loading = false
       })
@@ -59,11 +63,11 @@ export default {
   },
   methods: {
     removeItem(item) {
-      this.$store.dispatch('mlst/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
+      // this.$store.dispatch('mlst/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
     },
     selectItem(selectedList) {
       // 向MLEditDialog发送selected事件，并传递当前选中用户列表
-      this.$emit('selected', selectedList)
+      // this.$emit('selected', selectedList)
     },
   }, //method()
 }

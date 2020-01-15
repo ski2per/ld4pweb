@@ -35,9 +35,13 @@ export default {
       this.$store.dispatch("grp/preCreateGroup")
     },
     handleEditSubgroupEvent(payload){
-      console.log(payload.group)
-      console.log(payload.subgroup)
+      // console.log('handleEditSubgroupEvent')
+      // console.log(payload.group.ou)
+      // console.log(payload.subgroup.cn)
+      // 将当前的group跟subgroup对象传递给SubgroupEdit组件
       this.$refs.subgroupEdit.dialog = true
+      this.$refs.subgroupEdit.group = payload.group
+      this.$refs.subgroupEdit.subgroup = payload.subgroup
     }
   },
 }

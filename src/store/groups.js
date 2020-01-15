@@ -25,6 +25,18 @@ const getters = {
     //   cn: "subgroup cn"
     // }
     return data.subgroups.map(function(x){return x.cn}).indexOf(data.cn)
+  },
+  subgroupMembers: (state, getters) => (data) => {
+    // data = {
+    //   group: 'group name',
+    //   subgroup: 'subgroup name'
+    // }
+    let groupIdx = getters.getIndexByOU(data.group)
+    console.log(`groupInx: ${groupIdx}`)
+    let targetGroup = state.groups[groupIdx]
+    let subgroupIdx = getters.getIndexByCN({subgroups: targetGroup.subgroups, cn: data.subgroup})
+    console.log(`subgroupIdx: ${subgroupIdx}`)
+    return targetGroup.subgroups[subgroupIdx].members
   }
 }
 
@@ -33,7 +45,9 @@ const actions = {
     commit('RESET_STATE')
   },
 
+  // ====================================
   //Actions for group
+  // ====================================
   loadGroups({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
@@ -99,13 +113,19 @@ const actions = {
     })
   },
 
+  // ====================================
   //Actions for subgroup
+  // ====================================
   loadSubgroup({commit}, groupName) {
     httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
     .then(response => {
       commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
     })
     .catch(error => { console.log(error) })
+  },
+  loadSubgroupMembers({commit}, payload) {
+    console.log("loadSubgroupMembers")
+    console.log(payload)
   },
   preCreateSubgroup({commit}, groupOU) {
     commit('PRE_CREATE_SUBGROUP', groupOU)

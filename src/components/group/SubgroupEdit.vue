@@ -3,7 +3,7 @@
 
   <v-card>
     <v-card-title>
-      <span class="headline">编辑成员</span>
+      <span class="headline">编辑 {{group.ou}}/{{subgroup.cn}} 成员</span>
     </v-card-title>
 
     <v-card-text>
@@ -26,7 +26,7 @@
             </template>
           </v-col>
           <v-col>
-          group member
+          <subgroup-members ref="sgMembers" v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"></subgroup-members>
           </v-col>
         </v-row>
       </v-container>
@@ -44,13 +44,18 @@
 
 <script>
 import UserListMini from '@/components/user/UserListMini.vue'
+import SubgroupMembers from '@/components/group/SubgroupMembers.vue'
 
 export default {
   components: {
     'userlist-mini': UserListMini,
+    'subgroup-members': SubgroupMembers,
   },
   data () {
     return {
+      group: Object,
+      subgroup: Object,
+
       notification: {
         msg: '',
         color: '',
@@ -73,6 +78,12 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
+  },
+  mounted() {
+    console.log('[SubgroupEdit.vue: mounted()]')
+  },
+  created() {
+    console.log('[SubgroupEdit.vue: created()]')
   },
   methods: {
     handleSelectedEvent(data) {

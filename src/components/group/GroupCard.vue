@@ -176,6 +176,7 @@ export default {
     },
     // 继续向上一级（GroupContent.vue）发送事件
     handleEditSubgroup(subgroup) {
+      console.log('[GroupCard.vue: handleEditSubgroup]')
       this.$emit('editSubgroup', {group: this.group, subgroup: subgroup})
     },
     handleEditSubgroupDesc(subgroup) {
