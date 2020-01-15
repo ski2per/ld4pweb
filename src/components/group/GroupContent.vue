@@ -1,17 +1,25 @@
 <template>
 <v-container fluid>
+  <!--公用subgroup编辑组件-->
   <subgroup-edit ref="subgroupEdit"></subgroup-edit>
+
+  <!--创建组按钮-->
   <v-row col="12" justify="end">
-          <v-btn small color="green" fab dark @click="handleCreateGroup">
-          <v-icon>mdi-account-multiple-plus</v-icon>
-        </v-btn>
+    <v-btn small color="green" fab dark @click="handleCreateGroup">
+      <v-icon>mdi-account-multiple-plus</v-icon>
+    </v-btn>
   </v-row>
+
+  <!--组卡片组件-->
   <v-row col="12" alignment="start" justify="start">
     <v-col v-for="(group, cardIdx) in groups" v-bind:key="cardIdx">
-      <group-card v-bind:group="group" v-on:editSubgroup="handleEditSubgroupEvent($event)">
+      <group-card
+        v-bind:group="group"
+        v-on:editSubgroup="handleEditSubgroupEvent($event)">
       </group-card>
     </v-col>
   </v-row>
+
 </v-container>
 </template>
 

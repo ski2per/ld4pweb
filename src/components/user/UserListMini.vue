@@ -61,6 +61,9 @@ export default {
       ],
     }
   }, //data()
+  created() {
+    console.log('[UserListMini.vue] created')
+  },
   methods: {
     selectItem(selectedList) {
       // 向MLEditDialog发送selected事件，并传递当前选中用户列表

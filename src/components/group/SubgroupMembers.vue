@@ -43,11 +43,15 @@ export default {
   computed: {
     members: function() {
       console.log("rick")
-      return this.$store.getters['grp/subgroupMembers']({group: this.group, subgroup: this.subgroup})
+      console.log(this.group)
+      console.log(this.subgroup)
+      let tmp = this.$store.getters['grp/subgroupMembers']({group: this.group, subgroup: this.subgroup})
+      console.log(tmp)
+      return tmp
     } 
   },
   mounted() {
-    console.log("mmmmmm")
+    console.log("mounted shit")
   },
   created() {
     console.log('==================')

@@ -26,7 +26,7 @@
             </template>
           </v-col>
           <v-col>
-          <subgroup-members ref="sgMembers" v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"></subgroup-members>
+          <subgroup-members v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"></subgroup-members>
           </v-col>
         </v-row>
       </v-container>
