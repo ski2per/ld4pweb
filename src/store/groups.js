@@ -176,6 +176,23 @@ const actions = {
   },
   deleteSubgroupMember({commit}, data) {
 
+  },
+  addSubgroupMember({commit}, data) {
+    // data = {
+    //   group: "group name",
+    //   subgroup: "subgroup name",
+    //   members: [Object, Object]
+    // }
+    commit('ADD_SUBGROUP_MEMBER', data)
+    // WILL refactor in later release
+    // MAYBE add batch addition API
+    data.members.forEach((item, index) => {
+      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${item.uid}`) 
+      .then(response => {
+        console.log(response.data.detail)
+      })
+      .catch(error => {console.log(error)})
+    })
   }
 }
 
@@ -291,6 +308,18 @@ const mutations = {
     }
     let subgroupIdx = this.getters['grp/getIndexByCN'](data)
     state.groups[groupIdx].subgroups.splice(subgroupIdx, 1)
+  },
+  ADD_SUBGROUP_MEMBER(state, payload) {
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    let data = {
+      subgroups: state.groups[groupIdx].subgroups,
+      cn: payload.subgroup
+    }
+    let subgroupIdx = this.getters['grp/getIndexByCN'](data)
+    let targetArr = state.groups[groupIdx].subgroups[subgroupIdx].members
+    let newArr = targetArr.concat(payload.members)
+    state.groups[groupIdx].subgroups[subgroupIdx].members = newArr
+
   }
 }
 export default {

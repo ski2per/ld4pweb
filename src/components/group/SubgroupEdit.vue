@@ -99,6 +99,7 @@ export default {
     },
     reset () {
       this.dialog = false
+      this.disabled = false
       this.selected = []
       this.$refs.userMini.selectedUsers = []
     },
@@ -118,7 +119,14 @@ export default {
           }
         })//forEach
         console.log(realMember2add)
-        // this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
+        console.log(this.group.ou)
+        console.log(this.subgroup.cn)
+        let payload = {
+          group: this.group.ou,
+          subgroup: this.subgroup.cn,
+          members: realMember2add
+        }
+        this.$store.dispatch('grp/addSubgroupMember', payload)
       }
       this.reset()
     },
