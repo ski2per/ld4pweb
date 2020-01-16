@@ -42,7 +42,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="green darken-1" text @click="validate">OK</v-btn>
+      <v-btn color="green darken-1" text @click="update">OK</v-btn>
     </v-card-actions>
   </v-card>
 </v-dialog>
@@ -69,7 +69,6 @@ export default {
       },
       dialog: false,
       valid: true,
-      edited: false,
       selected: [],
       //Record last cn，invoke maillist update API when value changing
       lastCN: "",
@@ -100,50 +99,28 @@ export default {
     },
     reset () {
       this.dialog = false
-      this.edited = false
-      this.editedItem = this.defaultItem
       this.selected = []
       this.$refs.userMini.selectedUsers = []
-      this.notification= {msg: "", color: ""}
     },
-    validate () {
+    update() {
       this.valid = false
-      if(this.$refs.maillistForm.validate()) {
-        if (this.edited) {
-          this.modify()
-        } else {
-          this.create()
-        }
-      }
-      this.valid = true
-    },
-    modify () {
-      const mlMember = this.filterList(this.$refs.userMicro.members)
-      const maillistName = this.editedItem.mail.split('@')[0]
+      const currentMembers = this.filterList(this.$refs.sgMembers.members)
+      // const maillistName = this.editedItem.mail.split('@')[0]
 
       // NEED optimize later
-      if((this.lastCN == this.editedItem.cn) && (! this.selected.length)) {
-        this.reset()
-      } else {
-        // Detect whether cn value changed
-        if(this.lastCN != this.editedItem.cn) {
-          this.$store.dispatch('mlst/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
-          this.reset()
-        }
-
-        if (this.selected.length) {
-          // Update maillist member
-          let members = []
-          this.selected.forEach((item, index) => {
-            // 过滤掉重复选择的用户
-            if (mlMember.indexOf(item.cn) == -1) {
-              members.push(item)
-            }
-          })//forEach
-          this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
-          this.reset()
-        }
+      if (this.selected.length) {
+        // Update maillist member
+        let realMember2add = []
+        this.selected.forEach((item, index) => {
+          // 过滤掉重复选择的用户
+          if (currentMembers.indexOf(item.cn) == -1) {
+            realMember2add.push(item)
+          }
+        })//forEach
+        console.log(realMember2add)
+        // this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
       }
+      this.reset()
     },
     create () {
       const data = {

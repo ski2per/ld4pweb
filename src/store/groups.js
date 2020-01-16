@@ -237,11 +237,8 @@ const mutations = {
     //   subgroup: "subgroup name",
     //   members: []
     // }
-    console.log(payload)
     let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
-    console.log(`groupIdx: ${groupIdx}`)
     let targetGroup = state.groups[groupIdx]
-    console.log(targetGroup)
     let subgroupIdx = this.getters['grp/getIndexByCN']({subgroups: targetGroup.subgroups, cn: payload.subgroup})
     targetGroup.subgroups[subgroupIdx].members = payload.members
   },

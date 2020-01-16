@@ -42,18 +42,13 @@ export default {
   },
   computed: {
     members: function() {
-      console.log('invoke members-----')
       return this.$store.getters['grp/subgroupMembers']({group: this.group, subgroup: this.subgroup})
     } 
   },
   created() {
-    console.log('holy shit, i am created')
-    console.log(this.members.length)
-    console.log(`loading: ${this.loading}`)
     if (!this.members.length) {
       console.log('No subgroup member in Vuex, load from API')
       this.loading = true
-      console.log(`loading: ${this.loading}`)
       this.$store.dispatch('grp/loadSubgroupMembers', {group: this.group, subgroup: this.subgroup})
       .then(response => {
         this.loading = false
