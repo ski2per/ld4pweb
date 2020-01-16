@@ -8,7 +8,7 @@
         ></v-progress-circular>
       </template>
       <!--Will use CSS later-->
-      <v-list dense style="max-height: 200px" class="overflow-y-auto">
+      <v-list dense style="max-height: 400px" class="overflow-y-auto">
         <v-list-item-group color="green">
           <v-list-item
             v-for="(item, idx) in members"
@@ -42,19 +42,18 @@ export default {
   },
   computed: {
     members: function() {
-      console.log("rick")
+      console.log('invoke members-----')
       return this.$store.getters['grp/subgroupMembers']({group: this.group, subgroup: this.subgroup})
     } 
   },
-  mounted() {
-    console.log("mmmmmm")
-  },
   created() {
-    console.log('==================')
-    console.log(`members:${this.members}`)
+    console.log('holy shit, i am created')
+    console.log(this.members.length)
+    console.log(`loading: ${this.loading}`)
     if (!this.members.length) {
       console.log('No subgroup member in Vuex, load from API')
       this.loading = true
+      console.log(`loading: ${this.loading}`)
       this.$store.dispatch('grp/loadSubgroupMembers', {group: this.group, subgroup: this.subgroup})
       .then(response => {
         this.loading = false
@@ -63,6 +62,7 @@ export default {
   },
   methods: {
     removeItem(item) {
+      console.log(`will remove ${item.uid}`)
       // this.$store.dispatch('mlst/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
     },
     selectItem(selectedList) {

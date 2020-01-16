@@ -8,6 +8,7 @@ const getDefaultState = () => {
   }
 }
 
+// 邮件列表state使用字典(Object)来保存
 const state = getDefaultState()
 
 const getters = {

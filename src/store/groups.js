@@ -5,6 +5,7 @@ import { transcode } from 'buffer'
 
 const getDefaultState = () => {
   return {
+    // Group及GeoupTree使用数组来保存
     groups: [],
     groupTree: [],
   }
@@ -32,10 +33,8 @@ const getters = {
     //   subgroup: 'subgroup name'
     // }
     let groupIdx = getters.getIndexByOU(data.group)
-    console.log(`groupInx: ${groupIdx}`)
     let targetGroup = state.groups[groupIdx]
     let subgroupIdx = getters.getIndexByCN({subgroups: targetGroup.subgroups, cn: data.subgroup})
-    console.log(`subgroupIdx: ${subgroupIdx}`)
     return targetGroup.subgroups[subgroupIdx].members
   }
 }
@@ -114,7 +113,7 @@ const actions = {
   },
 
   // ====================================
-  //Actions for subgroup
+  // Actions for subgroup
   // ====================================
   loadSubgroup({commit}, groupName) {
     httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
@@ -124,8 +123,16 @@ const actions = {
     .catch(error => { console.log(error) })
   },
   loadSubgroupMembers({commit}, payload) {
-    console.log("loadSubgroupMembers")
-    console.log(payload)
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${payload.group}/${payload.subgroup}/member`)
+    .then(response => {
+      let dataPack = {
+        ...payload,
+        members: response.data
+      }
+      commit('SET_SUBGROUP_MEMBERS', dataPack)
+    })
+    .catch(error => { console.log(error) })
+
   },
   preCreateSubgroup({commit}, groupOU) {
     commit('PRE_CREATE_SUBGROUP', groupOU)
@@ -166,7 +173,8 @@ const actions = {
       // this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
     })
     .catch(error => {console.log(error)})
-    console.log(data.subgroup)
+  },
+  deleteSubgroupMember({commit}, data) {
 
   }
 }
@@ -222,6 +230,20 @@ const mutations = {
     let idx = this.getters['grp/getIndexByOU'](data.group)
     let target = state.groups[idx]
     Vue.set(target, 'subgroups', data.subgroups)
+  },
+  SET_SUBGROUP_MEMBERS(state, payload) {
+    // payload = {
+    //   group: "group name",
+    //   subgroup: "subgroup name",
+    //   members: []
+    // }
+    console.log(payload)
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    console.log(`groupIdx: ${groupIdx}`)
+    let targetGroup = state.groups[groupIdx]
+    console.log(targetGroup)
+    let subgroupIdx = this.getters['grp/getIndexByCN']({subgroups: targetGroup.subgroups, cn: payload.subgroup})
+    targetGroup.subgroups[subgroupIdx].members = payload.members
   },
   PRE_CREATE_SUBGROUP(state, groupOU) {
     let idx = this.getters['grp/getIndexByOU'](groupOU)

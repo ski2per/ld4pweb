@@ -25,8 +25,15 @@
               </div>
             </template>
           </v-col>
-          <v-col>
-          <subgroup-members ref="sgMembers" v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"></subgroup-members>
+          <!--
+          !!! 通过v-if触发条件渲染，保证v-dialog每次打开时都对SubgroupMembers.vue进行创建，
+          也就是能触发created() hook
+          -->
+          <v-col v-if="dialog">
+            <subgroup-members
+              ref="sgMembers"
+              v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"
+            ></subgroup-members>
           </v-col>
         </v-row>
       </v-container>
@@ -78,12 +85,6 @@ export default {
         required: value => !!value || '不能为空',
       },
     }
-  },
-  mounted() {
-    console.log('[SubgroupEdit.vue: mounted()]')
-  },
-  created() {
-    console.log('[SubgroupEdit.vue: created()]')
   },
   methods: {
     handleSelectedEvent(data) {
