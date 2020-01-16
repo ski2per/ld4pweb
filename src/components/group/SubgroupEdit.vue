@@ -99,7 +99,7 @@ export default {
     },
     reset () {
       this.dialog = false
-      this.disabled = false
+      this.valid = true
       this.selected = []
       this.$refs.userMini.selectedUsers = []
     },

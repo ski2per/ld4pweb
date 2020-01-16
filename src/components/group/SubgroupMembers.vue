@@ -58,7 +58,12 @@ export default {
   methods: {
     removeItem(item) {
       console.log(`will remove ${item.uid}`)
-      // this.$store.dispatch('mlst/removeUserFromMaillist', {maillist: this.maillistName, uid: item.uid})
+      let payload = {
+        group: this.group,
+        subgroup: this.subgroup,
+        member: item.uid
+      }
+      this.$store.dispatch('grp/deleteSubgroupMember', payload)
     },
     selectItem(selectedList) {
       // 向MLEditDialog发送selected事件，并传递当前选中用户列表

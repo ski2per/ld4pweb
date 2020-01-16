@@ -27,6 +27,13 @@ const getters = {
     // }
     return data.subgroups.map(function(x){return x.cn}).indexOf(data.cn)
   },
+  getIndexByUid: (state) => (data) => {
+    // data = {
+    //   members: [],
+    //   member: "member's uid"
+    // }
+    return data.members.map(function(x){return x.uid}).indexOf(data.member)
+  },
   subgroupMembers: (state, getters) => (data) => {
     // data = {
     //   group: 'group name',
@@ -175,7 +182,18 @@ const actions = {
     .catch(error => {console.log(error)})
   },
   deleteSubgroupMember({commit}, data) {
-
+    // data = {
+    //   group: "group name",
+    //   subgroup: "subgroup name",
+    //   member: "member uid"
+    // }
+    commit('DELETE_SUBGROUP_MEMBER', data)
+    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${data.member}`) 
+    .then(response => {
+      console.log(response.data.detail)
+      // this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+    })
+    .catch(error => {console.log(error)})
   },
   addSubgroupMember({commit}, data) {
     // data = {
@@ -319,6 +337,16 @@ const mutations = {
     let targetArr = state.groups[groupIdx].subgroups[subgroupIdx].members
     let newArr = targetArr.concat(payload.members)
     state.groups[groupIdx].subgroups[subgroupIdx].members = newArr
+  },
+  DELETE_SUBGROUP_MEMBER(state, payload) {
+    // data = {
+    //   group: "group name",
+    //   subgroup: "subgroup name",
+    //   member: "member uid"
+    // }
+    let members = this.getters['grp/subgroupMembers'](payload)
+    let memberIdx = this.getters['grp/getIndexByUid']({members: members, member: payload.member})
+    members.splice(memberIdx, 1)
 
   }
 }
