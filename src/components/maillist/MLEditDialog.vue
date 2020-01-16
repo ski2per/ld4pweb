@@ -28,7 +28,7 @@
           <!--Only visible in edit mode-->
           <v-col v-if="edited">
             <userlist-micro ref="userMicro"
-              :maillist="this.editedItem.mail"
+              :maillist="editedItem.mail"
             ></userlist-micro>
           </v-col>
         </v-row>
