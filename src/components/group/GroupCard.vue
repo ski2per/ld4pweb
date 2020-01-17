@@ -49,7 +49,19 @@
     <div v-show="expand">
       <v-divider></v-divider>
       <v-card-text>
-        <v-list>
+        <!--加载提示-->
+        <v-list v-if="loading">
+          <v-row justify="center">
+            <v-progress-circular
+              width="2"
+              color="green darken-2"
+              indeterminate
+            >
+            </v-progress-circular>
+          </v-row>
+        </v-list>
+
+        <v-list v-else>
           <!-- 删除按钮 -->
           <v-row justify="center" v-if="!isSubgroup">
             <v-btn icon color="red" @click="deleteGroup">
@@ -125,6 +137,7 @@ export default {
       expand: false,
       showDel: false,
       groupEdited: false,
+      loading: false,
       lastDesc: "",
       rules: {
         required: value => !!value || '不能为空',
@@ -214,8 +227,12 @@ export default {
       // Only load subgroup when expanding,
       // and subgroups array is empty
       if(this.expand && !this.isSubgroup){
+        this.loading = true
         console.log('[GroupCard]: Loading subgroup')
         this.$store.dispatch('grp/loadSubgroup', this.group.ou)
+        .then(response => {
+          this.loading = false
+        })
       }
     },
     preCreateSubgroup: function() {

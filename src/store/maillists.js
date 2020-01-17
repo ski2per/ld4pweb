@@ -132,13 +132,12 @@ const actions = {
     .catch(error => { reject(error) })
   },
   loadMaillistMember({commit}, maillist) {
-    return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
-      .then(response => {
-        commit('SET_MAILLIST_MEMBER', {maillist: maillist, members: response.data})
-        resolve(response)
-      })
-      .catch(error => { reject(error) })
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
+    .then(response => {
+      commit('SET_MAILLIST_MEMBER', {maillist: maillist, members: response.data})
+    })
+    .catch(error => {
+      console.log(error)
     })
   },
 }

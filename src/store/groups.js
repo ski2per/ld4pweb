@@ -123,11 +123,17 @@ const actions = {
   // Actions for subgroup
   // ====================================
   loadSubgroup({commit}, groupName) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
-    .then(response => {
-      commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
+    return new Promise((resolve, reject) => {
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
+      .then(response => {
+        commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
+        resolve(response)
+      })
+      .catch(error => {
+        console.log(error.response)
+        reject(error)
+      })
     })
-    .catch(error => { console.log(error) })
   },
   loadSubgroupMembers({commit}, payload) {
     httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${payload.group}/${payload.subgroup}/member`)

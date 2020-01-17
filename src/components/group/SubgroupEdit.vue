@@ -17,7 +17,7 @@
           </v-col>
           <v-col>
             <template v-if="!selected.length">
-              <h4><- 选择要加入的用户</h4>
+              <h4>选择要加入的用户</h4>
             </template>
             <template v-else>
               <div v-for="item in selected" :key="item.uid">
@@ -28,11 +28,13 @@
           <!--
           !!! 通过v-if触发条件渲染，保证v-dialog每次打开时都对SubgroupMembers.vue进行创建，
           也就是能触发created() hook
+              v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"
           -->
           <v-col v-if="dialog">
             <subgroup-members
               ref="sgMembers"
-              v-bind="{group: this.group.ou, subgroup: this.subgroup.cn}"
+              :group="this.group.ou"
+              :subgroup="this.subgroup.cn"
             ></subgroup-members>
           </v-col>
         </v-row>
