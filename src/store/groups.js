@@ -158,8 +158,6 @@ const actions = {
     commit('PRE_CREATE_SUBGROUP', groupOU)
   },
   createSubgroup({commit}, data) {
-    console.log('[group.js: createSubgroup]')
-
     let groupName = data.group
     commit('CREATE_SUBGROUP', data)
     let postData = {
@@ -168,7 +166,7 @@ const actions = {
     }
     httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}/${data.cn}`, postData)
     .then(response => {
-      console.log(response.data)
+      console.info(`[Invoke API] POST: /groups/{group}/{subgroup}, http code: ${response.status}`)
     })
     .catch(error => { console.log(error) })
   },
@@ -320,6 +318,7 @@ const mutations = {
     let subgroupIdx = target.subgroups.length - 1
 
     delete payload.group
+    Vue.set(payload, 'members', [])
     target.subgroups.splice(subgroupIdx, 1, payload)
   },
   UPDATE_SUBGROUP_DESC(state, payload) {
