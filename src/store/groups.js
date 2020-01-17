@@ -138,7 +138,14 @@ const actions = {
       }
       commit('SET_SUBGROUP_MEMBERS', dataPack)
     })
-    .catch(error => { console.log(error) })
+    .catch(error => {
+      // Bug fix: 如果该组在memberOf插件之前有一些残留用户，进行通知提示
+      //          用户需要手动删除
+      if(error.response && error.response.status == 404) {
+        this.dispatch('notify', {msg: "该组有残留用户(F12)", color: "error"}, { root: true })
+      }
+      console.log(error.response)
+    })
 
   },
   preCreateSubgroup({commit}, groupOU) {
