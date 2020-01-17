@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="this.$store.state.usr.users"
+    :items="users"
     :search="search"
     sort-by="uid"
     :loading="loading"
@@ -106,8 +106,13 @@ export default {
       ],
     }
   }, //data()
+  computed: {
+    users: function() {
+      return this.$store.state.usr.users
+    }
+  },
   created() {
-    if(!this.$store.state.usr.users.length) {
+    if(!this.users.length) {
       this.loading = true
       this.$store.dispatch('usr/loadUsers')
       .then(response => {

@@ -2,8 +2,10 @@
   <v-data-table
     v-model="selectedUsers"
     :headers="headers"
-    :items="this.$store.state.usr.users"
+    :items="users"
     :search="search"
+    :loading="loading"
+    loading-text="Loading..."
     sort-by="uid"
     item-key="cn"
     dense
@@ -51,6 +53,7 @@ export default {
   name: 'UserListMini',
   data () {
     return {
+      loading: false,
       valid: true,  
       selectedUsers: [],
       search: '',
@@ -61,8 +64,19 @@ export default {
       ],
     }
   }, //data()
+  computed: {
+    users: function() {
+      return this.$store.state.usr.users
+    }
+  },
   created() {
-    console.log('[UserListMini.vue] created')
+    if(!this.users.length) {
+      this.loading = true
+      this.$store.dispatch('usr/loadUsers')
+      .then(response => {
+        this.loading = false
+      })
+    }
   },
   methods: {
     selectItem(selectedList) {
