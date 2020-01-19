@@ -29,12 +29,17 @@
         <v-btn small color="green" fab dark @click="handleCreate">
           <v-icon>mdi-email-plus </v-icon>
         </v-btn>
+
         <!--创建/编辑用户对话框-->
         <ml-edit-dialog ref="editDialog"></ml-edit-dialog>
-
         <ml-delete-dialog ref="deleteDialog"></ml-delete-dialog>
 
       </v-toolbar>
+    </template>
+
+    <!-- Use Dynamic Slot Names to setup header -->
+    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
+      <span class="green-text">{{h.text}}</span>
     </template>
 
     <!--操作按钮
@@ -109,3 +114,10 @@ export default {
   }, //method()
 }
 </script>
+
+<style scoped>
+.green-text {
+  color: green;
+  font-size: 16px;
+}
+</style>

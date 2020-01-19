@@ -7,30 +7,7 @@
     :loading="loading"
     loading-text="Loading..."
   >
-    <!-- Use Dynamic Slot Names -->
-    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
-      <span class="green-text">{{h.text}}</span>
-    </template>
-    <!--
-      "item"为v-slot:item中的属性，
-      貌似必须为"item"
-    -->
-    <template v-slot:item="{item}"
-    >
-      <tr>
-        <uid-col :user="item"></uid-col>
-        <td>{{item.cn}}</td>
-        <td>{{item.mail}}</td>
-        <td>
-          <user-list-action :user="item"
-          v-on:delete="handleDeleteEvent($event)"
-          v-on:edit="handleEditEvent($event)"
-          v-on:lock="handleLockEvent($event)"
-          v-on:reset="handleResetPsdEvent($event)"
-          ></user-list-action>
-        </td>
-      </tr>
-    </template>
+    <!--Table top-->
     <template v-slot:top>
       <v-toolbar flat color="white">
         <v-spacer></v-spacer>
@@ -55,6 +32,32 @@
 
       </v-toolbar>
     </template>
+
+    <!-- Use Dynamic Slot Names to setup header -->
+    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
+      <span class="green-text">{{h.text}}</span>
+    </template>
+    <!--
+      "item"为v-slot:item中的属性，
+      貌似必须为"item"
+    -->
+    <template v-slot:item="{item}"
+    >
+      <tr>
+        <uid-col :user="item"></uid-col>
+        <td>{{item.cn}}</td>
+        <td>{{item.mail}}</td>
+        <td>
+          <user-list-action :user="item"
+          v-on:delete="handleDeleteEvent($event)"
+          v-on:edit="handleEditEvent($event)"
+          v-on:lock="handleLockEvent($event)"
+          v-on:reset="handleResetPsdEvent($event)"
+          ></user-list-action>
+        </td>
+      </tr>
+    </template>
+
 
     <!--操作按钮
       v-slot:item.action跟的"action"对应headers数组对象中，
@@ -169,5 +172,6 @@ export default {
 <style scoped>
 .green-text {
   color: green;
+  font-size: 16px;
 }
 </style>
