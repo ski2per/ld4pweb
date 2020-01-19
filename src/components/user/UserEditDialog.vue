@@ -33,6 +33,14 @@
               <v-col>
                 <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
               </v-col>
+              <v-col>
+                <v-checkbox 
+                  label="管理员"
+                  v-model="editedItem.admin"
+                  true-value="true"
+                  false-value="false"
+                ></v-checkbox>
+              </v-col>
             </v-form>
           </v-col>
 
@@ -78,6 +86,7 @@ export default {
           mail: '',
           sn: '',
           givenName: '',
+          admin: false,
       },
       defaultItem: {
           uid: '',
@@ -85,6 +94,7 @@ export default {
           mail: '',
           sn: '',
           givenName: '',
+          admin: false,
       },
       rules: {
         required: value => !!value || '不能为空',
@@ -116,11 +126,13 @@ export default {
         cn: this.editedItem.cn,
         sn: this.editedItem.sn,
         givenName: this.editedItem.givenName,
+        admin: this.editedItem.admin
       }
 
       if (this.edited) {
         this.$store.dispatch('usr/updateUser', data)
       } else {
+        console.log(data)
         // Add new user
         this.$store.dispatch('usr/createUser', data)
         // WILL refactor later~~~~
