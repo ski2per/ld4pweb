@@ -37,8 +37,7 @@
                 <v-checkbox 
                   label="管理员"
                   v-model="editedItem.admin"
-                  true-value="true"
-                  false-value="false"
+                  :input-value="editedItem.admin"
                 ></v-checkbox>
               </v-col>
             </v-form>
@@ -130,6 +129,7 @@ export default {
       }
 
       if (this.edited) {
+        // 后期增加: 如果未修改则不提交
         this.$store.dispatch('usr/updateUser', data)
       } else {
         console.log(data)

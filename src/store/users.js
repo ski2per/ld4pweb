@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 import { stat } from 'fs'
 
@@ -150,6 +151,18 @@ const mutations = {
   UPDATE_USER(state, user) {
     let idx = this.getters['usr/getIndexByUid'](user.uid)
     let target = state.users[idx]
+    if(user.admin) {
+      // Assign admin permission to user
+      // no need to update 'enabledService' array
+      // target.domainGlobalAdmin = 'yes'
+      Vue.set(target, 'domainGlobalAdmin', 'yes')
+    } else {
+      if(target.domainGlobalAdmin) {
+        // This means user is admin before,
+        // remove user's admin permission
+        Vue.delete(target, 'domainGlobalAdmin')
+      }
+    }
     target.cn = user.cn
     target.displayName = user.cn
     target.sn = user.sn

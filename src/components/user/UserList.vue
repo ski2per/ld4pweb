@@ -129,12 +129,17 @@ export default {
       this.$refs.editDialog.dialog = true
     },
     handleEditEvent(item) {
+      let isAdmin = false
+      if(item.domainGlobalAdmin && item.domainGlobalAdmin == 'yes') {
+        isAdmin = true
+      }
       const editedItem = {
         uid: item.uid,
         cn: item.cn,
         mail: item.mail,
         sn: item.sn,
         givenName: item.givenName,
+        admin: isAdmin
       }
       this.$refs.editDialog.editedItem = editedItem
       this.$refs.editDialog.edited = true
