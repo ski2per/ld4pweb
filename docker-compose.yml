@@ -2,9 +2,9 @@ version: '3.5'
 
 services:
   ldapman-web:
-    #build:
-    #  context: ./
-    #  dockerfile: Dockerfile
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
     image: ld4pman-web
     hostname: ld4pman-web
     ports:
