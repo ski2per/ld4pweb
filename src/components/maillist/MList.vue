@@ -38,8 +38,8 @@
     </template>
 
     <!-- Use Dynamic Slot Names to setup header -->
-    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
-      <span class="green-text">{{h.text}}</span>
+    <template v-for="(h, index) in headers" v-slot:[`header.${h.value}`]>
+      <span class="green-text" :key="index">{{h.text}}</span>
     </template>
 
     <!--操作按钮
@@ -54,7 +54,7 @@
     </template>
 
     <template v-slot:no-data>
-      No data : P
+      No Data ; /
     </template>
 
   </v-data-table>

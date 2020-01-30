@@ -20,6 +20,13 @@
     </v-col>
   </v-row>
 
+  <!--空组提示-->
+  <v-container v-if="!groups.length">
+    <v-row justify="center">
+      No Data ; /
+    </v-row>
+  </v-container>
+
 </v-container>
 </template>
 
