@@ -20,7 +20,7 @@ httpCli.interceptors.response.use(undefined, function (err) {
         })
       }
     }
-    // throw err;
+    throw err;
   });
 });
 
