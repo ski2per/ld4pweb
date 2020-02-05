@@ -1,5 +1,6 @@
 <template>
-<v-container fluid class="pa-0 ml-0 fill-height" style="display:-webkit-box;">
+<!--<v-container fluid class="pa-0 ml-0" style="display:-webkit-box;">-->
+<v-container fluid>
   <v-row align="center" justify="center">
 
     <v-col cols="12">
@@ -26,6 +27,7 @@
 
       </v-row><!--row with elevation-->
     </v-col>
+
   </v-row><!--row with 100% height-->
 
 </v-container>
@@ -41,3 +43,6 @@
     }
   }
 </script>
+
+<style scoped>
+</style>
