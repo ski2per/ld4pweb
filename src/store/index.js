@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import httpCli from 'httpCli'
 import httpCli from '@/assets/js/http'
 import users from './users'
 import groups from './groups'
@@ -36,10 +35,6 @@ const mutations = {
     state.admin = false
   },
   NOTIFY(state, data){
-    // data = {
-    //   msg: "yo, check it out",
-    //   color: "success"
-    // }
     state.notificationText = data.msg
     state.notificationColor = data.color 
   }

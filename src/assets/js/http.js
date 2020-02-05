@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 
@@ -11,11 +12,15 @@ httpCli.interceptors.response.use(undefined, function (err) {
   return new Promise(function (resolve, reject) {
     console.log("Caught by axios response interceptor")
     if (err.response.status === 401) {
-      // store.dispatch('logout')
-      console.log(err)
-      console.log(err.response)
+      let currentURL = err.response.config.url
+      if ( ! (currentURL.endsWith('/login') || currentURL.endsWith('/password')) ) {
+        store.dispatch('logout')
+        .then(() => {
+          window.location.href="#/login"
+        })
+      }
     }
-    throw err;
+    // throw err;
   });
 });
 
