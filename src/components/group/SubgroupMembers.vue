@@ -79,5 +79,5 @@ export default {
 .v-progress-circular {
   margin: 6rem;
 }
--->
 </style>
+-->
