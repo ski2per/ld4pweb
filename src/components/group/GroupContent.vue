@@ -11,7 +11,7 @@
   </v-row>
 
   <!--组卡片组件-->
-  <v-row col="12" alignment="start" justify="start">
+  <v-row>
     <v-col v-for="(group, cardIdx) in groups" v-bind:key="cardIdx">
       <group-card
         v-bind:group="group"

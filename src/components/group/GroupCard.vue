@@ -2,8 +2,6 @@
 <!--Normal Card-->
 <v-card v-if="!group.edited"
   class="mx-auto"
-  min-width="360"
-  max-width="360"
 >
   <v-card-title
     @click="editGroup"
