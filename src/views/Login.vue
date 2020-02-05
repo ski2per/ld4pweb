@@ -1,9 +1,12 @@
 <template>
-<!--<v-container fluid class="pa-0 ml-0" style="display:-webkit-box;">-->
-<v-container fluid>
-  <v-row align="center" justify="center">
+<v-container fluid class="pa-0 ml-0 fill-height" style="display:-webkit-box;">
+  <!--
+    Use 'no-gutters' to remove negative margin,
+    or there will be a tricky space on the right
+  -->
+  <v-row align="center" justify="center" no-gutters="">
 
-    <v-col cols="12">
+    <v-col>
       <v-row class="elevation-4" > 
 
         <v-col>
