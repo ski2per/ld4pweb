@@ -28,7 +28,7 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-icon>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title style="font-size: 1em;">{{ item.title }}</v-list-item-title>
         </v-list-item-icon>
       </v-list-item>
     </v-list>
@@ -82,3 +82,9 @@
     },
   }
 </script>
+
+<style scoped>
+.v-list-item-title {
+  font-size: 18px;
+}
+</style>
