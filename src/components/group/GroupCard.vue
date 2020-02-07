@@ -211,7 +211,6 @@ export default {
       }
     },
     deleteGroup: function(){
-      console.log(this.group.ou)
       this.$store.dispatch('grp/deleteGroup', this.group)
       this.expand = false
     },

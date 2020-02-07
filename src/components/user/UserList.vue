@@ -34,8 +34,8 @@
     </template>
 
     <!-- Use Dynamic Slot Names to setup header -->
-    <template v-for="h in headers" v-slot:[`header.${h.value}`]>
-      <span class="green-text">{{h.text}}</span>
+    <template v-for="(h,idx) in headers" v-slot:[`header.${h.value}`]>
+      <span class="green-text" :key="idx">{{h.text}}</span>
     </template>
     <!--
       "item"为v-slot:item中的属性，

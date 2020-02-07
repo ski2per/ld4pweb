@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
-import { stat } from 'fs'
 
 const getDefaultState = () => {
   return {

@@ -5,7 +5,6 @@
       <v-col cols="4">
       <v-card min-width="400">
         <v-card-title><h4>{{ me.cn }}</h4></v-card-title>
-        <v-divider></v-divider>
         <v-list dense>
           <v-list-item>
             <v-list-item-content>用户ID:</v-list-item-content>
@@ -21,8 +20,19 @@
             <v-list-item-content>邮箱别名:</v-list-item-content>
             <v-list-item-content>{{ me.shadowAddress}}</v-list-item-content>
           </v-list-item>
-
         </v-list>
+        <v-divider></v-divider>
+        <v-card-text v-if="me.memberof && me.memberof.length">
+        <v-card-subtitle style="color: green;">
+          所在用户组：
+        </v-card-subtitle>
+        <v-list dense>
+          <v-list-item v-for="(member, idx) in me.memberof" :key="idx">
+            {{member.pgroup}}/{{member.group}}
+          </v-list-item>
+        </v-list>
+        </v-card-text>
+
       </v-card>
       </v-col>
     </v-row>

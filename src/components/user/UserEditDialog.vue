@@ -132,7 +132,6 @@ export default {
         // 后期增加: 如果未修改则不提交
         this.$store.dispatch('usr/updateUser', data)
       } else {
-        console.log(data)
         // Add new user
         this.$store.dispatch('usr/createUser', data)
         // WILL refactor later~~~~

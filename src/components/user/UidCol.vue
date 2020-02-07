@@ -1,6 +1,6 @@
 <template>
 <td v-bind:class="classObject">
-  <v-icon v-if="isAdmin">mdi-account-supervisor</v-icon>
+  <v-icon v-if="isAdmin">mdi-account-tie</v-icon>
   {{ this.user.uid }}
 </td>
 </template>

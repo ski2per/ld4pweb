@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
-import { stat } from 'fs'
-import { transcode } from 'buffer'
 
 const getDefaultState = () => {
   return {
@@ -203,6 +201,8 @@ const actions = {
     .then(response => {
       console.log(response.data.detail)
       // this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
+      // Load current user's info(especially for admin)
+      this.dispatch('usr/loadMyInfo')
     })
     .catch(error => {console.log(error)})
   },
@@ -219,6 +219,8 @@ const actions = {
       httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${item.uid}`) 
       .then(response => {
         console.log(response.data.detail)
+        // Load current user's info(especially for admin)
+        this.dispatch('usr/loadMyInfo')
       })
       .catch(error => {console.log(error)})
     })

@@ -120,9 +120,6 @@ export default {
             realMember2add.push(item)
           }
         })//forEach
-        console.log(realMember2add)
-        console.log(this.group.ou)
-        console.log(this.subgroup.cn)
         let payload = {
           group: this.group.ou,
           subgroup: this.subgroup.cn,
