@@ -21,7 +21,7 @@
         <v-col class="green darken-1">
           <v-chip class="my-2" color="white" outlined label >
             <v-icon left>mdi-contact-mail-outline</v-icon>
-            统一账号管理系统
+            统一账号管理系统 - {{version}}
           </v-chip>
           <v-row justify="start" class="pl-2">
             <login-form />
@@ -41,6 +41,11 @@
 
   export default {
     name: "Login",
+    data() {
+      return {
+        version: process.env.VUE_APP_VERSION,
+      }
+    },
     components: {
       'login-form': LoginForm,
     }
