@@ -2,8 +2,8 @@
 <v-dialog v-model="dialog" persistent max-width="800px">
 
   <v-card>
-    <v-card-title>
-      <span class="headline">编辑 {{group.ou}}/{{subgroup.cn}} 成员</span>
+    <v-card-title class="green-text">
+      编辑 {{group.ou}}/{{subgroup.cn}} 成员
     </v-card-title>
 
     <v-card-text>
@@ -142,3 +142,9 @@ export default {
   }//methods(),
 }
 </script>
+
+<style scoped>
+.green-text {
+  color: green;
+}
+</style>

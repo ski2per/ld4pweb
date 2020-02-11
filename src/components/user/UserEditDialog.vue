@@ -2,8 +2,8 @@
 <v-dialog v-model="dialog" persistent max-width="600px">
 
   <v-card>
-    <v-card-title>
-      <span class="headline">{{ title }}</span>
+    <v-card-title class="green-text">
+      {{title}}
     </v-card-title>
 
     <v-card-text>
@@ -158,3 +158,9 @@ export default {
   }//methods(),
 }
 </script>
+
+<style scoped>
+.green-text {
+  color: green;
+}
+</style>

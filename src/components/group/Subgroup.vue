@@ -64,13 +64,14 @@
   <!--使用overlay组件来进行子组删除确认-->
   <v-overlay
     absolute
-    opacity="0.7"
+    opacity="0.8"
+    color="orange"
     :value="overlay"
   >
-    <v-icon medium class="mr-6" color="orange" @click="overlay = false">
+    <v-icon medium class="mr-6" color="white" @click="overlay = false">
       mdi-close-outline
     </v-icon>
-    <v-icon medium class="ml-6" color="orange" @click="deleteSubgroup">
+    <v-icon medium class="ml-6" color="white" @click="deleteSubgroup">
       mdi-check-outline
     </v-icon>
   </v-overlay>

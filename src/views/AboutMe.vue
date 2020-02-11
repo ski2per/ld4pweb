@@ -28,7 +28,7 @@
         </v-card-subtitle>
         <v-list dense>
           <v-list-item v-for="(member, idx) in me.memberof" :key="idx">
-            {{member.pgroup}}/{{member.group}}
+            {{member.pgroup}} / {{member.group}}
           </v-list-item>
         </v-list>
         </v-card-text>
