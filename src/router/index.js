@@ -18,8 +18,10 @@ const routes = [
   {
     path: '/',
     redirect: '/user',
-    requiresAuth: true,
-    requiresAdmin: true,
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+    }
   },
   {
     path: '/aboutme',
@@ -73,7 +75,7 @@ router.beforeEach((to, from, next) => {
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of
   // 'record => record.meta.requriesAuth' function
-  if(to.matched.some(record => record.meta.requiresAuth)) {
+  if(to.matched.some(fragmentURL => fragmentURL.meta.requiresAuth)) {
     if(!store.getters.isLoggedIn) {
       next('/login')
     } else {
