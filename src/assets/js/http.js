@@ -4,7 +4,7 @@ import store from '@/store'
 
 const httpCli = axios.create({
   baseURL: process.env.VUE_APP_API_HOST,
-  timeout: 10000,
+  timeout: 0,
 })
 
 // Logout when getting 401 code
