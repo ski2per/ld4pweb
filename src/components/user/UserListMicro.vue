@@ -49,7 +49,6 @@ export default {
   },
   created() {
     this.maillistName = this.maillist.split('@')[0]
-
     if (!this.members.length) {
       console.log('No maillist member in Vuex, load from API')
       this.$store.dispatch('mlst/loadMaillistMember', this.maillistName)

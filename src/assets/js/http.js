@@ -12,8 +12,8 @@ httpCli.interceptors.response.use(undefined, function (err) {
   return new Promise(function (resolve, reject) {
     console.log("Caught by axios response interceptor")
     if (err.response.status === 401) {
-      let currentURL = err.response.config.url
-      if ( ! (currentURL.endsWith('/login') || currentURL.endsWith('/password')) ) {
+      let currentURL = err.response.config.url.split('/').pop()
+      if ( !['login', 'password', 'maillistinfo'].includes(currentURL) ) {
         store.dispatch('logout')
         .then(() => {
           window.location.href="#/login"

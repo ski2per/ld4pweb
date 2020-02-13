@@ -61,7 +61,13 @@ const routes = [
       requiresAuth: true,
       requiresAdmin: true,
     }
+  },
+  {
+    path: '/maillistinfo',
+    name: 'maillistinfo',
+    component: () => import(/* webpackChunkName: "maillistinfo" */ '../views/MaillistInfo.vue'),
   }
+
 ]
 
 const router = new VueRouter({
