@@ -4,11 +4,11 @@
     加载中...
   </v-container>
   <v-list>
-    <v-list-item v-for="(maillist, idx0) in allMaillists" :key="idx0">
+    <v-list-item v-for="(maillist, idx) in allMaillists" :key="idx">
       <v-list-item-content>
         <v-list-item-title style="font-size: 1.5em;">{{maillist.cn}}</v-list-item-title>
         <v-list-item-subtitle style="color: #388E3C;">{{maillist.mail}}</v-list-item-subtitle>
-        <maillist-member :maillist="maillist.mail"></maillist-member>
+        <maillist-member v-if="! (maillist.mail == 'all_group@cetcxl.com')" :maillist="maillist.mail"></maillist-member>
       </v-list-item-content>
     </v-list-item>
   </v-list>
@@ -39,6 +39,7 @@ export default {
       this.allMaillists = ['加载邮件列表信息出错🤷']
       console.log(error)
     })
+    console.log(this.allMaillists)
 
     // httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
     // .then(response => {
