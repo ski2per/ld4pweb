@@ -1,7 +1,17 @@
 <template>
   <v-container class="mx-0 px-0">
-    <v-row >
-      <v-col cols="1" xs="12" v-for="(member, idx) in members" :key="idx">
+    <v-row align="center"  justify="start" v-if="!members.length">
+      <v-progress-circular class="ml-6"
+        width="2"
+        color="green darken-2"
+        indeterminate
+      >
+      </v-progress-circular>
+    </v-row>
+    <v-row  justify="start" >
+      <!-- Use 'cols' instead of 'xs' -->
+      <v-col cols="6" sm="3" md="2" lg="2" xl="1"
+        v-for="(member, idx) in members" :key="idx">
         {{member.cn}}
       </v-col>
     </v-row>
