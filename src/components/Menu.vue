@@ -1,18 +1,27 @@
 <template>
   <v-navigation-drawer
+    v-model="drawer"
+    :mini-variant.sync="mini"
     app
     permanent
-    width="200"
   >
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title class="title">
-          统一账号管理
-        </v-list-item-title>
-        <v-list-item-subtitle style="color: #FF8F00;">
-          {{ version }}
-        </v-list-item-subtitle>
-      </v-list-item-content>
+    <v-list-item class="px-2">
+      <v-list-item-action>
+        <v-btn icon color="warning" @click="logout" >
+          <v-tooltip right>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" medium>mdi-exit-run</v-icon>
+            </template>
+            <span>退出登录</span>
+          </v-tooltip>
+        </v-btn>
+      </v-list-item-action>
+      <v-list-item-title class="green-text">
+        统一账号系统
+      </v-list-item-title>
+      <v-btn icon @click.stop="mini = !mini">
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
     </v-list-item>
 
     <v-divider></v-divider>
@@ -32,13 +41,13 @@
         </v-list-item-icon>
       </v-list-item>
     </v-list>
-
+<!--
     <template v-slot:append>
       <div class="pa-4">
         <v-btn block @click="logout" class="success">Logout</v-btn>
       </div>
     </template>
-
+-->
   </v-navigation-drawer>
 </template>
 
@@ -47,6 +56,8 @@
     name: 'Menu',
     data () {
       return {
+        drawer: true,
+        mini: true,
         items: [],
         version: process.env.VUE_APP_VERSION,
       }
@@ -86,5 +97,8 @@
 <style scoped>
 .v-list-item-title {
   font-size: 18px;
+}
+.green-text {
+  color: green;
 }
 </style>
