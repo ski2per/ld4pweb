@@ -20,7 +20,8 @@
         统一账号系统
       </v-list-item-title>
       <v-btn icon @click.stop="mini = !mini">
-        <v-icon>mdi-chevron-left</v-icon>
+        <!-- <v-icon>mdi-chevron-left</v-icon> -->
+        <v-icon>mdi-arrow-left-circle-outline</v-icon>
       </v-btn>
     </v-list-item>
 
