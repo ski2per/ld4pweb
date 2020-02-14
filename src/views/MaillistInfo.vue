@@ -40,20 +40,6 @@ export default {
       console.log(error)
     })
     console.log(this.allMaillists)
-
-    // httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
-    // .then(response => {
-    //   if(response && response.status == 200) {
-    //     this.maillistInfo = response.data
-    //     console.log(Object.keys(thddis.maillistInfo))
-    //   } else {
-    //     this.maillistInfo = ['加载邮件列表信息出错🤷']
-    //   }
-    // })
-    // .catch(error => {
-    //   console.log(error)
-    // })
-
   },
 }
 </script>
