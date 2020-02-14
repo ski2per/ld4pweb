@@ -42,13 +42,6 @@
         </v-list-item-icon>
       </v-list-item>
     </v-list>
-<!--
-    <template v-slot:append>
-      <div class="pa-4">
-        <v-btn block @click="logout" class="success">Logout</v-btn>
-      </div>
-    </template>
--->
   </v-navigation-drawer>
 </template>
 

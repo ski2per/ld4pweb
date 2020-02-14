@@ -74,10 +74,3 @@ export default {
   }, //method()
 }
 </script>
-<!--
-<style scoped>
-.v-progress-circular {
-  margin: 6rem;
-}
-</style>
--->

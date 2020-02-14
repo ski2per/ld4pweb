@@ -78,10 +78,6 @@
             v-on:editsg="handleEditSubgroup($event)"
             v-on:editdesc="handleEditSubgroupDesc($event)"
           ></subgroup>
-          <!--
-          <v-row v-for="(sg, index) in group.subgroups" :key="index">
-          </v-row>
-          -->
         </v-list>
       </v-card-text>
     </div>

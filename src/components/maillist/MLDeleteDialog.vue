@@ -39,31 +39,6 @@ export default {
       const maillistName = this.maillist.mail.split('@')[0]
       this.$store.dispatch('mlst/deleteMaillist', maillistName)
       this.dialog = false
-      // .then(response => {
-      //   if(response && response.status == 200) {
-      //     info.msg = response.data.detail
-      //     info.color = "success"
-      //     // 重新加载邮件列表
-      //     this.$store.dispatch('mlst/loadMaillists')
-      //   } else {
-      //     info.msg = response.data.detail
-      //     info.color = "error"
-      //   }
-      //   this.$store.dispatch("notify", info)
-      // })
-      // .catch(error => {
-      //   // Also need to refactor
-      //   info.color = "error"
-      //   if (error.response) {
-      //     info.msg = error.response.data.detail
-      //   } else {
-      //     info.msg = "Unknown server error"
-      //   }
-      //   this.$store.dispatch('notify', info)
-      // })
-      // .finally(() => {
-      //   this.dialog = false
-      // })
     },
   },
 }

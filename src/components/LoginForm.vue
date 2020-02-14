@@ -22,7 +22,6 @@
     ></v-text-field>
 
     <v-btn color="warning" type="submit" :disabled="!valid">Login</v-btn>
-    <!--<v-btn color="warning" @click="validate" :disabled="!valid">Login</v-btn>-->
   </v-form>
 </template>
 

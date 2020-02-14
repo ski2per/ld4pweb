@@ -58,11 +58,6 @@
         }
       }
     }, //data()
-    // computed: {
-        // passwordMatchRule() {
-            // return () => (this.newPassword === this.newPasswordAgain) || '两次密码不匹配'
-        // }
-    // },
     methods: {
       validate () {
         this.valid = false

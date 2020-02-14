@@ -39,7 +39,6 @@ export default {
       this.allMaillists = ['加载邮件列表信息出错🤷']
       console.log(error)
     })
-    console.log(this.allMaillists)
   },
 }
 </script>
