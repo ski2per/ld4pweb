@@ -14,7 +14,8 @@
     class="elevation-1"
     :items-per-page="8"
     :footer-props="{
-      'disable-items-per-page': true,
+      itemsPerPageText: '',
+      disableItemsPerPage: true
     }"
     @input="selectItem"
   >

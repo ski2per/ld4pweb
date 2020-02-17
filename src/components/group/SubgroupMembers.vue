@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0">
     <h3>当前组用户({{members.length}})</h3>
     <v-list v-if="!members.length">
       <v-row justify="center">

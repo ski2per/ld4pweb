@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GroupContent from '@/components/group/GroupContent.vue'
+import GroupContent from '@/components/group/GroupCardContainer.vue'
 
 export default {
   name: 'Group',

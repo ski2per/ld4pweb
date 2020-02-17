@@ -20,7 +20,7 @@
               <h4>选择要加入的用户</h4>
             </template>
             <template v-else>
-              <div v-for="item in selected" :key="item.uid">
+              <div style="color: green;" v-for="item in selected" :key="item.uid">
                 {{ item.cn}}
               </div>
             </template>

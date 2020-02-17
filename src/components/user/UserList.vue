@@ -6,6 +6,15 @@
     sort-by="uid"
     :loading="loading"
     loading-text="Loading..."
+    dense
+    :footer-props="{
+      itemsPerPageText: '每页',
+      showFirstLastPage: true,
+      firstIcon: 'mdi-skip-previous',
+      lastIcon: 'mdi-skip-next',
+      prevIcon: 'mdi-arrow-left-bold',
+      nextIcon: 'mdi-arrow-right-bold'
+    }"
   >
     <!--Table top-->
     <template v-slot:top>

@@ -6,40 +6,28 @@
       {{title}}
     </v-card-title>
 
-    <v-card-text>
-      <v-container>
+    <v-card-text class="pa-0">
+      <v-container class="py-0">
         <v-row>
           <!--User info(left)-->
           <v-col>
             <v-form ref="userForm">
-              <v-col>
-                <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col>
-              <v-col v-if="edited">
-                <v-text-field v-model="editedItem.mail" label="Email" disabled></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.sn" label="姓(Surname)"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
-              </v-col>
-              <v-col>
-                <v-checkbox 
-                  label="管理员"
-                  v-model="editedItem.admin"
-                  :input-value="editedItem.admin"
-                ></v-checkbox>
-              </v-col>
+              <v-text-field v-model="editedItem.cn" label="Name(建议中文名)"
+                :rules="[rules.required]"
+              ></v-text-field>
+              <v-text-field v-model="editedItem.uid" label="UserID(中文全拼)" :disabled="edited"
+                :rules="[rules.required]"
+              ></v-text-field>
+              <v-text-field v-if="edited" v-model="editedItem.mail" label="Email" disabled></v-text-field>
+              <v-text-field v-model="editedItem.sn" label="姓(Surname)"
+                :rules="[rules.required]"
+              ></v-text-field>
+              <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
+              <v-checkbox 
+                label="管理员"
+                v-model="editedItem.admin"
+                :input-value="editedItem.admin"
+              ></v-checkbox>
             </v-form>
           </v-col>
 
@@ -53,6 +41,7 @@
               :items="this.$store.state.grp.groupTree"
               item-disabled="locked"
               selectable
+              dense
               return-object
             ></v-treeview>
           </v-col>
@@ -60,7 +49,7 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions class="py-0">
       <v-spacer></v-spacer>
       <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
       <v-btn color="green darken-1" text @click="validate">OK</v-btn>

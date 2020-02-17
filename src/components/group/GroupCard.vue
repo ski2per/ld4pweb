@@ -6,6 +6,7 @@
 >
   <v-card-title
     @click="editGroup"
+    style="color:green;"
   >{{ group.ou }}</v-card-title>
   <v-card-subtitle v-if="groupEdited">
     <v-text-field
@@ -31,7 +32,7 @@
   
     <v-tooltip bottom v-if="expand">
       <template v-slot:activator="{ on }">
-        <v-icon v-on="on" medium class="mx-2" color="green" :disabled="!addSubgroupBtnValid" @click="preCreateSubgroup">
+        <v-icon v-on="on" medium class="mx-2" color="warning" :disabled="!addSubgroupBtnValid" @click="preCreateSubgroup">
           mdi-folder-plus
         </v-icon>
       </template>

@@ -5,6 +5,7 @@
     :search="search"
     sort-by="uid"
     class="elevation-1"
+    dense
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
