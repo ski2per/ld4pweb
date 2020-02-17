@@ -42,16 +42,17 @@
     <template v-for="(h, index) in headers" v-slot:[`header.${h.value}`]>
       <span class="green-text" :key="index">{{h.text}}</span>
     </template>
-
-    <!--操作按钮
-      v-slot:item.action中的"action"对应headers数组对象中，
-      操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
-    -->
-    <template v-slot:item.action="{ item }">
-      <ml-action :maillist="item"
-      v-on:delete="handleDeleteEvent($event)"
-      v-on:edit="handleEditEvent($event)"
-      ></ml-action>
+    <template v-slot:item="{item}">
+      <tr>
+        <ml-td :maillist="item"></ml-td>
+        <td>{{item.mail}}</td>
+        <td>
+          <ml-action :maillist="item"
+          v-on:delete="handleDeleteEvent($event)"
+          v-on:edit="handleEditEvent($event)"
+          ></ml-action>
+        </td>
+      </tr>
     </template>
 
     <template v-slot:no-data>
@@ -63,6 +64,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import MLTd from '@/components/maillist/MLTd.vue'
 import MLActionBtn from '@/components/maillist/MLActionBtn.vue'
 import MLEditDialog from '@/components/maillist/MLEditDialog.vue'
 import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
@@ -70,6 +72,7 @@ import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
 export default {
   name: 'MList',
   components: {
+    'ml-td': MLTd,
     'ml-action': MLActionBtn,
     'ml-edit-dialog': MLEditDialog,
     'ml-delete-dialog': MLDeleteDialog,
@@ -81,7 +84,7 @@ export default {
       headers: [
         { text: "邮件列表", value: "cn"},
         { text: "Email", value: "mail", sortable: false},
-        { text: "操作", value: "action", sortable: false, align: 'center'},
+        { text: "操作", value: "action", sortable: false, align: 'left'},
       ],
     }
   }, //data()

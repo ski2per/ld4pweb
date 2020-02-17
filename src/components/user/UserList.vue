@@ -50,10 +50,9 @@
       "item"为v-slot:item中的属性，
       貌似必须为"item"
     -->
-    <template v-slot:item="{item}"
-    >
+    <template v-slot:item="{item}">
       <tr>
-        <uid-col :user="item"></uid-col>
+        <uid-td :user="item"></uid-td>
         <td>{{item.cn}}</td>
         <td>{{item.mail}}</td>
         <td>
@@ -69,8 +68,8 @@
 
 
     <!--操作按钮
-      v-slot:item.action跟的"action"对应headers数组对象中，
-      操作这一列的value
+      v-slot:item.action中的"action"对应headers数组对象中，
+      操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
     <template v-slot:item.action="{ item }">
       <user-list-action :user="item"
       v-on:delete="handleDeleteEvent($event)"
@@ -87,7 +86,7 @@
 </template>
 
 <script>
-import UidCol from '@/components/user/UidCol.vue'
+import UidTd from '@/components/user/UidTd.vue'
 import UserListActionBtn from '@/components/user/UserListActionBtn.vue'
 import UserEditDialog from '@/components/user/UserEditDialog.vue'
 import UserActionDialog from '@/components/user/UserActionDialog.vue'
@@ -98,7 +97,7 @@ export default {
     'user-list-action': UserListActionBtn,
     'user-edit-dialog': UserEditDialog,
     'user-action-dialog': UserActionDialog,
-    'uid-col': UidCol,
+    'uid-td': UidTd,
   },
   data () {
     return {
