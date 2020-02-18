@@ -6,6 +6,14 @@
     sort-by="uid"
     class="elevation-1"
     dense
+    :footer-props="{
+      itemsPerPageText: '每页',
+      showFirstLastPage: true,
+      firstIcon: 'mdi-skip-previous',
+      lastIcon: 'mdi-skip-next',
+      prevIcon: 'mdi-arrow-left-bold',
+      nextIcon: 'mdi-arrow-right-bold'
+    }"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
