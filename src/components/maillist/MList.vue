@@ -38,21 +38,42 @@
       </v-toolbar>
     </template>
 
-    <!-- Use Dynamic Slot Names to setup header -->
+    <!-- 
+      Use Dynamic Slot Names to setup header.
+      Here we use <span> to set color for header
+     -->
     <template v-for="(h, index) in headers" v-slot:[`header.${h.value}`]>
       <span class="green-text" :key="index">{{h.text}}</span>
     </template>
-    <template v-slot:item="{item}">
-      <tr>
-        <ml-td :maillist="item"></ml-td>
-        <td>{{item.mail}}</td>
-        <td>
-          <ml-action :maillist="item"
-          v-on:delete="handleDeleteEvent($event)"
-          v-on:edit="handleEditEvent($event)"
-          ></ml-action>
-        </td>
-      </tr>
+
+    <template v-slot:item.cn="props">
+      <v-edit-dialog
+        :return-value.sync="props.item.cn"
+        @open="open(props.item)"
+        @save="save(props.item)"
+      > {{ props.item.cn}}
+        <template v-slot:input>
+          <v-text-field
+            v-model="props.item.cn"
+            :rules="[maxChars]"
+            label="Edit"
+            single-line
+            counter
+          >
+          </v-text-field>
+        </template>
+      </v-edit-dialog>
+    </template>
+
+    <!--操作按钮
+      v-slot:item.action中的"action"对应headers数组对象中，
+      操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
+    -->
+    <template v-slot:item.action="{item}">
+      <ml-action :maillist="item"
+      v-on:delete="handleDeleteEvent($event)"
+      v-on:edit="handleEditEvent($event)"
+      ></ml-action>
     </template>
 
     <template v-slot:no-data>
@@ -64,7 +85,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import MLTd from '@/components/maillist/MLTd.vue'
 import MLActionBtn from '@/components/maillist/MLActionBtn.vue'
 import MLEditDialog from '@/components/maillist/MLEditDialog.vue'
 import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
@@ -72,7 +92,6 @@ import MLDeleteDialog from '@/components/maillist/MLDeleteDialog.vue'
 export default {
   name: 'MList',
   components: {
-    'ml-td': MLTd,
     'ml-action': MLActionBtn,
     'ml-edit-dialog': MLEditDialog,
     'ml-delete-dialog': MLDeleteDialog,
@@ -80,12 +99,14 @@ export default {
   data () {
     return {
       valid: true,  
-      search: '',
+      search: "",
+      lastCN: "",
       headers: [
         { text: "邮件列表", value: "cn"},
         { text: "Email", value: "mail", sortable: false},
         { text: "操作", value: "action", sortable: false, align: 'left'},
       ],
+      maxChars: v => v.length <= 16 || '小于16个字符',
     }
   }, //data()
   computed: {
@@ -97,6 +118,16 @@ export default {
     // }
   },
   methods: {
+    open: function(item) {
+      this.lastCN = item.cn
+    },
+    save: function(item){
+      if(item.cn != this.lastCN) {
+        const maillistName = item.mail.split('@')[0]
+        this.$store.dispatch('mlst/updateMaillist', {maillist: maillistName, cn: item.cn})
+
+      }
+    },
     handleCreate() {
       this.$refs.editDialog.editedItem = {}
       this.$refs.editDialog.dialog = true

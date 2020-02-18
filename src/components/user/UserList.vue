@@ -66,7 +66,6 @@
       </tr>
     </template>
 
-
     <!--操作按钮
       v-slot:item.action中的"action"对应headers数组对象中，
       操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
