@@ -12,7 +12,11 @@
       </v-row>
     </v-list>
     <!--Will use CSS later-->
-    <v-list v-else dense style="max-height: 200px" class="overflow-y-auto">
+    <v-list v-else 
+      dense 
+      style="max-height: 200px"
+      class="overflow-y-auto"
+    >
       <v-list-item-group color="green">
         <v-list-item
           v-for="(item, idx) in members"
@@ -22,7 +26,7 @@
             <v-list-item-title v-text="item.cn" inactive></v-list-item-title>
           </v-list-item-content>
           <v-list-item-icon>
-            <v-icon @click="removeItem(item)">mdi-minus-circle-outline</v-icon>
+            <v-icon @click="removeItem(item)" color="red">mdi-minus-circle-outline</v-icon>
           </v-list-item-icon>
         </v-list-item>
       </v-list-item-group>
