@@ -1,53 +1,47 @@
 <template>
-<v-dialog v-model="dialog" persistent max-width="600px">
+<v-dialog v-model="dialog" persistent max-width="800px">
 
   <v-card>
-    <v-card-title class="green-text">
+    <v-card-title>
       {{ dialogTitle }}
     </v-card-title>
+    <v-card-subtitle v-if="edited" style="color: green;">
+      {{editedItem.mail}}
+    </v-card-subtitle>
 
     <v-card-text>
       <v-container>
-        <v-row>
-          <!--User info(left)-->
+        <v-row v-if="!edited">
           <v-col>
             <v-form ref="maillistForm">
-              <v-col>
-                <v-text-field v-model="editedItem.cn" label="邮件列表名(建议中文)"
-                ></v-text-field>
-              </v-col>
-              <v-col>
-                <v-text-field v-model="editedItem.mail" label="邮件列表地址(不用输入@域名)" 
-                  v-if="!edited" :rules="[rules.required]"
-                ></v-text-field>
-                <v-text-field v-model="editedItem.mail" label="邮件列表地址" v-if="edited" :disabled="edited"
-                ></v-text-field>
-              </v-col>
+              <v-text-field v-model="editedItem.cn" label="邮件列表名(建议中文)"
+              ></v-text-field>
+              <v-text-field v-model="editedItem.mail" label="邮件列表地址(不用输入@域名)" 
+                v-if="!edited" :rules="[rules.required]"
+              ></v-text-field>
             </v-form>
           </v-col>
-          <!--Only visible in edit mode-->
-          <v-col v-if="edited">
-            <userlist-micro ref="userMicro"
-              :maillist="editedItem.mail"
-            ></userlist-micro>
-          </v-col>
         </v-row>
-        <!--User Addition-->
         <v-row>
           <v-col>
-          <userlist-mini ref="userMini"
-            v-on:selected="handleSelectedEvent($event)"
-          ></userlist-mini>
+            <userlist-mini ref="userMini"
+              v-on:selected="handleSelectedEvent($event)"
+            ></userlist-mini>
           </v-col>
           <v-col>
             <template v-if="!selected.length">
-              <h4>从左侧选择要加入邮件列表的用户</h4>
+              <h4>选择加入邮件列表的用户</h4>
             </template>
             <template v-else>
               <div v-for="item in selected" :key="item.uid">
                 {{ item.cn}}
               </div>
             </template>
+          </v-col>
+          <v-col v-if="edited">
+              <userlist-micro ref="userMicro"
+                :maillist="editedItem.mail"
+              ></userlist-micro>
           </v-col>
         </v-row>
       </v-container>
@@ -85,11 +79,11 @@ export default {
       //Record last cn，invoke maillist update API when value changing
       lastCN: "",
       editedItem: {
-        cn: '',
+        // cn: '',
         mail: '',
       },
       defaultItem: {
-        cn: '',
+        // cn: '',
         mail: '',
       },
       rules: {
@@ -124,10 +118,10 @@ export default {
     },
     validate () {
       this.valid = false
-      if(this.$refs.maillistForm.validate()) {
-        if (this.edited) {
-          this.modify()
-        } else {
+      if(this.edited) {
+        this.modify()
+      } else {
+        if(this.$refs.maillistForm.validate()) {
           this.create()
         }
       }
@@ -137,29 +131,18 @@ export default {
       const mlMember = this.filterList(this.$refs.userMicro.members)
       const maillistName = this.editedItem.mail.split('@')[0]
 
-      // NEED optimize later
-      if((this.lastCN == this.editedItem.cn) && (! this.selected.length)) {
-        this.reset()
-      } else {
-        // Detect whether cn value changed
-        if(this.lastCN != this.editedItem.cn) {
-          this.$store.dispatch('mlst/updateMaillist', {maillist: maillistName, cn: this.editedItem.cn})
-          this.reset()
-        }
-
-        if (this.selected.length) {
-          // Update maillist member
-          let members = []
-          this.selected.forEach((item, index) => {
-            // 过滤掉重复选择的用户
-            if (mlMember.indexOf(item.cn) == -1) {
-              members.push(item)
-            }
-          })//forEach
-          this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
-          this.reset()
-        }
+      if(this.selected.length) {
+        // Update maillist member
+        let members = []
+        this.selected.forEach((item, index) => {
+          // 过滤掉重复选择的用户
+          if (mlMember.indexOf(item.cn) == -1) {
+            members.push(item)
+          }
+        })//forEach
+        this.$store.dispatch('mlst/addUser2Maillist', {maillist: maillistName, members: members})
       }
+      this.reset()
     },
     create () {
       const data = {
@@ -174,9 +157,3 @@ export default {
   }//methods(),
 }
 </script>
-
-<style scoped>
-.green-text {
-  color: green;
-}
-</style>
