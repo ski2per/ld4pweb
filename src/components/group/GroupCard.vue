@@ -14,6 +14,7 @@
       autofocus
       v-model="group.description"
       @blur="updateGroup"
+      @keydown.enter="updateGroup"
       ></v-text-field>
     </v-card-subtitle>
   <v-card-subtitle v-else>{{ group.description}}</v-card-subtitle>
