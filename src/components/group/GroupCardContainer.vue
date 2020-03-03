@@ -1,5 +1,5 @@
 <template>
-<v-container fluid>
+<v-container>
   <!--公用subgroup编辑组件-->
   <subgroup-edit ref="subgroupEdit"></subgroup-edit>
 
