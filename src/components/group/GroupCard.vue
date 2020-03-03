@@ -2,7 +2,8 @@
 <!--Normal Card-->
 <v-card v-if="!group.edited"
   class="mx-auto"
-  min-width="300"
+  :min-width="cardWidth"
+  :max-width="cardWidth"
 >
   <v-card-title
     @click="editGroup"
@@ -49,7 +50,7 @@
   <v-expand-transition>
     <div v-show="expand">
       <v-divider></v-divider>
-      <v-card-text>
+      <v-card-text class="pa-0">
         <!--加载提示-->
         <v-list v-if="loading">
           <v-row justify="center">
@@ -91,8 +92,8 @@
 -->
 <v-card v-else
   class="mx-auto"
-  min-width="360"
-  max-width="360"
+  :min-width="cardWidth"
+  :max-width="cardWidth"
 >
   <v-container>
     <v-form ref="newGroupForm">
@@ -129,6 +130,7 @@ import Subgroup from '@/components/group/Subgroup.vue'
 export default {
   data () {
     return {
+      cardWidth: 260,
       newGroupFormBtnValid: true,
       addSubgroupBtnValid: true,
       expand: false,
