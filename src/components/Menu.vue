@@ -2,15 +2,17 @@
   <v-navigation-drawer
     v-model="drawer"
     :mini-variant.sync="mini"
+    mini-variant-width="50"
     app
     permanent
+    width="220"
   >
     <v-list-item class="px-2">
       <v-list-item-action>
         <v-btn icon color="warning" @click="logout" >
           <v-tooltip right>
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on" medium>mdi-exit-run</v-icon>
+              <v-icon v-on="on" medium class="mx-0">mdi-exit-run</v-icon>
             </template>
             <span>退出登录</span>
           </v-tooltip>
@@ -34,7 +36,7 @@
         :to="item.link"
         link
       >
-        <v-list-item-icon>
+        <v-list-item-icon class="mx-0">
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-icon>
         <v-list-item-icon>
