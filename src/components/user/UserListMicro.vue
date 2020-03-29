@@ -14,7 +14,7 @@
     <!--Will use CSS later-->
     <v-list v-else 
       dense 
-      style="max-height: 200px"
+      style="max-height: 400px"
       class="overflow-y-auto"
     >
       <v-list-item-group color="green">
