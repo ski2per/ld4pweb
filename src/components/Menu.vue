@@ -1,11 +1,8 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    :mini-variant.sync="mini"
-    mini-variant-width="50"
     app
-    permanent
-    width="220"
+    expand-on-hover
   >
     <v-list-item class="px-2">
       <v-list-item-action>
@@ -21,10 +18,9 @@
       <v-list-item-title class="green-text">
         统一账号系统
       </v-list-item-title>
-      <v-btn icon @click.stop="mini = !mini">
-        <!-- <v-icon>mdi-chevron-left</v-icon> -->
+      <!-- <v-btn icon @click.stop="mini = !mini">
         <v-icon>mdi-arrow-left-circle-outline</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-list-item>
 
     <v-divider></v-divider>
