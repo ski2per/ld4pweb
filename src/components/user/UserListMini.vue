@@ -12,7 +12,7 @@
     show-select
     hide-default-header
     class="elevation-1"
-    :items-per-page="8"
+    :items-per-page="16"
     :footer-props="{
       itemsPerPageText: '',
       disableItemsPerPage: true
