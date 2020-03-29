@@ -1,5 +1,9 @@
 <template>
-<v-dialog v-model="dialog" persistent max-width="600px">
+<v-dialog v-model="dialog"
+  fullscreen
+  hide-overlay
+  transition="dialog-bottom-transition"
+>
 
   <v-card>
     <v-card-title class="green-text">
