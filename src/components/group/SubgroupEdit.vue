@@ -6,9 +6,12 @@
 >
 
   <v-card>
-    <v-card-title class="green-text">
+    <v-app-bar
+      color="green"
+      dark
+    >
       编辑 {{group.ou}}/{{subgroup.cn}} 成员
-    </v-card-title>
+    </v-app-bar>
 
     <v-card-text>
       <v-container>

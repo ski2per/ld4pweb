@@ -4,14 +4,17 @@
   hide-overlay
   transition="dialog-bottom-transition"
 >
-
   <v-card>
-    <v-card-title>
+    <v-app-bar
+      color="green"
+      dark
+    >
       {{ dialogTitle }}
-    </v-card-title>
-    <v-card-subtitle v-if="edited" style="color: green;">
+      <v-spacer></v-spacer>
+      <template v-if="edited">
       {{editedItem.mail}}
-    </v-card-subtitle>
+      </template>
+    </v-app-bar>
 
     <v-card-text>
       <v-container>

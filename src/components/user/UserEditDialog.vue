@@ -6,9 +6,12 @@
 >
 
   <v-card>
-    <v-card-title class="green-text">
+    <v-app-bar
+      color="green"
+      dark
+    >
       {{title}}
-    </v-card-title>
+    </v-app-bar>
 
     <v-card-text class="pa-0">
       <v-container class="py-0">
