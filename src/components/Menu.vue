@@ -3,10 +3,14 @@
     v-model="drawer"
     app
     expand-on-hover
+    color="success"
+    hide-overlay
+    dark
+    permanent
   >
     <v-list-item class="px-2">
       <v-list-item-action>
-        <v-btn icon color="warning" @click="logout" >
+        <v-btn icon color="#000000" @click="logout" >
           <v-tooltip right>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on" medium class="mx-0">mdi-exit-run</v-icon>
@@ -15,7 +19,7 @@
           </v-tooltip>
         </v-btn>
       </v-list-item-action>
-      <v-list-item-title class="green-text">
+      <v-list-item-title>
         统一账号系统
       </v-list-item-title>
       <!-- <v-btn icon @click.stop="mini = !mini">
@@ -87,10 +91,7 @@
 </script>
 
 <style scoped>
-.v-list-item-title {
+/* .v-list-item-title {
   font-size: 18px;
-}
-.green-text {
-  color: green;
-}
+} */
 </style>
