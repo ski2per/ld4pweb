@@ -9,11 +9,20 @@
       color="green"
       dark
     >
-      {{ dialogTitle }}
-      <v-spacer></v-spacer>
+      {{ dialogTitle }}:
       <template v-if="edited">
-      {{editedItem.mail}}
+        {{editedItem.mail}}
       </template>
+      <v-spacer></v-spacer>
+
+      <!-- <v-icon medium class="mr-6" color="white" @click="reset" :disabled="!valid">
+        mdi-close-outline
+      </v-icon>
+      <v-icon medium class="ml-6" color="white" @click="validate">
+        mdi-check-outline
+      </v-icon> -->
+      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
+      <v-btn color="white" text @click="validate">OK</v-btn>
     </v-app-bar>
 
     <v-card-text>
@@ -40,7 +49,7 @@
               <h4>选择加入邮件列表的用户</h4>
             </template>
             <template v-else>
-              <div v-for="item in selected" :key="item.uid">
+              <div style="color: green;" v-for="item in selected" :key="item.uid">
                 {{ item.cn}}
               </div>
             </template>
@@ -54,11 +63,11 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions>
+    <!-- <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
       <v-btn color="green darken-1" text @click="validate">OK</v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </v-dialog>
 

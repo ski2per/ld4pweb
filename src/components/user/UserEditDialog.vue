@@ -11,6 +11,9 @@
       dark
     >
       {{title}}
+      <v-spacer></v-spacer>
+      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
+      <v-btn color="white" text @click="validate">OK</v-btn>
     </v-app-bar>
 
     <v-card-text class="pa-0">
@@ -56,11 +59,11 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions class="py-0">
+    <!-- <v-card-actions class="py-0">
       <v-spacer></v-spacer>
       <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
       <v-btn color="green darken-1" text @click="validate">OK</v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </v-dialog>
 

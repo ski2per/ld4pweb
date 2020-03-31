@@ -11,6 +11,9 @@
       dark
     >
       编辑 {{group.ou}}/{{subgroup.cn}} 成员
+      <v-spacer></v-spacer>
+      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
+      <v-btn color="white" text @click="update">OK</v-btn>
     </v-app-bar>
 
     <v-card-text>
@@ -48,11 +51,6 @@
       </v-container>
     </v-card-text>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="green darken-1" text @click="update">OK</v-btn>
-    </v-card-actions>
   </v-card>
 </v-dialog>
 
