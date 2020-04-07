@@ -19,6 +19,14 @@
     <!--Table top-->
     <template v-slot:top>
       <v-toolbar flat color="white">
+        <!--Filter User-->
+        <v-checkbox label="show real user" class="mt-8"
+          @change="handleUserFilter"
+          v-model="realUsers"
+          :input-value="realUsers"
+
+        ></v-checkbox>
+
         <v-spacer></v-spacer>
 
         <v-text-field
@@ -77,11 +85,13 @@
     </template>
     -->
 
+
     <template v-slot:no-data>
       No data : P
     </template>
 
   </v-data-table>
+
 </template>
 
 <script>
@@ -100,6 +110,7 @@ export default {
   },
   data () {
     return {
+      realUsers: false,
       valid: true,  
       loading: false,
       search: '',
@@ -117,8 +128,16 @@ export default {
     }
   }, //data()
   computed: {
-    users: function() {
-      return this.$store.state.usr.users
+    // users: function() {
+    //   return this.$store.state.usr.users
+    // }
+    users: {
+      get: function() {
+        return this.$store.state.usr.users
+      },
+      set: function(newList) {
+        this.$store.state.usr.users = newList
+      }
     }
   },
   created() {
@@ -177,6 +196,21 @@ export default {
       this.edited = false
       this.selectedGroup = []
     },
+    handleUserFilter() {
+      // console.log(this.$store.getters['usr/realUsers'])
+      console.log(this.realUsers)
+      if(this.realUsers) {
+        this.users = this.$store.state.usr.realUsers
+        console.log("real user")
+      } else {
+        console.log('all user')
+        console.log(this.$store.state.usr.users.length)
+        console.log(this.$store.state.usr.realUsers.length)
+        console.log(this.$store.getters['usr/allUsers'])
+        this.users = this.$store.getters['usr/allUsers']
+      }
+
+    }
   }, //method()
 }
 </script>
