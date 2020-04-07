@@ -21,7 +21,8 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--Filter User-->
-        <v-checkbox label="隐藏功能账号" class="mt-8"
+        <v-checkbox label="隐藏功能账号" class="mt-6"
+          color="orange"
           v-model="realUsers"
           :input-value="realUsers"
 
