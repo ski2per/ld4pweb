@@ -5,16 +5,15 @@ const getDefaultState = () => {
   return {
     users: [],
     me: Object,
-    tmp: [],
   }
 }
 
 const state = getDefaultState()
 
 const getters = {
-  allUsers: state => {
-    if(state.tmp.length) {
-      return state.tmp
+  allUsers: (state) =>(filter) => {
+    if (filter) {
+      return state.users.filter(user => user.objectClass.length == 5)
     } else {
       return state.users
     }
@@ -23,11 +22,6 @@ const getters = {
   getIndexByUid: (state) => (uid) => {
     return state.users.map(function(x){ return x.uid}).indexOf(uid)
   },
-
-  realUsers: state => {
-    state.tmp = state.users
-    return state.users.filter(item => item.objectClass.length == 5)
-  }
 }
 
 const actions = {

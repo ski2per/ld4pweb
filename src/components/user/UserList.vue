@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    ref="ul"
     :headers="headers"
     :items="users"
     :search="search"
@@ -20,8 +21,7 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--Filter User-->
-        <v-checkbox label="show real user" class="mt-8"
-          @change="handleUserFilter"
+        <v-checkbox label="隐藏功能账号" class="mt-8"
           v-model="realUsers"
           :input-value="realUsers"
 
@@ -128,16 +128,8 @@ export default {
     }
   }, //data()
   computed: {
-    // users: function() {
-    //   return this.$store.state.usr.users
-    // }
-    users: {
-      get: function() {
-        return this.$store.state.usr.users
-      },
-      set: function(newList) {
-        this.$store.state.usr.users = newList
-      }
+    users: function() {
+      return this.$store.getters['usr/allUsers'](this.realUsers)
     }
   },
   created() {
@@ -196,21 +188,6 @@ export default {
       this.edited = false
       this.selectedGroup = []
     },
-    handleUserFilter() {
-      // console.log(this.$store.getters['usr/realUsers'])
-      console.log(this.realUsers)
-      if(this.realUsers) {
-        this.users = this.$store.state.usr.realUsers
-        console.log("real user")
-      } else {
-        console.log('all user')
-        console.log(this.$store.state.usr.users.length)
-        console.log(this.$store.state.usr.realUsers.length)
-        console.log(this.$store.getters['usr/allUsers'])
-        this.users = this.$store.getters['usr/allUsers']
-      }
-
-    }
   }, //method()
 }
 </script>
