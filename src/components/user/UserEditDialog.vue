@@ -34,11 +34,10 @@
               ></v-text-field>
               <v-text-field v-model="editedItem.givenName" label="名(Given name)"></v-text-field>
               <v-select
-                item-text="text"
-                item-value="value"
-                v-model="value"
+                v-model="editedItem.accountType"
                 :items='accountType'
                 label="账号类型"
+                :disabled="edited"
               ></v-select>
               <v-checkbox 
                 label="管理员"
@@ -81,14 +80,8 @@ export default {
   data () {
     return {
       accountType: [
-        {
-          'text': '用户账号',
-          'value': 'user'
-        },
-        {
-          'text': '功能账号',
-          'value': 'util'
-        }
+        {'text': '用户账号', 'value': 'user'},
+        {'text': '功能账号', 'value': 'util'}
       ],
       dialog: false,
       valid: true,  
@@ -138,25 +131,24 @@ export default {
       this.valid = true
     },
     save () {
-      console.log(this.editedItem)
-      // const data = {
-      //   uid: this.editedItem.uid,
-      //   cn: this.editedItem.cn,
-      //   sn: this.editedItem.sn,
-      //   givenName: this.editedItem.givenName,
-      //   admin: this.editedItem.admin
-      // }
+      const data = {
+        uid: this.editedItem.uid,
+        cn: this.editedItem.cn,
+        sn: this.editedItem.sn,
+        givenName: this.editedItem.givenName,
+        admin: this.editedItem.admin
+      }
 
-      // if (this.edited) {
-      //   // 后期增加: 如果未修改则不提交
-      //   this.$store.dispatch('usr/updateUser', data)
-      // } else {
-      //   // Add new user
-      //   this.$store.dispatch('usr/createUser', data)
-      //   // WILL refactor later~~~~
-      //   this.massiveAddToGroup(this.selectedGroup)
-      // }
-      // this.reset()
+      if (this.edited) {
+        // 后期增加: 如果未修改则不提交
+        this.$store.dispatch('usr/updateUser', data)
+      } else {
+        // Add new user
+        this.$store.dispatch('usr/createUser', data)
+        // WILL refactor later~~~~
+        this.massiveAddToGroup(this.selectedGroup)
+      }
+      this.reset()
     }, //save()
     massiveAddToGroup (groupData) {
       console.log("[massiveAddToGroup()] heavy operation")
