@@ -21,6 +21,14 @@
         <v-toolbar-title>LDAP Maillists</v-toolbar-title>
         <v-divider class="mx-4" inset vertical ></v-divider>
       -->
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" @click="syncMaillist" class='mx-2' color="green">
+            mdi-sync
+          </v-icon>
+        </template>
+        <span>同步组织邮件列表</span>
+      </v-tooltip>
 
         <v-spacer></v-spacer>
 
@@ -126,6 +134,9 @@ export default {
     // }
   },
   methods: {
+    syncMaillist: function() {
+      console.log('sync maillist')
+    },
     open: function(item) {
       this.lastCN = item.cn
     },

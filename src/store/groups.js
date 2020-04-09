@@ -329,8 +329,11 @@ const mutations = {
     target.subgroups.splice(subgroupIdx, 1, payload)
   },
   UPDATE_SUBGROUP_DESC(state, payload) {
+    console.log('BUG 2 FIX')
+    console.log(payload)
     // payload is a whole group object
     let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
+    console.log(`group idx: ${groupIdx}`)
     state.groups.splice(groupIdx, 1)
   },
   DELETE_SUBGROUP(state, payload) {
