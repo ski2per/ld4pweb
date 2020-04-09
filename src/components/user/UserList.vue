@@ -21,12 +21,18 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--Filter User-->
-        <v-checkbox label="隐藏功能账号" class="mt-6"
+        <!-- <v-checkbox label="隐藏功能账号" class="mt-6"
           color="orange"
           v-model="realUsers"
           :input-value="realUsers"
-
-        ></v-checkbox>
+        ></v-checkbox> -->
+        <v-tooltip>
+          <!-- <v-switch v-model="realUsers" label="隐藏功能账号" class="mt-6" color="orange"></v-switch> -->
+          <template v-slot:activator="{ on }">
+            <v-switch v-on="on" v-model="realUsers" class="mt-6" color="orange"></v-switch>
+          </template>
+          <span>隐藏功能账号</span>
+        </v-tooltip>
 
         <v-spacer></v-spacer>
 
