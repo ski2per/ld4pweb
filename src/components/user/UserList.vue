@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     syncUser() {
-      console.log('sync all user')
+      this.$store.dispatch('usr/syncUsers')
     },
     handleCreate() {
       // this.$refs.editDialog.editedItem = {}

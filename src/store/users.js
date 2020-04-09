@@ -28,6 +28,26 @@ const actions = {
   resetState({commit}) {
     commit('RESET_STATE')
   },
+  // 同步全员用户账号
+  syncUsers({commit}) {
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/syncuser`)
+    .then(response => {
+      if (response && response.status == 200) {
+        this.dispatch('notify', {msg: '同步全员成功', color: "success"}, { root: true })
+        let payload = {
+          group: process.env.VUE_APP_DEFAULT_GROUP_NAME,
+          subgroup: process.env.VUE_APP_ALL_SUBGROUP_NAME,
+          members: []
+        }
+        commit('grp/SET_SUBGROUP_MEMBERS', payload, {root: true})
+      }
+    })
+    .catch(error =>{
+      console.log(error)
+      console.log(error.response)
+      this.dispatch('notify', {msg: '同步全员发生异常', color: "error"}, { root: true })
+    })
+  },
   loadUsers({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/`)
