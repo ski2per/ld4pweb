@@ -102,7 +102,17 @@ const actions = {
     return new Promise((resolve, reject) => {
       httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
       .then(response => {resolve(response)})
-      .catch(error => {reject(error)})
+      .catch(error => {
+        switch(error.response.status) {
+          case 466:
+            this.dispatch('notify', {msg: `${data.uid} 已经存在`, color: "error"}, { root: true })
+            console.log(`${data.uid}已经加入该组`)
+            break;
+          default:
+            break;
+        }
+        // reject(error)
+      })
     })
   },
   deleteGroup({commit}, data) {

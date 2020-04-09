@@ -26,12 +26,20 @@
           v-model="realUsers"
           :input-value="realUsers"
         ></v-checkbox> -->
-        <v-tooltip>
-          <!-- <v-switch v-model="realUsers" label="隐藏功能账号" class="mt-6" color="orange"></v-switch> -->
+        <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-switch v-on="on" v-model="realUsers" class="mt-6" color="orange"></v-switch>
           </template>
           <span>隐藏/显示功能账号</span>
+        </v-tooltip>
+
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on" @click="syncUser" class='mx-2' color="green">
+              mdi-sync
+            </v-icon>
+          </template>
+          <span>同步全员</span>
         </v-tooltip>
 
         <v-spacer></v-spacer>
@@ -149,6 +157,9 @@ export default {
     }
   },
   methods: {
+    syncUser() {
+      console.log('sync all user')
+    },
     handleCreate() {
       // this.$refs.editDialog.editedItem = {}
       this.$refs.editDialog.dialog = true

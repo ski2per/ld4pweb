@@ -59,9 +59,22 @@ const actions = {
       if (response && response.status == 200) {
         commit('CREATE_USER', response.data)
         this.dispatch('notify', {msg: `${data.cn} 创建成功`, color: "success"}, { root: true })
+      } else {
+        console.log('hehe')
+        console.log(response.status)
       }
     })
-    .catch(error => { console.log(error) })
+    .catch(error => { 
+      console.log(error) 
+      console.log(error.response)
+      switch(error.response.status) {
+        case 462:
+          this.dispatch('notify', {msg: `${data.uid} 已经存在`, color: "error"}, { root: true })
+          break;
+        default:
+          break;
+      }
+    })
   },
   updateUser({commit}, data) {
     commit('UPDATE_USER', data)
