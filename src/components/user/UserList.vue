@@ -31,7 +31,7 @@
           <template v-slot:activator="{ on }">
             <v-switch v-on="on" v-model="realUsers" class="mt-6" color="orange"></v-switch>
           </template>
-          <span>隐藏功能账号</span>
+          <span>隐藏/显示功能账号</span>
         </v-tooltip>
 
         <v-spacer></v-spacer>
