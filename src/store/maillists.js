@@ -28,6 +28,22 @@ const actions = {
   resetState({commit}) {
     commit('RESET_STATE')
   },
+  syncMaillist({commit}) {
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/syncmaillist`)
+    .then(response => {
+      console.log(response)
+      if (response && response.status == 200) {
+        this.dispatch('notify', {msg: '同步邮件列表成功', color: "success"}, { root: true })
+      }
+      this.dispatch('mlst/loadMaillists')
+    })
+    .catch(error => {
+      console.log(error)
+      console.log(error.response)
+      this.dispatch('notify', {msg: '同步邮件列表发生异常', color: "error"}, { root: true })
+    })
+
+  },
   loadMaillists({commit}) {
     return new Promise((resolve, reject) => {
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)

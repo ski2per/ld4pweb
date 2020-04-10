@@ -37,9 +37,10 @@ const actions = {
         let payload = {
           group: process.env.VUE_APP_DEFAULT_GROUP_NAME,
           subgroup: process.env.VUE_APP_ALL_SUBGROUP_NAME,
-          members: []
+          // members: []
         }
-        commit('grp/SET_SUBGROUP_MEMBERS', payload, {root: true})
+        // commit('grp/SET_SUBGROUP_MEMBERS', payload, {root: true})
+        this.dispatch('grp/loadSubgroupMembers', payload)
       }
     })
     .catch(error =>{

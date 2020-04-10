@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     syncMaillist: function() {
-      console.log('sync maillist')
+      this.$store.dispatch('mlst/syncMaillist')
     },
     open: function(item) {
       this.lastCN = item.cn

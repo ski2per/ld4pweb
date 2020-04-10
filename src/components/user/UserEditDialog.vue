@@ -158,10 +158,12 @@ export default {
         // this.$store.dispatch('grp/add2Group', {pgroup: item.pgroup, group: item.name, uid: this.editedItem.uid})
         this.$store.dispatch('grp/add2Group', {pgroup: "xl", group: item.name, uid: this.editedItem.uid})
         .then(response => {
-          console.log(response.status)
           if(response && response.status == 200) {
             // console.log(`Add ${this.editedItem.uid} to ${item.pgroup}/${item.name} success`)
             console.log(`Add ${this.editedItem.uid} to ${item.name} success`)
+
+            // 新建用户添加到指定组成功之后同步邮件列表
+            this.$store.dispatch('mlst/syncMaillist')
           }
         })
         .catch(error => { console.log(error) })
