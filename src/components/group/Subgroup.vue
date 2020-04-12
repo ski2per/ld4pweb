@@ -34,6 +34,7 @@
         solo
         autofocus
         v-model="subgroup.description"
+        @keydown.enter="updateDesc"
         @blur="updateDesc"
         ></v-text-field>
       </v-list-item-subtitle>
