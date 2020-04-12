@@ -16,7 +16,6 @@ const getters = {
   getIndexByOU: (state) => (ou) => {
     return state.groups.map(function(x){ return x.ou}).indexOf(ou)
   },
-
   // For subgroup
   getIndexByCN: (state) => (data) => {
     // data = {
@@ -329,12 +328,9 @@ const mutations = {
     target.subgroups.splice(subgroupIdx, 1, payload)
   },
   UPDATE_SUBGROUP_DESC(state, payload) {
-    console.log('BUG 2 FIX')
-    console.log(payload)
-    // payload is a whole group object
-    let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
-    console.log(`group idx: ${groupIdx}`)
-    state.groups.splice(groupIdx, 1)
+    // payload is a whole group object to replace
+    let groupIdx = this.getters['grp/getIndexByOU'](payload.ou)
+    state.groups.splice(groupIdx, 1, payload)
   },
   DELETE_SUBGROUP(state, payload) {
     // payload = {
