@@ -65,7 +65,7 @@ const routes = [
   {
     path: '/maillistinfo',
     name: 'maillistinfo',
-    component: () => import(/* webpackChunkName: "maillistinfo" */ '../views/MaillistInfo.vue'),
+    component: () => import(/* webpackChunkName: "maillistinfo" */ '../views/MLInfo.vue'),
   }
 
 ]
