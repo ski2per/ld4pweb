@@ -20,7 +20,12 @@ export default {
     'my-noti': Notification
   },
   computed: {
-    isLoggedIn : function(){ return this.$store.getters.isLoggedIn },
+    isLoggedIn : function() {
+      if(this.$route.name == 'ml') {
+        return false
+      }
+      return this.$store.getters.isLoggedIn
+    },
   },
 }
 </script>
