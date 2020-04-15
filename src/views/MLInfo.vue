@@ -34,11 +34,14 @@ export default {
     })
   },
   created: function () {
-    this.$store.dispatch('mlst/loadMaillists')
-    .catch(error => {
-      this.allMaillists = ['加载邮件列表信息出错🤷']
-      console.log(error)
-    })
+    // 浏览器未检测到用户登录时重新加邮件列表
+    if(!this.$store.getters.isLoggedIn) {
+      this.$store.dispatch('mlst/loadMaillists')
+      .catch(error => {
+        this.allMaillists = ['加载邮件列表信息出错🤷']
+        console.log(error)
+      })
+    }
   },
 }
 </script>
