@@ -2,10 +2,11 @@ version: '3.5'
 
 services:
   ldapman-web:
-    # build:
-    #   context: ./
-    #   dockerfile: Dockerfile
-    image: ld4pman-web
+    build:
+      context: ./ldap-web
+      dockerfile: Dockerfile
+    image: ld4pman-web:1.3.8
     hostname: ld4pman-web
     ports:
       - "8080:80"
+    restart: always
