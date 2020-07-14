@@ -105,7 +105,7 @@ const actions = {
   },
   getMenu({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/menu`)
+      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/menu`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })

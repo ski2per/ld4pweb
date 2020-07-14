@@ -30,7 +30,7 @@ const actions = {
   },
   // 同步全员用户账号
   syncUsers({commit}) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/syncuser`)
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/syncuser`)
     .then(response => {
       if (response && response.status == 200) {
         this.dispatch('notify', {msg: '同步全员成功', color: "success"}, { root: true })

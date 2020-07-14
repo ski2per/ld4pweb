@@ -29,7 +29,7 @@ const actions = {
     commit('RESET_STATE')
   },
   syncMaillist({commit}) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/common/syncmaillist`)
+    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/syncmaillist`)
     .then(response => {
       console.log(response)
       if (response && response.status == 200) {

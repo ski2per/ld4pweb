@@ -66,7 +66,11 @@ const routes = [
     path: '/ml',
     name: 'ml',
     component: () => import(/* webpackChunkName: "maillistinfo" */ '../views/MLInfo.vue'),
-  }
+  },
+  {
+    path: '*',
+    redirect: '/'
+  },
 
 ]
 
@@ -79,6 +83,7 @@ router.beforeEach((to, from, next) => {
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of
   // 'record => record.meta.requriesAuth' function
+
   if(to.matched.some(fragmentURL => fragmentURL.meta.requiresAuth)) {
     if(!store.getters.isLoggedIn) {
       next('/login')
@@ -96,7 +101,12 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // Route no auth required goes here
-    next()
+    if(store.getters.isLoggedIn) {
+      // Redirect to "/", when access "/login" even after login
+      next('/')
+    } else {
+      next()
+    }
   }
 })
 
