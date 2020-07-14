@@ -54,7 +54,7 @@ const actions = {
   login({commit}, userdata){
     return new Promise((resolve, reject) => {
       commit('AUTH_REQUEST')
-      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/auth/login`, userdata)
+      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/auth/token`, userdata)
       .then(response => {
         const token = response.data.access_token
         const user = userdata.get('username')
