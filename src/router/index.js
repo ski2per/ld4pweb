@@ -83,6 +83,7 @@ router.beforeEach((to, from, next) => {
   // 'to.matched' is a list
   // some() method tests whether at least one element pass the test of
   // 'record => record.meta.requriesAuth' function
+  console.log(to)
 
   if(to.matched.some(fragmentURL => fragmentURL.meta.requiresAuth)) {
     if(!store.getters.isLoggedIn) {
@@ -92,10 +93,13 @@ router.beforeEach((to, from, next) => {
       if(to.meta.requiresAdmin) {
         if(!store.getters.isAdmin) {
           next('/aboutme')
+          console.log("000")
         } else {
+          console.log("111")
           next()
         }
       } else {
+        console.log("222")  
         next()
       }
     }
@@ -103,8 +107,10 @@ router.beforeEach((to, from, next) => {
     // Route no auth required goes here
     if(store.getters.isLoggedIn) {
       // Redirect to "/", when access "/login" even after login
+      console.log("333")
       next('/')
     } else {
+      console.log('444')
       next()
     }
   }
