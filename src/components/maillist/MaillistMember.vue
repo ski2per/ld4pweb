@@ -24,13 +24,14 @@ export default {
   data () {
     return {
       maillistName: "",
+      loading: false,
     }
   }, //data()
   props: {
     maillist: ""
   },
   computed: {
-    members: function(){
+    members: function() {
       return this.$store.getters['mlst/maillistMember'](this.maillistName)
     } 
   },

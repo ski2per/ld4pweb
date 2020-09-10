@@ -1,7 +1,8 @@
 <template>
   <v-container class="pa-0">
     <h3>当前邮件组用户({{members.length}})</h3>
-    <v-list v-if="!members.length">
+    <!-- <v-list v-if="!members.length"> -->
+    <v-list v-if="isLoading">
       <v-row justify="center">
         <v-progress-circular class="mt-12"
           width="2"
@@ -47,9 +48,12 @@ export default {
     maillist: ""
   },
   computed: {
-    members: function(){
+    members: function() {
       return this.$store.getters['mlst/maillistMember'](this.maillistName)
-    } 
+    },
+    isLoading: function() {
+      return this.$store.getters['mlst/isMemberLoading']
+    }
   },
   created() {
     this.maillistName = this.maillist.split('@')[0]

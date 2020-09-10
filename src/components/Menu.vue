@@ -1,11 +1,11 @@
 <template>
   <v-navigation-drawer
     v-model="drawer"
-    app
     expand-on-hover
     color="success"
     hide-overlay
     dark
+    app
     permanent
   >
     <v-list-item class="px-2">
@@ -53,7 +53,7 @@
     data () {
       return {
         drawer: true,
-        mini: true,
+        // mini: true,
         items: [],
         version: process.env.VUE_APP_VERSION,
       }
@@ -87,6 +87,13 @@
         })
       }
     },
+    computed: {
+      mini() {
+        tmp = this.$vuetify.breakpoint.mdAndDown;
+        console.log(tmp);
+        return this.$vuetify.breakpoint.mdAndDown;
+      }
+    }
   }
 </script>
 

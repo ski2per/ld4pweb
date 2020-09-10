@@ -4,6 +4,7 @@ import httpCli from '@/assets/js/http'
 const getDefaultState = () => {
   return {
     maillists: Object,
+    loading: false,
   }
 }
 
@@ -22,6 +23,9 @@ const getters = {
     // this.$store.getters['mlst/maillistMember'](this.maillistName)
     return state.maillists[mlst].members
   },
+  isMemberLoading: state => {
+    return state.loading
+  }
 }
 
 const actions = {
@@ -46,10 +50,13 @@ const actions = {
   },
   loadMaillists({commit}) {
     return new Promise((resolve, reject) => {
+      // Set loading signal
+      commit('LOADING');
       httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
       .then(response => {
-        commit('LOAD_MAILLISTS', response.data)
-        resolve(response)
+        commit('LOAD_MAILLISTS', response.data);
+        commit('LOADING');
+        resolve(response);
       })
       .catch(error => {
         reject(error)
@@ -160,6 +167,9 @@ const actions = {
 const mutations = {
   RESET_STATE (state) {
     Object.assign(state, getDefaultState())
+  },
+  LOADING (state) {
+    state.loading = !state.loading
   },
   LOAD_MAILLISTS(state, maillists){
     state.maillists = maillists 
