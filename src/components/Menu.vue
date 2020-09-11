@@ -30,82 +30,17 @@
         <v-toolbar-title>Mobile Menu</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-btn>ab</v-btn>
+          <v-btn icon @click.stop="dialog = true">
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
         </v-toolbar-items>
 
-        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-          <v-card>
-            <v-toolbar color="blue-grey darken-2">
-              <v-toolbar-title>Mobile Menu</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon @click.native="dialog = false">
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-toolbar>
-
-            <v-list>
-              <v-list-tile
-                v-for="(item, index) in items"
-                :key="index"
-                to="#"
-              >
-                <v-list-tile-action>
-                  <v-icon v-if="item.icon">{{item.icon}}</v-icon>
-                </v-list-tile-action>
-                <v-list-tile-content>
-                  <v-list-tile-title :title="item.title">{{ item.title}}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-          </v-card>
+        <v-dialog v-model="dialog" transition="dialog-right-transition">
+          abc
         </v-dialog>
       </v-toolbar>
       
     </v-layout>
-  <!-- <v-navigation-drawer
-    v-model="drawer"
-    expand-on-hover
-    color="success"
-    hide-overlay
-    dark
-    app
-    permanent
-  >
-    <v-list-item class="px-2">
-      <v-list-item-action>
-        <v-btn icon color="#000000" @click="logout" >
-          <v-tooltip right>
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on" medium class="mx-0">mdi-exit-run</v-icon>
-            </template>
-            <span>退出登录</span>
-          </v-tooltip>
-        </v-btn>
-      </v-list-item-action>
-      <v-list-item-title>
-        统一账号系统
-      </v-list-item-title>
-    </v-list-item>
-
-    <v-divider></v-divider>
-
-    <v-list dense nav >
-      <v-list-item
-        v-for="item in items"
-        :key="item.title"
-        :to="item.link"
-        link
-      >
-        <v-list-item-icon class="mx-0">
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-icon>
-          <v-list-item-title style="font-size: 1em;">{{ item.title }}</v-list-item-title>
-        </v-list-item-icon>
-      </v-list-item>
-    </v-list>
-  </v-navigation-drawer>
- -->
 </template>
 
 <script>
