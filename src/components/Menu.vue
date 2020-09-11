@@ -1,5 +1,68 @@
 <template>
-  <v-navigation-drawer
+    <v-layout row justify-center>
+      <v-toolbar color="green darken-2" class="hidden-xs-only">
+        <v-toolbar-title>Desktop Menu</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+         <v-btn
+           v-for="(item, index) in items"
+           :key="index"
+           :to="item.link"
+           :title="item.title"
+           text
+           x-large
+           color="white"
+         >
+         {{item.title}}
+         </v-btn>
+        <v-btn icon color="#000000" @click="logout" >
+          <v-tooltip left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on" medium class="mx-0">mdi-exit-run</v-icon>
+            </template>
+            <span>退出登录</span>
+          </v-tooltip>
+        </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+      
+      <v-toolbar dark color="green darken-2" class="hidden-sm-and-up">
+        <v-toolbar-title>Mobile Menu</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-btn>ab</v-btn>
+        </v-toolbar-items>
+
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar color="blue-grey darken-2">
+              <v-toolbar-title>Mobile Menu</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon @click.native="dialog = false">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-toolbar>
+
+            <v-list>
+              <v-list-tile
+                v-for="(item, index) in items"
+                :key="index"
+                to="#"
+              >
+                <v-list-tile-action>
+                  <v-icon v-if="item.icon">{{item.icon}}</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                  <v-list-tile-title :title="item.title">{{ item.title}}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+      
+    </v-layout>
+  <!-- <v-navigation-drawer
     v-model="drawer"
     expand-on-hover
     color="success"
@@ -22,9 +85,6 @@
       <v-list-item-title>
         统一账号系统
       </v-list-item-title>
-      <!-- <v-btn icon @click.stop="mini = !mini">
-        <v-icon>mdi-arrow-left-circle-outline</v-icon>
-      </v-btn> -->
     </v-list-item>
 
     <v-divider></v-divider>
@@ -45,6 +105,7 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
+ -->
 </template>
 
 <script>
@@ -52,6 +113,7 @@
     name: 'Menu',
     data () {
       return {
+        dialog: false,
         drawer: true,
         // mini: true,
         items: [],

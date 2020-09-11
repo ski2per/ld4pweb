@@ -1,7 +1,7 @@
 <template>
 <v-app>
   <nav-menu v-if="isLoggedIn"></nav-menu>
-
+  
   <v-content transition="slide-x-transition">
     <router-view></router-view>
     <my-noti></my-noti>
