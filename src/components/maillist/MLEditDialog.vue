@@ -15,8 +15,12 @@
       </template>
       <v-spacer></v-spacer>
 
-      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="white" text @click="validate">OK</v-btn>
+      <v-btn color="white" icon @click="reset" :disabled="!valid">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-btn color="white" icon @click="validate">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-card-text>
@@ -32,18 +36,19 @@
             </v-form>
           </v-col>
         </v-row>
-
-        <v-row>
+        <v-row >
           <!-- Desktop -->
-          <v-col class="hidden-xs-only">
-            <userlist-mini ref="userMini"
-              v-on:selected="handleSelectedEvent($event)"
-            ></userlist-mini>
+          <v-col cols="4" class="hidden-xs-only">
+            <userlist-mini
+             ref="userMini"
+             v-bind:noPerPage="10"
+             v-on:selected="handleSelectedEvent($event)" ></userlist-mini>
           </v-col>
 
+          <!--<v-col class="hidden-xs-only">-->
           <v-col>
             <template v-if="!selected.length">
-              <h4>选择加入邮件列表的用户</h4>
+              <h4><- 选择邮件列表用户</h4>
             </template>
             <template v-else>
               <div style="color: green;" v-for="item in selected" :key="item.uid">
@@ -59,41 +64,16 @@
           </v-col>
         </v-row>
         <!-- UserListMini for mobile -->
-        <!-- <v-row>
+        <v-row>
           <v-col class="hidden-sm-and-up" cols="12">
             <userlist-mini ref="userMini"
               v-on:selected="handleSelectedEvent($event)"
             ></userlist-mini>
           </v-col>
-        </v-row> -->
+        </v-row>
       </v-container>
     </v-card-text>
     
-      <div class="text-center">
-    <v-btn
-      fab
-      fixed
-      right
-      bottom
-      color="error"
-      @click="overlay = !overlay"
-    >
-      Show Overlay
-    </v-btn>
-
-    <v-overlay :value="overlay">
-      <v-btn
-        icon
-        @click="overlay = false"
-      >
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-            <userlist-mini ref="userMini"
-              v-on:selected="handleSelectedEvent($event)"
-            ></userlist-mini>
-    </v-overlay>
-  </div>
-
   </v-card>
 </v-dialog>
 
@@ -115,7 +95,7 @@ export default {
         color: '',
       },
       dialog: false,
-      overlay: false,
+      userDialog: false,
       valid: true,
       edited: false,
       selected: [],

@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+    :mobile-breakpoint="120"
     v-model="selectedUsers"
     :headers="headers"
     :items="users"
@@ -12,7 +13,7 @@
     show-select
     hide-default-header
     class="elevation-1"
-    :items-per-page="16"
+    :items-per-page="noPerPage"
     :footer-props="{
       itemsPerPageText: '',
       disableItemsPerPage: true
@@ -65,6 +66,9 @@ export default {
       ],
     }
   }, //data()
+  props: {
+    noPerPage: Number,
+  },
   computed: {
     users: function() {
       return this.$store.state.usr.users

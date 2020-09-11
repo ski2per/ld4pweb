@@ -25,7 +25,7 @@
           </v-chip>
 
           <v-row>
-            <v-col cols="5">
+            <v-col cols="4">
               <v-row justify="start" class="pl-2">
                 <login-form />
               </v-row>

@@ -12,8 +12,12 @@
     >
       {{title}}
       <v-spacer></v-spacer>
-      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="white" text @click="validate">OK</v-btn>
+      <v-btn color="white" icon @click="reset" :disabled="!valid">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-btn color="white" icon @click="validate">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-card-text class="pa-0">

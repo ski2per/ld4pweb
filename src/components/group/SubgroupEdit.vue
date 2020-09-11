@@ -12,19 +12,18 @@
     >
       编辑 {{group.ou}}/{{subgroup.cn}} 成员
       <v-spacer></v-spacer>
-      <v-btn color="white" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="white" text @click="update">OK</v-btn>
+      <v-btn color="white" icon @click="reset" :disabled="!valid">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-btn color="white" icon @click="update">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-card-text>
       <v-container>
         <!--User Addition-->
         <v-row>
-          <v-col>
-            <userlist-mini ref="userMini"
-              v-on:selected="handleSelectedEvent($event)"
-            ></userlist-mini>
-          </v-col>
           <v-col>
             <template v-if="!selected.length">
               <h4>选择要加入的用户</h4>
@@ -48,6 +47,21 @@
             ></subgroup-members>
           </v-col>
         </v-row>
+        <v-row>
+          <!-- Desktop -->
+          <v-col cols="6" class="hidden-xs-only">
+            <userlist-mini ref="userMini" :noPerPage="10"
+              v-on:selected="handleSelectedEvent($event)"
+            ></userlist-mini>
+          </v-col>
+          <!-- Mobile -->
+          <v-col class="hidden-sm-and-up">
+            <userlist-mini ref="userMini" :noPerPage="10"
+              v-on:selected="handleSelectedEvent($event)"
+            ></userlist-mini>
+          </v-col>
+        </v-row>
+
       </v-container>
     </v-card-text>
 

@@ -36,7 +36,9 @@
       color="green"
     ></v-text-field>
 
-    <v-btn color="warning" type="submit" :disabled="!valid">修改密码</v-btn>
+    <v-row justify="end">
+      <v-btn color="warning" type="submit" :disabled="!valid">修改密码</v-btn>
+    </v-row>
   </v-form>
 </template>
 
