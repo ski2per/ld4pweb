@@ -1,9 +1,8 @@
 <template>
   <!--<v-container justify="start">-->
-  <v-container fluid>
+  <v-container>
     <v-row>
-      <v-col cols="6">
-      <!-- <v-card min-width="400"> -->
+      <v-col :cols="colWidth">
         <v-card>
           <v-card-title><h4>{{ me.cn }}</h4></v-card-title>
           <v-card-text>
@@ -35,11 +34,8 @@
         </v-card>
       </v-col>
 
-      <v-col cols="3">
+      <v-col :cols="colWidth">
         <password-update></password-update>
-      </v-col>
-      <v-col cols="auto">
-        <v-spacer></v-spacer>
       </v-col>
     </v-row>
 
@@ -53,8 +49,19 @@ export default {
   name: 'About',
   computed: {
     me: function () {
-      return this.$store.state.usr.me
-    }
+      return this.$store.state.usr.me;
+    },
+    colWidth: function () {
+      if (this.$vuetify.breakpoint.name === 'xs') {
+        return 12;
+      } else {
+        return 4;
+      }
+    },
+    // infoColWidth: function () {
+    //   if (this.$vuetify.breakpoint.name === 'xs') {}
+    // }
+
   },
   components: {
     'password-update': PasswordUpdate

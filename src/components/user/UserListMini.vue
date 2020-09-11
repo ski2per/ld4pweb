@@ -60,8 +60,8 @@ export default {
       search: '',
       headers: [
         //注意' d-none'前面有空格
-        {value: "uid", align: ' d-none'},
         {value: "cn", align: "left"},
+        {value: "uid", align: ' d-none'},
       ],
     }
   }, //data()

@@ -7,7 +7,6 @@
     sort-by="uid"
     :loading="loading"
     loading-text="Loading..."
-    dense
     :footer-props="{
       itemsPerPageText: '每页',
       showFirstLastPage: true,
@@ -21,11 +20,6 @@
     <template v-slot:top>
       <v-toolbar flat color="white">
         <!--Filter User-->
-        <!-- <v-checkbox label="隐藏功能账号" class="mt-6"
-          color="orange"
-          v-model="realUsers"
-          :input-value="realUsers"
-        ></v-checkbox> -->
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-switch v-on="on" v-model="realUsers" class="mt-6" color="orange"></v-switch>
@@ -69,11 +63,12 @@
     <template v-for="(h,idx) in headers" v-slot:[`header.${h.value}`]>
       <span class="green-text" :key="idx">{{h.text}}</span>
     </template>
+
     <!--
       "item"为v-slot:item中的属性，
       貌似必须为"item"
     -->
-    <template v-slot:item="{item}">
+    <!-- <template v-slot:item="{item}">
       <tr>
         <uid-td :user="item"></uid-td>
         <td>{{item.cn}}</td>
@@ -87,18 +82,20 @@
           ></user-list-action>
         </td>
       </tr>
-    </template>
+    </template> -->
 
     <!--操作按钮
       v-slot:item.action中的"action"对应headers数组对象中，
       操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
+    -->
     <template v-slot:item.action="{ item }">
       <user-list-action :user="item"
       v-on:delete="handleDeleteEvent($event)"
       v-on:edit="handleEditEvent($event)"
+      v-on:lock="handleLockEvent($event)"
+      v-on:reset="handleResetPsdEvent($event)"
       ></user-list-action>
     </template>
-    -->
 
 
     <template v-slot:no-data>

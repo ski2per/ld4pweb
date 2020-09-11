@@ -46,85 +46,36 @@
     </v-list>
   </v-navigation-drawer>
 
-<!-- <v-card>
-     <v-speed-dial
-        v-model="fab"
-        :top="top"
-        :bottom="bottom"
-        :right="right"
-        :left="left"
-        :direction="direction"
-        :open-on-hover="hover"
-        :transition="transition"
+  <v-menu>
+    <template v-slot:activator="{ on }">
+      <v-btn
+        fab
+        fixed
+        right
+        bottom
+        color="green"
+        v-on="on"
+        class="hidden-sm-and-up"
       >
-        <template v-slot:activator>
-          <v-btn
-            v-model="fab"
-            color="blue darken-2"
-            dark
-            fab
-          >
-            <v-icon v-if="fab">mdi-close</v-icon>
-            <v-icon v-else>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
-        <v-btn
-          fab
-          dark
-          small
-          color="green"
-        >
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="indigo"
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-        <v-btn
-          fab
-          dark
-          small
-          color="red"
-        >
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-      </v-speed-dial>
-</v-card> -->
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
+    </template>
 
-    <v-menu>
-      <template v-slot:activator="{ on }">
-        <v-btn
-          fab
-          fixed
-          right
-          bottom
-          color="green"
-          v-on="on"
-        >
-          <v-icon>mdi-menu</v-icon>
-        </v-btn>
-      </template>
+    <v-list>
+      <v-list-item
+        v-for="(item, index) in items"
+        :key="index"
+        :to="item.link"
+      >
+        <v-list-item-title>{{item.title}}</v-list-item-title>
+      </v-list-item>
 
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          :to="item.link"
-        >
-          <v-list-item-title>{{item.title}}</v-list-item-title>
-        </v-list-item>
+      <v-btn text color="warning" @click="logout">
+        退出登录
+      </v-btn>
 
-        <v-btn text color="warning" @click="logout">
-          退出登录
-        </v-btn>
-
-      </v-list>
-    </v-menu>
-  <!-- </v-app-bar> -->
+    </v-list>
+  </v-menu>
 </v-container>
 
 
