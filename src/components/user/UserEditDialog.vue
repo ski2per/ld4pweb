@@ -65,11 +65,6 @@
       </v-container>
     </v-card-text>
 
-    <!-- <v-card-actions class="py-0">
-      <v-spacer></v-spacer>
-      <v-btn color="green darken-1" text @click="reset" :disabled="!valid">Cancel</v-btn>
-      <v-btn color="green darken-1" text @click="validate">OK</v-btn>
-    </v-card-actions> -->
   </v-card>
 </v-dialog>
 

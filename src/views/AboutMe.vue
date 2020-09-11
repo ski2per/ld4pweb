@@ -58,10 +58,6 @@ export default {
         return 4;
       }
     },
-    // infoColWidth: function () {
-    //   if (this.$vuetify.breakpoint.name === 'xs') {}
-    // }
-
   },
   components: {
     'password-update': PasswordUpdate

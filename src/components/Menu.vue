@@ -51,7 +51,7 @@
       <v-btn
         fab
         fixed
-        right
+        left 
         bottom
         color="green"
         v-on="on"
