@@ -247,7 +247,8 @@ const mutations = {
   },
   PRE_CREATE_GROUP(state, data) {
     // Can this mutation be canceled?
-    state.groups.push(data)
+    // state.groups.push(data)
+    state.groups.unshift(data)
   },
   CREATE_GROUP(state, data) {
     delete data.edited
