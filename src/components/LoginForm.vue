@@ -1,4 +1,5 @@
 <template>
+<v-container>
   <v-form 
     ref="loginForm"
     @submit.prevent="validate"
@@ -23,6 +24,7 @@
 
     <v-btn color="warning" type="submit" :disabled="!valid">Login</v-btn>
   </v-form>
+</v-container>
 </template>
 
 <script>

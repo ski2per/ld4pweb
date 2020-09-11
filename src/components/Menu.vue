@@ -1,46 +1,133 @@
 <template>
-    <v-layout row justify-center>
-      <v-toolbar color="green darken-2" class="hidden-xs-only">
-        <v-toolbar-title>Desktop Menu</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-         <v-btn
-           v-for="(item, index) in items"
-           :key="index"
-           :to="item.link"
-           :title="item.title"
-           text
-           x-large
-           color="white"
-         >
-         {{item.title}}
-         </v-btn>
+<v-container class="pa-0">
+  <v-navigation-drawer class="hidden-xs-only"
+    v-model="drawer"
+    app
+    expand-on-hover
+    color="success"
+    hide-overlay
+    dark
+  >
+    <v-list-item class="px-2">
+      <v-list-item-action>
         <v-btn icon color="#000000" @click="logout" >
-          <v-tooltip left>
+          <v-tooltip right>
             <template v-slot:activator="{ on }">
               <v-icon v-on="on" medium class="mx-0">mdi-exit-run</v-icon>
             </template>
             <span>退出登录</span>
           </v-tooltip>
         </v-btn>
-        </v-toolbar-items>
-      </v-toolbar>
-      
-      <v-toolbar dark color="green darken-2" class="hidden-sm-and-up">
-        <v-toolbar-title>Mobile Menu</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-          <v-btn icon @click.stop="dialog = true">
-            <v-icon>mdi-menu</v-icon>
-          </v-btn>
-        </v-toolbar-items>
+      </v-list-item-action>
+      <v-list-item-title>
+        统一账号系统
+      </v-list-item-title>
+      <!-- <v-btn icon @click.stop="mini = !mini">
+        <v-icon>mdi-arrow-left-circle-outline</v-icon>
+      </v-btn> -->
+    </v-list-item>
 
-        <v-dialog v-model="dialog" transition="dialog-right-transition">
-          abc
-        </v-dialog>
-      </v-toolbar>
-      
-    </v-layout>
+    <v-divider></v-divider>
+
+    <v-list dense nav >
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        :to="item.link"
+        link
+      >
+        <v-list-item-icon class="mx-0">
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+        <v-list-item-icon>
+          <v-list-item-title style="font-size: 1em;">{{ item.title }}</v-list-item-title>
+        </v-list-item-icon>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+<!-- <v-card>
+     <v-speed-dial
+        v-model="fab"
+        :top="top"
+        :bottom="bottom"
+        :right="right"
+        :left="left"
+        :direction="direction"
+        :open-on-hover="hover"
+        :transition="transition"
+      >
+        <template v-slot:activator>
+          <v-btn
+            v-model="fab"
+            color="blue darken-2"
+            dark
+            fab
+          >
+            <v-icon v-if="fab">mdi-close</v-icon>
+            <v-icon v-else>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-btn
+          fab
+          dark
+          small
+          color="green"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="indigo"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+        <v-btn
+          fab
+          dark
+          small
+          color="red"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </v-speed-dial>
+</v-card> -->
+
+    <v-menu>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          fab
+          fixed
+          right
+          bottom
+          color="green"
+          v-on="on"
+        >
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          :to="item.link"
+        >
+          <v-list-item-title>{{item.title}}</v-list-item-title>
+        </v-list-item>
+
+        <v-btn text color="warning" @click="logout">
+          退出登录
+        </v-btn>
+
+      </v-list>
+    </v-menu>
+  <!-- </v-app-bar> -->
+</v-container>
+
+
 </template>
 
 <script>
@@ -48,9 +135,8 @@
     name: 'Menu',
     data () {
       return {
-        dialog: false,
         drawer: true,
-        // mini: true,
+        mini: true,
         items: [],
         version: process.env.VUE_APP_VERSION,
       }
@@ -84,13 +170,6 @@
         })
       }
     },
-    computed: {
-      mini() {
-        tmp = this.$vuetify.breakpoint.mdAndDown;
-        console.log(tmp);
-        return this.$vuetify.breakpoint.mdAndDown;
-      }
-    }
   }
 </script>
 

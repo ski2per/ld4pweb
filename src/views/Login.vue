@@ -8,8 +8,7 @@
 
     <v-col>
       <v-row class="elevation-4" > 
-
-        <v-col>
+        <v-col class="hidden-xs-only">
           <v-row justify="end">
               <v-img src="../assets/logo.png"
                 max-width="200"
@@ -18,14 +17,33 @@
           </v-row>
         </v-col>
 
-        <v-col class="green darken-1">
+        <!-- Desktop -->
+        <v-col class="green darken-1 hidden-xs-only">
           <v-chip class="my-2" color="white" outlined label >
             <v-icon left>mdi-contact-mail-outline</v-icon>
             统一账号管理系统 - {{version}}
           </v-chip>
-          <v-row justify="start" class="pl-2">
-            <login-form />
+
+          <v-row>
+            <v-col cols="5">
+              <v-row justify="start" class="pl-2">
+                <login-form />
+              </v-row>
+            </v-col>
           </v-row>
+        </v-col>
+
+        <!-- Mobile -->
+        <v-col class="green darken-1 hidden-sm-and-up">
+          <v-container>
+            <v-chip class="my-2" color="white" outlined label >
+              <v-icon left>mdi-contact-mail-outline</v-icon>
+              统一账号管理系统 - {{version}}
+            </v-chip>
+            <v-row justify="start">
+              <login-form />
+            </v-row>
+          </v-container>
         </v-col>
 
       </v-row><!--row with elevation-->
