@@ -52,6 +52,7 @@
         fab
         fixed
         left 
+        small
         bottom
         color="green"
         v-on="on"
