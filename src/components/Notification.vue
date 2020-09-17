@@ -9,9 +9,13 @@
     :top="y === 'top'"
   >
     {{ myText }}
-    <v-btn dark text @click="dismiss" >
-      <v-icon>mdi-cancel</v-icon>
-    </v-btn>
+    <template v-slot:action="{ attrs }">
+      <v-btn dark text
+        @click="dismiss"
+        v-bind="attrs">
+        <v-icon>mdi-cancel</v-icon>
+      </v-btn>
+    </template>
   </v-snackbar>
 </template>
 
