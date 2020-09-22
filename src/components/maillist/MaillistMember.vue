@@ -1,6 +1,6 @@
 <template>
   <v-container class="mx-0 px-0">
-    <v-row align="center"  justify="start" v-if="!members.length">
+    <v-row align="center"  justify="start" v-if="loading">
       <v-progress-circular class="ml-6"
         width="2"
         color="green darken-2"
@@ -32,14 +32,16 @@ export default {
   },
   computed: {
     members: function() {
-      return this.$store.getters['mlst/maillistMember'](this.maillistName)
+      this.loading = false;
+      return this.$store.getters['mlst/maillistMember'](this.maillistName);
     } 
   },
   created: function() {
     this.maillistName = this.maillist.split('@')[0]
     if (!this.members.length) {
-      console.log('No maillist member in Vuex, load from API')
-      this.$store.dispatch('mlst/loadMaillistMember', this.maillistName)
+      this.loading = true;
+      console.log('No maillist member in Vuex, load from API');
+      this.$store.dispatch('mlst/loadMaillistMember', this.maillistName);
     }
   },
   
