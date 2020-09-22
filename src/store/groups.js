@@ -300,16 +300,12 @@ const mutations = {
     let target = state.groups[idx]
 
     // --- DEBUG ---
-    // console.log(target.subgroups)
     // let arr = [...target.subgroups]
     // arr.unshift({cn: "", description: "", edited: true})
     // arr.push({cn: "", description: "", edited: true})
     // Vue.set(target, "subgroups", arr)
 
-    // unshift() 导致不能监听Subgroup.vue的自定义addsg事件，暂时未解决
-    // Still stuck
-    // target.subgroups.unshift({cn: "", description: "", edited: true})
-    target.subgroups.push({cn: "", description: "", state: "create"})
+    target.subgroups.unshift({cn: "", description: "", state: "create"})
   },
   CREATE_SUBGROUP(state, payload) {
     // payload = {
@@ -320,9 +316,9 @@ const mutations = {
     let groupIdx = this.getters['grp/getIndexByOU'](payload.group)
     let target = state.groups[groupIdx]
 
-    // 由于在PRE_CREATE_SUBGROUP中使用了push
-    // 默认数组最后一个元素为新加元素
-    let subgroupIdx = target.subgroups.length - 1
+    // 由于在PRE_CREATE_SUBGROUP中使用了unshift
+    // 数组第一个元素为新加元素
+    let subgroupIdx = 0
 
     delete payload.group
     Vue.set(payload, 'members', [])

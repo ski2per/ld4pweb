@@ -19,6 +19,7 @@
     </v-card-subtitle>
   <v-card-subtitle
     @click="editGroup"
+    class="py-0"
     v-else>{{ group.description}}</v-card-subtitle>
 
   <v-card-actions>
@@ -176,9 +177,9 @@ export default {
       let payload = {
         group: this.group.ou,
         ...data
-      }
-      this.$store.dispatch('grp/createSubgroup', payload)
-      this.addSubgroupBtnValid = true
+      };
+      this.$store.dispatch('grp/createSubgroup', payload);
+      this.addSubgroupBtnValid = true;
     },
     handleDelSubgroup(subgroup) {
       let data = {

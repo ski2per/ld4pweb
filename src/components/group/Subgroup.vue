@@ -79,9 +79,6 @@
     </v-icon>
   </v-overlay>
 </v-list-item>
-
-
-
 </template>
 
 <script>
@@ -112,7 +109,7 @@ export default {
         }
         // 向父级(GroupCard.vue)发送'addsg'事件，
         // 并传递创建subgroup的数据
-        this.$emit('addsg', payload)
+        this.$emit('addsg', payload);
       }
       this.valid = true
     },
