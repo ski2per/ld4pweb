@@ -43,7 +43,7 @@
     -->
 
     <template v-slot:no-data>
-      No data : P
+      No Data ☕
     </template>
 
   </v-data-table>

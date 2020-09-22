@@ -93,7 +93,7 @@
     </template>
 
     <template v-slot:no-data>
-      No Data 🤷
+      No Data ☕
     </template>
 
   </v-data-table>
