@@ -6,7 +6,6 @@
   :max-width="cardWidth"
 >
   <v-card-title
-    @click="editGroup"
     style="color:green;"
   >{{ group.ou }}</v-card-title>
   <v-card-subtitle v-if="groupEdited">
@@ -18,7 +17,9 @@
       @blur="updateGroup"
       ></v-text-field>
     </v-card-subtitle>
-  <v-card-subtitle v-else>{{ group.description}}</v-card-subtitle>
+  <v-card-subtitle
+    @click="editGroup"
+    v-else>{{ group.description}}</v-card-subtitle>
 
   <v-card-actions>
   <!--暂时注释

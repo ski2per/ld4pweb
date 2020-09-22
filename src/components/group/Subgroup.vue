@@ -38,7 +38,9 @@
         @blur="updateDesc"
         ></v-text-field>
       </v-list-item-subtitle>
-    <v-list-item-subtitle v-else>{{subgroup.description}}</v-list-item-subtitle>
+    <v-list-item-subtitle
+      @click="editDesc"
+      v-else>{{subgroup.description}}</v-list-item-subtitle>
   </v-list-item-content>
 
   <v-list-item-action>
