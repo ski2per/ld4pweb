@@ -23,7 +23,7 @@
   <!--空组提示-->
   <v-container v-if="!groups.length">
     <v-row justify="center" style="font-size: 3em;">
-      No Data 🤷
+      No Data ☕
     </v-row>
   </v-container>
 
