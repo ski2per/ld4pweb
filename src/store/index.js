@@ -7,6 +7,8 @@ import maillists from './maillists'
 
 Vue.use(Vuex)
 
+const CURRENT_ORIGIN = window.location.origin
+
 const state = {
   status: '',
   token: localStorage.getItem('token') || '',
@@ -54,7 +56,7 @@ const actions = {
   login({commit}, userdata){
     return new Promise((resolve, reject) => {
       commit('AUTH_REQUEST')
-      httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/token`, userdata)
+      httpCli.post(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/token`, userdata)
       .then(response => {
         const token = response.data.access_token
         const user = userdata.get('username')
@@ -105,7 +107,7 @@ const actions = {
   },
   getMenu({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/menu`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/util/menu`)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })

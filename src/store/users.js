@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 
+const CURRENT_ORIGIN = window.location.origin
+
 const getDefaultState = () => {
   return {
     users: [],
@@ -30,7 +32,7 @@ const actions = {
   },
   // 同步全员用户账号
   syncUsers({commit}) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/syncuser`)
+    httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/util/syncuser`)
     .then(response => {
       if (response && response.status == 200) {
         this.dispatch('notify', {msg: '同步全员成功', color: "success"}, { root: true })
@@ -51,7 +53,7 @@ const actions = {
   },
   loadUsers({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/`)
       .then(response => {
         commit('SET_USERS', response.data)
         resolve(response)
@@ -62,7 +64,7 @@ const actions = {
     })
   },
   loadMyInfo({commit}) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/me`)
+    httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/me`)
     .then(response => {
       if(response && response.status == 200) {
         console.info(`[Invoke API] GET: /users/me, http code: ${response.status}`)
@@ -74,7 +76,7 @@ const actions = {
   // 创建用户Action, 先调用后台API创建用户成功之后，
   // 将返回的用户字典提交给state
   createUser({commit}, data) {
-    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
+    httpCli.post(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => {
       console.info(`[Invoke API] POST: /users/{user}, http code: ${response.status}`)
       if (response && response.status == 200) {
@@ -99,7 +101,7 @@ const actions = {
   },
   updateUser({commit}, data) {
     commit('UPDATE_USER', data)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${data.uid}`, data)
     .then(response => { 
       console.info(`[Invoke API] PUT: /users/{user}, http code: ${response.status}`)
       if (response && response.status == 200) {
@@ -113,7 +115,7 @@ const actions = {
   },
   deleteUser({commit}, uid) {
     commit('DELETE_USER', uid)
-    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}`)
+    httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${uid}`)
     .then(response => {
       console.info(`[Invoke API] DELETE: /users/{user}, http code: ${response.status}`)
       if(response && response.status == 200) {
@@ -126,7 +128,7 @@ const actions = {
   },
   updatePassword({commit}, password) {
     return new Promise((resolve, reject) => {
-      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/password`, password)
+      httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/password`, password)
       .then(response => {resolve(response)})
       .catch(error => {reject(error)})
     })
@@ -134,7 +136,7 @@ const actions = {
   resetPassword({commit}, uid) {
     // 直接调用后端API，但不更改Vuex state，
     // state中的密码Hash暂无卵用
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/password/reset`)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${uid}/password/reset`)
     .then(response => {
       if(response && response.status == 200) {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
@@ -147,7 +149,7 @@ const actions = {
   },
   lockUser({commit}, uid) {
     commit('LOCK_USER', uid)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/lock`)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${uid}/lock`)
     .then(response => {
       if(response && response.status == 200) {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
@@ -160,7 +162,7 @@ const actions = {
   },
   unlockUser({commit}, uid) {
     commit('UNLOCK_USER', uid)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/users/${uid}/unlock`)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/users/${uid}/unlock`)
     .then(response => {
       if(response && response.status == 200) {
         this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })

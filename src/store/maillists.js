@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import httpCli from '@/assets/js/http'
 
+const CURRENT_ORIGIN = window.location.origin
+
 const getDefaultState = () => {
   return {
     maillists: Object,
@@ -33,7 +35,7 @@ const actions = {
     commit('RESET_STATE')
   },
   syncMaillist({commit}) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/util/syncmaillist`)
+    httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/util/syncmaillist`)
     .then(response => {
       console.log(response)
       if (response && response.status == 200) {
@@ -52,7 +54,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       // Set loading signal
       commit('LOADING');
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/`)
       .then(response => {
         commit('LOAD_MAILLISTS', response.data);
         commit('LOADING');
@@ -83,7 +85,7 @@ const actions = {
       members: []
     }
     commit("CREATE_MAILLIST", {key: maillistName, data: newData})
-    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
+    httpCli.post(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${data.mail}`, data)
     .then(response => {
       console.info(`[Invoke API] POST: /maillists/{maillist}, http code: ${response.status}`)
       if (response && response.status == 200) {
@@ -102,7 +104,7 @@ const actions = {
   },
   deleteMaillist({commit}, maillist) {
     commit("DELETE_MAILLIST", maillist)
-      httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
+      httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}`)
       .then(response => {
         if (response && response.status == 200) {
           console.info(`[Invoke API] DELETE: /maillists/{maillist}, http code: ${response.status}`)
@@ -113,7 +115,7 @@ const actions = {
   },
   updateMaillist({commit}, data) {
     commit('UPDATE_MAILLIST', data)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}`, data)
     .then(response => { 
       if (response && response.status == 200) {
         console.info(`[Invoke API] PUT: /maillists/{maillist}, http code: ${response.status}`)
@@ -130,7 +132,7 @@ const actions = {
     commit('SET_MAILLIST_MEMBER', payload)
     payload.members.forEach((item, index) => {
       // Think I will put sleep or something here ;P
-      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${payload.maillist}/${item.uid}`)
+      httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${payload.maillist}/${item.uid}`)
       .then(response => {
         if(response && response.status == 200) {
           console.info(`[Invoke API] PUT: /maillists/{maillist}/{user}, http code: ${response.status}`)
@@ -144,7 +146,7 @@ const actions = {
   },
   removeUserFromMaillist({commit}, data) {
     commit('REMOVE_MAILLIST_MEMBER', data)
-    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
+    httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${data.maillist}/${data.uid}`)
     .then(response => {
       if (response && response.status == 200) {
         console.info(`[Invoke API] DELETE: /maillists/{maillist}/{user}, http code: ${response.status}`)
@@ -154,7 +156,7 @@ const actions = {
     .catch(error => { reject(error) })
   },
   loadMaillistMember({commit}, maillist) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
+    httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/maillists/${maillist}/member`)
     .then(response => {
       commit('SET_MAILLIST_MEMBER', {maillist: maillist, members: response.data})
     })

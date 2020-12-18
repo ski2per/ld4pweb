@@ -10,6 +10,7 @@ const getDefaultState = () => {
 }
 
 const state = getDefaultState()
+const CURRENT_ORIGIN = window.location.origin
 
 const getters = {
   // For group
@@ -53,7 +54,7 @@ const actions = {
   // ====================================
   loadGroups({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/`)
       .then(response => {
         commit('SET_GROUPS', response.data)
         resolve(response)
@@ -65,7 +66,7 @@ const actions = {
   },
   loadGroupTree({commit}) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/tree`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/tree`)
       .then(response => {
         commit('SET_GROUP_TREE', response.data)
         resolve(response)
@@ -80,7 +81,7 @@ const actions = {
   },
   createGroup({commit}, data) {
     commit('CREATE_GROUP', data)
-    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
+    httpCli.post(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
     .then(response => {
       console.log(response.data)
     })
@@ -88,7 +89,7 @@ const actions = {
   },
   updateGroup({commit}, data) {
     commit('UPDATE_GROUP', data)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`, data)
     .then(response => {
       console.info(`[Invoke API] PUT: /groups/{group}, http code: ${response.status}`)
       this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
@@ -99,7 +100,7 @@ const actions = {
   },
   add2Group({commit}, data) {
     return new Promise((resolve, reject) => {
-      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
+      httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.pgroup}/${data.group}/${data.uid}`)
       .then(response => {resolve(response)})
       .catch(error => {
         switch(error.response.status) {
@@ -116,7 +117,7 @@ const actions = {
   },
   deleteGroup({commit}, data) {
     commit('DELETE_GROUP', data)
-    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`)
+    httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.ou}`)
     .then(response => {
       console.info(`[Invoke API] DELETE: /groups/{group}, http code: ${response.status}`)
       this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
@@ -131,7 +132,7 @@ const actions = {
   // ====================================
   loadSubgroup({commit}, groupName) {
     return new Promise((resolve, reject) => {
-      httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
+      httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${groupName}`)
       .then(response => {
         commit('SET_SUBGROUPS', {group: groupName, subgroups: response.data})
         resolve(response)
@@ -143,7 +144,7 @@ const actions = {
     })
   },
   loadSubgroupMembers({commit}, payload) {
-    httpCli.get(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${payload.group}/${payload.subgroup}/member`)
+    httpCli.get(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${payload.group}/${payload.subgroup}/member`)
     .then(response => {
       let dataPack = {
         ...payload,
@@ -166,7 +167,7 @@ const actions = {
       members: [],
       description: data.description
     }
-    httpCli.post(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${groupName}/${data.cn}`, postData)
+    httpCli.post(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${groupName}/${data.cn}`, postData)
     .then(response => {
       console.info(`[Invoke API] POST: /groups/{group}/{subgroup}, http code: ${response.status}`)
     })
@@ -174,7 +175,7 @@ const actions = {
   },
   deleteSubgroup({commit}, data) {
     commit('DELETE_SUBGROUP', data)
-    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}`)
+    httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}`)
     .then(response => {
       this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
     })
@@ -186,7 +187,7 @@ const actions = {
     //   subgroup: subgroup Object
     // }
     commit('UPDATE_SUBGROUP_DESC', data.group)
-    httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group.ou}/${data.subgroup.cn}`, 
+    httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.group.ou}/${data.subgroup.cn}`, 
                   {description: data.subgroup.description})
     .then(response => {
       console.log(response.data.detail)
@@ -201,7 +202,7 @@ const actions = {
     //   member: "member uid"
     // }
     commit('DELETE_SUBGROUP_MEMBER', data)
-    httpCli.delete(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${data.member}`) 
+    httpCli.delete(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${data.member}`) 
     .then(response => {
       console.log(response.data.detail)
       // this.dispatch('notify', {msg: response.data.detail, color: "success"}, { root: true })
@@ -220,7 +221,7 @@ const actions = {
     // WILL refactor in later release
     // MAYBE add batch addition API
     data.members.forEach((item, index) => {
-      httpCli.put(`${process.env.VUE_APP_API_HOST}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${item.uid}`) 
+      httpCli.put(`${CURRENT_ORIGIN}/${process.env.VUE_APP_API_PATH}/groups/${data.group}/${data.subgroup}/${item.uid}`) 
       .then(response => {
         console.log(response.data.detail)
         // Load current user's info(especially for admin)
