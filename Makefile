@@ -2,7 +2,7 @@
 
 # Registry used for publishing images
 REGISTRY?=docker.cetcxl.local/ldapman-web
-ENV := ".env.production"
+ENV := .env.production
 
 # Default tag and architecture. Can be overridden
 TAG?=$(shell git describe --tags --dirty)
@@ -28,5 +28,5 @@ image:
 push: image
 	docker push $(REGISTRY):$(TAG)
 
-all:
-	: '$(ENV)'
+#debug:
+#	@echo $(ENV)
