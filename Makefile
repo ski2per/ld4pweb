@@ -2,7 +2,7 @@
 
 # Registry used for publishing images
 REGISTRY?=docker.cetcxl.local/ldapman-web
-VERSION_FILE=.env.production
+ENV := ".env.production"
 
 # Default tag and architecture. Can be overridden
 TAG?=$(shell git describe --tags --dirty)
@@ -20,11 +20,13 @@ clean:
 
 ## Create a docker image on disk for a specific arch and tag
 image:
-	@cp $(VERSION_FILE) "$(VERSION_FILE).bak"
-	@sed -i "s/LDAPWEB_VERSION/$(TAG)/" $(VERSION_FILE)
+	@cp $(ENV) "$(ENV).bak"
+	@sed -i "s/LDAPWEB_VERSION/$(TAG)/" $(ENV)
 	docker build --no-cache -f Dockerfile -t $(REGISTRY):$(TAG) .
-	@mv "$(VERSION_FILE).bak" $(VERSION_FILE)
+	@mv "$(ENV).bak" $(ENV)
 
 push: image
 	docker push $(REGISTRY):$(TAG)
 
+all:
+	: '$(ENV)'

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "home": "vue-cli-service serve --mode home",
+    "k8s": "vue-cli-service serve --mode k8s",
     "build": "vue-cli-service build",
     "test": "vue-cli-service build --mode test"
   },

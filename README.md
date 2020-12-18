@@ -31,7 +31,7 @@ npm install
 可根据需要增加相应的.env.xxx文件, 修改package.json来增加自己的开发环境.
 ```
 npm run serve
-npm run home
+npm run k8s
 ```
 
 ## 打包生产环境
