@@ -7,7 +7,8 @@ import maillists from './maillists'
 
 Vue.use(Vuex)
 
-const CURRENT_ORIGIN = window.location.origin
+// const CURRENT_ORIGIN = window.location.origin
+const CURRENT_ORIGIN = process.env.VUE_APP_API_HOST
 
 const state = {
   status: '',

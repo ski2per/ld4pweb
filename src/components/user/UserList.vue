@@ -68,7 +68,7 @@
       "item"为v-slot:item中的属性，
       貌似必须为"item"
     -->
-    <!-- <template v-slot:item="{item}">
+    <template v-slot:item="{item}">
       <tr>
         <uid-td :user="item"></uid-td>
         <td>{{item.cn}}</td>
@@ -82,20 +82,20 @@
           ></user-list-action>
         </td>
       </tr>
-    </template> -->
+    </template>
 
     <!--操作按钮
       v-slot:item.action中的"action"对应headers数组对象中，
       操作这一列的"value"(参考VuetifyJS v-table API slots: item.<name>)
     -->
-    <template v-slot:item.action="{ item }">
+    <!-- <template v-slot:item.action="{ item }">
       <user-list-action :user="item"
       v-on:delete="handleDeleteEvent($event)"
       v-on:edit="handleEditEvent($event)"
       v-on:lock="handleLockEvent($event)"
       v-on:reset="handleResetPsdEvent($event)"
       ></user-list-action>
-    </template>
+    </template> -->
 
 
     <template v-slot:no-data>

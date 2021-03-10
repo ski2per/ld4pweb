@@ -10,7 +10,8 @@ const getDefaultState = () => {
 }
 
 const state = getDefaultState()
-const CURRENT_ORIGIN = window.location.origin
+// const CURRENT_ORIGIN = window.location.origin
+const CURRENT_ORIGIN = process.env.VUE_APP_API_HOST
 
 const getters = {
   // For group
