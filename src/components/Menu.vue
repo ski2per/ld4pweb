@@ -3,11 +3,13 @@
   <v-navigation-drawer class="hidden-xs-only"
     v-model="drawer"
     app
-    expand-on-hover
     color="success"
     hide-overlay
     dark
+    permanent
+    :mini-variant="mini"
   >
+    <!-- expand-on-hover -->
     <v-list-item class="px-2">
       <v-list-item-action>
         <v-btn icon color="#000000" @click="logout" >
@@ -88,7 +90,6 @@
     data () {
       return {
         drawer: true,
-        mini: true,
         items: [],
         version: process.env.VUE_APP_VERSION,
       }
@@ -122,6 +123,13 @@
         })
       }
     },
+    computed: {
+      mini() {
+        console.log(this.$vuetify.breakpoint.name);
+        console.log(this.$vuetify.breakpoint.mdAndDown);
+        return this.$vuetify.breakpoint.mdAndDown;
+      }
+    }
   }
 </script>
 
